@@ -6,8 +6,8 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 
 @Entity
-data class User(@Id
-                @GeneratedValue(strategy = GenerationType.IDENTITY)
+data class User(@field:Id
+                @field:GeneratedValue(strategy = GenerationType.IDENTITY)
                 var id: Long? = null,  // 식별 값
 
                 var username: String? = null,  // 로그인을 위한 회원의 아이디, 중복 불가
