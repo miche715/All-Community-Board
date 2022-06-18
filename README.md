@@ -61,8 +61,8 @@ Kotlin, Android, Restrofit2, Recycler View, View Holder, Coroutine, ...
 -> [있다면 클라이언트에 user.username전송.] or [없다면 없다고 메세지를 클라이언트에 전송.]
 
 + findPassword(비밀번호 찾기) - GET  
-클라이언트에서 username과 name을 서버에 전송.  
--> 서버는 username과 name이 동시에 일치하는 User가 DB (user) table에 있는지 검사.  
+클라이언트에서 name과 username을 서버에 전송.  
+-> 서버는 name과 username이 동시에 일치하는 User가 DB (user) table에 있는지 검사.  
 -> [있다면 클라이언트에 user.password전송.] or [없다면 없다고 메세지를 클라이언트에 전송.]  
 
 계속 추가중...
