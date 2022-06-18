@@ -15,26 +15,26 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(private var userService: UserService)
 {
     @PostMapping("/sign-up")  // 회원 가입
-    fun signUp(@RequestBody user: User): ResponseEntity<Boolean>  // 회원 가입 성공 시 true, 실패 시 false 리턴
+    fun createUser(@RequestBody user: User): ResponseEntity<Boolean>  // 회원 가입 성공 시 true, 실패 시 false 리턴
     {
-        return ResponseEntity.status(201).body(true)
+        return ResponseEntity.status(201).body(userService.signUp(user))
     }
 
     @GetMapping("/sign-in")  // 로그인
-    fun signIn(@RequestParam username: String, @RequestParam password: String):  ResponseEntity<User?>  // 로그인 성공 시 User, 실패 시 null 리턴
+    fun readUser(@RequestParam username: String, @RequestParam password: String):  ResponseEntity<User?>  // 로그인 성공 시 User, 실패 시 null 리턴
     {
-        return ResponseEntity.status(200).body(null)
+        return ResponseEntity.status(200).body(userService.signIn(username, password))
     }
 
     @GetMapping("/find-username")  // 아이디 찾기
-    fun findUsername(@RequestParam name: String, @RequestParam email: String): ResponseEntity<String?>  // 아이디 찾기 성공 시 username, 실패 시 null 리턴
+    fun readUsername(@RequestParam name: String, @RequestParam email: String): ResponseEntity<String?>  // 아이디 찾기 성공 시 username, 실패 시 null 리턴
     {
-        return ResponseEntity.status(200).body(null)
+        return ResponseEntity.status(200).body(userService.findUsername(name, email))
     }
 
     @GetMapping("/find-password")  // 비밀번호 찾기
-    fun findPassword(@RequestParam username: String, @RequestParam name: String): ResponseEntity<String?>  // 비밀번호 찾기 성공 시 password, 실패 시 null 리턴
+    fun readPassword(@RequestParam name: String, @RequestParam username: String): ResponseEntity<String?>  // 비밀번호 찾기 성공 시 password, 실패 시 null 리턴
     {
-        return ResponseEntity.status(200).body(null)
+        return ResponseEntity.status(200).body(userService.findPassword(name, username))
     }
 }
