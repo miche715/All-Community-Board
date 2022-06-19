@@ -2,6 +2,7 @@ package com.example.server.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 @Entity
@@ -19,11 +20,11 @@ data class Content(@Id
 
                    @JsonProperty(value = "created_at")
                    @Column(name = "created_at")
-                   var createdAt: LocalDateTime? = null,  // 게시글이 등록된 날짜
+                   var createdAt: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm")),  // 게시글이 등록된 날짜
 
-                   var good: Int? = null,  // 좋아요
+                   var good: Int = 0,  // 좋아요
 
-                   var bad: Int? = null,  //싫어요
+                   var bad: Int = 0,  //싫어요
 
                    @JoinColumn(name = "user_id")
                    @ManyToOne

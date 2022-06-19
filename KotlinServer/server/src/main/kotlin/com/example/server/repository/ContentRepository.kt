@@ -1,4 +1,10 @@
 package com.example.server.repository
 
-interface ContentRepository {
+import com.example.server.domain.Content
+
+interface ContentRepository
+{
+    fun save(content: Content): Content
+
+    fun findById(id: Long): Content
 }
