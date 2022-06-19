@@ -1,14 +1,14 @@
 package com.example.server.domain
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import com.fasterxml.jackson.annotation.JsonProperty
+import javax.persistence.*
 
 @Entity
-data class User(@field:Id
-                @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-                var id: Long? = null,  // 식별 값
+data class User(@Id
+                @GeneratedValue(strategy = GenerationType.IDENTITY)
+                @JsonProperty(value = "user_id")
+                @Column(name = "user_id")
+                var userId: Long? = null,  // 식별 값
 
                 var username: String? = null,  // 로그인을 위한 회원의 아이디, 중복 불가
 
@@ -16,5 +16,5 @@ data class User(@field:Id
 
                 var name: String? = null,  // 회원의 이름
 
-                var email: String? = null  // 회원의 이메일, 중복 불가
+                var email: String? = null,  // 회원의 이메일, 중복 불가
 )

@@ -2,23 +2,28 @@ package com.example.server.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
-data class Comment(@field:Id
-                   @field:GeneratedValue(strategy = GenerationType.IDENTITY)
-                   var id: Long? = null,
+data class Comment(@Id
+                   @GeneratedValue(strategy = GenerationType.IDENTITY)
+                   @JsonProperty(value = "comment_id")
+                   @Column(name = "comment_id")
+                   var commentId: Long? = null,  // 식별 값
 
-                   @field:JsonProperty(value = "content_id")
-                   var contentId: Long? = null,  // 이 댓글이 달려있는 게시글의 식별 값
-
-                   var username: String? = null,  // 댓글을 쓴 유저의 아이디
+                   var writer: String? = null,  // 댓글을 쓴 유저의 username
 
                    var text: String? = null,  // 댓글의 본문
 
-                   @field:JsonProperty(value = "created_at")
-                   var createdAt: LocalDateTime? = null  // 댓글이 등록된 날짜
+                   @JsonProperty(value = "created_at")
+                   @Column(name = "created_at")
+                   var createdAt: LocalDateTime? = null,  // 댓글이 등록된 날짜
+
+                   @ManyToOne
+                   @JoinColumn(name = "content_id")
+                   var content: Content? = null,  // 댓글이 달린 게시글
+
+                   @ManyToOne
+                   @JoinColumn(name = "user_id")
+                   var user: User? = null,  // 댓글을 쓴 유저
 )
