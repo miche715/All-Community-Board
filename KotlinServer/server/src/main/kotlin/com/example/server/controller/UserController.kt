@@ -2,6 +2,7 @@ package com.example.server.controller
 
 import com.example.server.domain.User
 import com.example.server.service.UserService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/users")
-class UserController(private var userService: UserService)
+class UserController(@Autowired private var userService: UserService)
 {
     @PostMapping("/sign-up")  // 회원 가입
     fun createUser(@RequestBody user: User): ResponseEntity<Boolean>  // 회원 가입 성공 시 true, 실패 시 false 리턴
