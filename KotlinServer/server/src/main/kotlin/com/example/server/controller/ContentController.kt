@@ -19,22 +19,26 @@ class ContentController(@Autowired private var contentService: ContentService)
     @GetMapping("/detail")  // 게시글 1개 세부 사항 읽기
     fun readContent(@RequestParam(name = "content_id") contentId: Long): ResponseEntity<Content> // content_id를 받아 해당하는 게시글의 상세 페이지 리턴
     {
-        return ResponseEntity.status(200).body(contentService.showContent(contentId))
+        return ResponseEntity.status(200).body(contentService.getContent(contentId))
     }
 
-    fun readAll()  // 모든 게시글 읽기
+    @GetMapping("/all")  // 모든 게시글 읽기
+    fun readAll(): ResponseEntity<MutableList<Content>>
     {
-
+        return ResponseEntity.status(200).body(contentService.getAll())
     }
 
-    fun updateContent()  // 게시글 수정
+    @PutMapping("/update")  // 게시글 수정
+    fun updateContent(@RequestBody content: Content): ResponseEntity<Content>
     {
-
+        return ResponseEntity.status(200).body(contentService.modifyContent(content))
     }
 
-    fun deleteContent()  // 게시글 삭제
+    @DeleteMapping("/delete")  // 게시글 삭제
+    fun deleteContent(@RequestParam(name = "content_id") contentId: Long): ResponseEntity<Boolean>
     {
+        contentService.removeContent(contentId)
 
+        return ResponseEntity.status(200).body(true)
     }
-
 }

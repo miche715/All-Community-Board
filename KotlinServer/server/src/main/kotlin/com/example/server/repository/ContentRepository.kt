@@ -7,4 +7,8 @@ interface ContentRepository
     fun save(content: Content): Content
 
     fun findById(id: Long): Content
+
+    fun findAll(): MutableList<Content>
+
+    fun delete(content: Content)
 }

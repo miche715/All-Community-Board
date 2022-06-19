@@ -13,8 +13,23 @@ class ContentService(@Autowired private val contentRepository: ContentRepository
         return contentRepository.save(content)
     }
 
-    fun showContent(contentId: Long): Content
+    fun getContent(contentId: Long): Content
     {
         return contentRepository.findById(contentId)
+    }
+
+    fun getAll(): MutableList<Content>
+    {
+        return contentRepository.findAll()
+    }
+
+    fun modifyContent(content: Content): Content
+    {
+        return contentRepository.save(content)
+    }
+
+    fun removeContent(contentId: Long)
+    {
+        return contentRepository.delete(contentRepository.findById(contentId))
     }
 }
