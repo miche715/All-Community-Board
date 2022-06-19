@@ -177,7 +177,7 @@ class ContentFunctionTest
     }
 
     @Test
-    fun deleteContentTest()
+    fun removeContentTest()
     {
         val user = User().apply()
         {
