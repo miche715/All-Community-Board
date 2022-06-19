@@ -20,10 +20,12 @@ data class Comment(@Id
                    var createdAt: LocalDateTime? = null,  // 댓글이 등록된 날짜
 
                    @ManyToOne
+                   @JsonProperty(value = "content_id")
                    @JoinColumn(name = "content_id")
-                   var content: Content? = null,  // 댓글이 달린 게시글
+                   var contentId: Content? = null,  // 댓글이 달린 게시글
 
                    @ManyToOne
+                   @JsonProperty(value = "user_id")
                    @JoinColumn(name = "user_id")
-                   var user: User? = null,  // 댓글을 쓴 유저
+                   var userId: User? = null,  // 댓글을 쓴 유저
 )
