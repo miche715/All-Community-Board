@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CommentSpringDataRepository : JpaRepository<Comment, Long>, CommentRepository
 {
-    override fun findByContentId(content: Content): MutableList<Comment>
+    override fun findByContent(content: Content): MutableList<Comment>
 }

@@ -37,7 +37,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.userId = user
+            this.user = user
         }
 
         with(contentService.addContent(content))
@@ -66,7 +66,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.userId = user
+            this.user = user
         }
 
         with(contentService.addContent(content))
@@ -77,7 +77,7 @@ class ContentFunctionTest
             Assertions.assertEquals(content.writer, this.writer)
             Assertions.assertEquals(content.title, this.title)
             Assertions.assertEquals(content.text, this.text)
-            Assertions.assertEquals(content.userId, this.userId)
+            Assertions.assertEquals(content.user, this.user)
         }
     }
 
@@ -101,7 +101,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle1"
             this.text = "testtext1"
-            this.userId = user
+            this.user = user
         }
         contentService.addContent(content1)
 
@@ -110,7 +110,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle2"
             this.text = "testtext2"
-            this.userId = user
+            this.user = user
         }
         contentService.addContent(content2)
 
@@ -119,7 +119,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle3"
             this.text = "testtext3"
-            this.userId = user
+            this.user = user
         }
         contentService.addContent(content3)
 
@@ -149,7 +149,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.userId = user
+            this.user = user
         }.run()
         {
             contentService.addContent(this)
@@ -161,7 +161,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle1"
             this.text = "testtext1"
-            this.userId = user
+            this.user = user
         }.run()
         {
             contentService.modifyContent(this)
@@ -173,7 +173,7 @@ class ContentFunctionTest
         Assertions.assertEquals("testtext1", content2.text)
         Assertions.assertEquals(content1.title, content2.title)
         Assertions.assertEquals(content1.text, content2.text)
-        Assertions.assertEquals(content1.userId, content2.userId)
+        Assertions.assertEquals(content1.user, content2.user)
     }
 
     @Test
@@ -196,7 +196,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.userId = user
+            this.user = user
         }.run()
         {
             contentService.addContent(this)

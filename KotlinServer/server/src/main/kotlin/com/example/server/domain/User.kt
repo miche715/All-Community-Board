@@ -18,6 +18,6 @@ data class User(@Id
 
                 var email: String? = null,  // 회원의 이메일, 중복 불가
 
-                @OneToMany(mappedBy = "userId", cascade = [CascadeType.REMOVE])
+                @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
                 var contents: MutableList<Content> = mutableListOf()  // 유저가 작성한 게시글 목록
 )

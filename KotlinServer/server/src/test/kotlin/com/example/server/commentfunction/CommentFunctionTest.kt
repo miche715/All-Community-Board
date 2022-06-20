@@ -41,7 +41,7 @@ class CommentFunctionTest
             this.writer = user1.username
             this.title = "testtitle1"
             this.text = "testtext1"
-            this.userId = user1
+            this.user = user1
         }.run()
         {
             contentService.addContent(this)
@@ -51,8 +51,8 @@ class CommentFunctionTest
         {
             this.writer = user1.username
             this.text = "testcommenttext1"
-            this.contentId = content1
-            this.userId = user1
+            this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
@@ -62,8 +62,8 @@ class CommentFunctionTest
         {
             this.writer = user1.username
             this.text = "testcommenttext2"
-            this.contentId = content1
-            this.userId = user1
+            this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
@@ -90,7 +90,7 @@ class CommentFunctionTest
             this.writer = user1.username
             this.title = "testtitle1"
             this.text = "testtext1"
-            this.userId = user1
+            this.user = user1
         }.run()
         {
             contentService.addContent(this)
@@ -100,8 +100,8 @@ class CommentFunctionTest
         {
             this.writer = user1.username
             this.text = "testcommenttext1"
-            this.contentId = content1
-            this.userId = user1
+            this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
@@ -111,8 +111,8 @@ class CommentFunctionTest
         {
             this.writer = user1.username
             this.text = "testcommenttext2"
-            this.contentId = content1
-            this.userId = user1
+            this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
@@ -142,7 +142,7 @@ class CommentFunctionTest
             this.writer = user1.username
             this.title = "testtitle1"
             this.text = "testtext1"
-            this.userId = user1
+            this.user = user1
         }.run()
         {
             contentService.addContent(this)
@@ -152,8 +152,8 @@ class CommentFunctionTest
         {
             this.writer = user1.username
             this.text = "testcommenttext1"
-            this.contentId = content1
-            this.userId = user1
+            this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
@@ -163,25 +163,25 @@ class CommentFunctionTest
         {
             this.writer = user1.username
             this.text = "testcommenttext2"
-            this.contentId = content1
-            this.userId = user1
+            this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
         }
-
-        println(commentService.getAll(content1))
 
         val comment3 = Comment().apply()
         {
             this.commentId = comment2.commentId
             this.writer = user1.username
             this.text = "testcommenttext33333"
-            this.contentId = content1
-            this.userId = user1
+            this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.modifyComment(this)
         }
+
+
     }
 }

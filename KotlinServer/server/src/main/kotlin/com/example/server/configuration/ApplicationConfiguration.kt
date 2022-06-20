@@ -30,6 +30,6 @@ class ApplicationConfiguration(@Autowired private val userRepository: UserReposi
     @Bean
     fun commentService(): CommentService
     {
-        return CommentService(commentRepository)
+        return CommentService(commentRepository, contentRepository)
     }
 }

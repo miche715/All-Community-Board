@@ -9,7 +9,7 @@ interface CommentRepository
 
     fun findById(id: Long): Comment
 
-    fun findByContentId(content: Content): MutableList<Comment>
+    fun findByContent(content: Content): MutableList<Comment>
 
     fun delete(comment: Comment)
 }

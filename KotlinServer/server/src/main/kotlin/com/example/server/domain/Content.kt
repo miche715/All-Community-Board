@@ -29,8 +29,8 @@ data class Content(@Id
                    @ManyToOne
                    @JsonProperty(value = "user_id")
                    @JoinColumn(name = "user_id")
-                   var userId: User? = null,  // 게시글을 쓴 유저의 식별 값
+                   var user: User? = null,  // 게시글을 쓴 유저의 식별 값
 
-                   @OneToMany(mappedBy = "contentId", fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+                   @OneToMany(mappedBy = "content", fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
                    var comments: MutableList<Comment> = mutableListOf()  // 게시글에 달린 댓글 목록
 )
