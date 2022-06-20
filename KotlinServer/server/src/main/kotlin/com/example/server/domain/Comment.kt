@@ -2,6 +2,7 @@ package com.example.server.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.persistence.*
 
 @Entity
@@ -17,7 +18,7 @@ data class Comment(@Id
 
                    @JsonProperty(value = "created_at")
                    @Column(name = "created_at")
-                   var createdAt: LocalDateTime? = null,  // 댓글이 등록된 날짜
+                   var createdAt: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm")),  // 댓글이 등록된 날짜
 
                    @ManyToOne
                    @JsonProperty(value = "content_id")

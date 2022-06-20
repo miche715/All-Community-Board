@@ -22,15 +22,15 @@ data class Content(@Id
                    @Column(name = "created_at")
                    var createdAt: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm")),  // 게시글이 등록된 날짜
 
-                   var good: Int = 0,  // 좋아요
+                   var good: Int? = 0,  // 좋아요
 
-                   var bad: Int = 0,  //싫어요
+                   var bad: Int? = 0,  //싫어요
 
                    @ManyToOne
                    @JsonProperty(value = "user_id")
                    @JoinColumn(name = "user_id")
                    var userId: User? = null,  // 게시글을 쓴 유저의 식별 값
 
-                   @OneToMany(mappedBy = "contentId", cascade = [CascadeType.REMOVE])
+                   @OneToMany(mappedBy = "contentId", fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
                    var comments: MutableList<Comment> = mutableListOf()  // 게시글에 달린 댓글 목록
 )
