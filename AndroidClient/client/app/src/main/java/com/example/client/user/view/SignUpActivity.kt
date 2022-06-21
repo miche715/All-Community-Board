@@ -130,7 +130,7 @@ class SignUpActivity : AppCompatActivity()
                             {
                                 Snackbar.make(binding.mainLayout, "회원 가입 실패 : ", Snackbar.LENGTH_INDEFINITE).run()
                                 {
-                                    this.setAction("이미 가입된 회원입니다.", View.OnClickListener()
+                                    this.setAction("이미 가입된 아이디 또는 이메일 입니다.", View.OnClickListener()
                                     {
                                         this.dismiss()
                                     })
