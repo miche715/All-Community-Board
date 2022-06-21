@@ -1,10 +1,13 @@
 package com.example.client.user.view
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import com.example.client.databinding.ActivitySignUpBinding
@@ -49,6 +52,11 @@ class SignUpActivity : AppCompatActivity()
 
         signUpButton.setOnClickListener()
         {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
+            {
+                this.hideSoftInputFromWindow(signUpButton.windowToken, 0)
+            }
+
             var invalid = ""
 
             if(!nameEdittext.text.toString().matches(nameRegex) || nameEdittext.text.isEmpty())
@@ -149,4 +157,15 @@ class SignUpActivity : AppCompatActivity()
             }
         }
     }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
+        {
+            this.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        }
+
+        return true
+    }
+
 }

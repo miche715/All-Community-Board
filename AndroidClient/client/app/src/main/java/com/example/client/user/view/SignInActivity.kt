@@ -1,10 +1,13 @@
 package com.example.client.user.view
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -61,6 +64,11 @@ class SignInActivity : AppCompatActivity()
 
         signInButton.setOnClickListener()
         {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
+            {
+                this.hideSoftInputFromWindow(signInButton.windowToken, 0)
+            }
+
             userRetrofitService.signIn(usernameEdittext.text.toString(), passwordEdittext.text.toString()).enqueue(object: Callback<User?>
             {
                 override fun onResponse(call: Call<User?>, response: Response<User?>)
@@ -71,7 +79,7 @@ class SignInActivity : AppCompatActivity()
 
                         if(result != null)
                         {
-                            println(result)
+                            println(result)  // 로그인 성공 후 기능 만들어야함
                         }
                     }
                 }
@@ -92,6 +100,15 @@ class SignInActivity : AppCompatActivity()
         }
 
 
+    }
 
+    override fun onTouchEvent(event: MotionEvent): Boolean
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
+        {
+            this.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        }
+
+        return true
     }
 }
