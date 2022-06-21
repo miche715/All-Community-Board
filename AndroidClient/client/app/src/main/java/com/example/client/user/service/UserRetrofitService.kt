@@ -14,4 +14,10 @@ interface UserRetrofitService
 
     @GET("sign-in")
     fun signIn(@Query("username") username: String, @Query("password") password: String): Call<User?>
+
+    @GET("find-username")
+    fun findUsername(@Query("name") name: String, @Query("email") email: String): Call<String?>
+
+    @GET("find-password")
+    fun findPassword(@Query("name") name: String, @Query("username") username: String): Call<String?>
 }

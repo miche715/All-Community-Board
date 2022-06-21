@@ -103,7 +103,13 @@ class SignInActivity : AppCompatActivity()
             }
         }
 
-
+        findAccountTextview.setOnClickListener()
+        {
+            Intent(this@SignInActivity, FindAccountActivity::class.java).run()
+            {
+                startActivity(this)
+            }
+        }
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean

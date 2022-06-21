@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".user.view.FindUsernameFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color">
+
+        <EditText
+            android:id="@+id/emailEdittext"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="가입된 이메일"
+            android:inputType="textWebEmailAddress"
+            android:textColor="#000000"
+            android:textColorHint="@color/hint_color"
+            app:layout_constraintEnd_toEndOf="@+id/nameEdittext"
+            app:layout_constraintStart_toStartOf="@+id/nameEdittext"
+            app:layout_constraintTop_toBottomOf="@+id/nameEdittext" />
+
+        <EditText
+            android:id="@+id/nameEdittext"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:ems="10"
+            android:hint="가입된 이름"
+            android:inputType="text"
+            android:textColor="#000000"
+            android:textColorHint="@color/hint_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/findUsernameButton"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-black"
+            android:text="아이디 찾기"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/emailEdittext"
+            app:layout_constraintStart_toStartOf="@+id/emailEdittext"
+            app:layout_constraintTop_toBottomOf="@+id/emailEdittext" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
