@@ -5,7 +5,7 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D1C4E9"
+    android:background="@color/background_color"
     tools:context=".user.view.SignUpActivity">
 
     <EditText
@@ -17,7 +17,7 @@
         android:hint="아이디(소문자 + 숫자 4 ~ 20 자리)"
         android:inputType="textPersonName"
         android:textColor="#000000"
-        android:textColorHint="#80000000"
+        android:textColorHint="@color/hint_color"
         app:layout_constraintEnd_toEndOf="@+id/nameEdittext"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="@+id/nameEdittext"
@@ -32,7 +32,7 @@
         android:hint="비밀번호(소문자 + 숫자 4 ~ 20 자리)"
         android:inputType="textPassword"
         android:textColor="#000000"
-        android:textColorHint="#80000000"
+        android:textColorHint="@color/hint_color"
         app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
         app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
         app:layout_constraintTop_toBottomOf="@+id/usernameEdittext" />
@@ -46,7 +46,7 @@
         android:hint="비밀번호 확인"
         android:inputType="textPassword"
         android:textColor="#000000"
-        android:textColorHint="#80000000"
+        android:textColorHint="@color/hint_color"
         app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
@@ -61,7 +61,7 @@
         android:hint="이메일"
         android:inputType="textEmailAddress"
         android:textColor="#000000"
-        android:textColorHint="#80000000"
+        android:textColorHint="@color/hint_color"
         app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
@@ -76,7 +76,7 @@
         android:hint="이름(한글)"
         android:inputType="text"
         android:textColor="#000000"
-        android:textColorHint="#80000000"
+        android:textColorHint="@color/hint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -81,6 +81,10 @@ class SignInActivity : AppCompatActivity()
                         {
                             println(result)  // 로그인 성공 후 기능 만들어야함
                         }
+                        else
+                        {
+
+                        }
                     }
                 }
 
