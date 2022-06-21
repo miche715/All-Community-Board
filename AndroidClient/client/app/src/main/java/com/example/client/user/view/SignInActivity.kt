@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.ActivitySignInBinding
 import com.example.client.user.domain.User
 import com.example.client.user.service.UserRetrofitServiceObject
@@ -79,11 +80,23 @@ class SignInActivity : AppCompatActivity()
 
                         if(result != null)
                         {
-                            println(result)  // 로그인 성공 후 기능 만들어야함
+                            Intent(this@SignInActivity, ContentListActivity::class.java).run()
+                            {
+                                this.putExtra("user", result)
+                                startActivity(this)
+                            }
+
+                            finish()
                         }
                         else
                         {
-
+                            Snackbar.make(binding.mainLayout, "아이디 또는 패스워드가 잘못됐습니다.", Snackbar.LENGTH_INDEFINITE).run()
+                            {
+                                this.setAction("확인", View.OnClickListener()
+                                {
+                                    this.dismiss()
+                                })
+                            }.show()
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package com.example.client.user.domain
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class User(@SerializedName("user_id")
                 var userId: Long? = null,
@@ -16,4 +17,4 @@ data class User(@SerializedName("user_id")
 
                 @SerializedName("email")
                 var email: String? = null
-)
+) : Serializable
