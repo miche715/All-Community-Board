@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D1C4E9"
+    tools:context=".user.view.SignUpActivity">
+
+    <EditText
+        android:id="@+id/usernameEdittext"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="아이디(소문자 + 숫자 4 ~ 20 자리)"
+        android:inputType="textPersonName"
+        android:textColor="#000000"
+        android:textColorHint="#80000000"
+        app:layout_constraintEnd_toEndOf="@+id/nameEdittext"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/nameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/nameEdittext" />
+
+    <EditText
+        android:id="@+id/passwordEdittext"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="비밀번호(소문자 + 숫자 4 ~ 20 자리)"
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:textColorHint="#80000000"
+        app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
+        app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/usernameEdittext" />
+
+    <EditText
+        android:id="@+id/passwordConfirmEdittext"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="비밀번호 확인"
+        android:inputType="textPassword"
+        android:textColor="#000000"
+        android:textColorHint="#80000000"
+        app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEdittext" />
+
+    <EditText
+        android:id="@+id/emailEdittext"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="이메일"
+        android:inputType="textEmailAddress"
+        android:textColor="#000000"
+        android:textColorHint="#80000000"
+        app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/passwordConfirmEdittext" />
+
+    <EditText
+        android:id="@+id/nameEdittext"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="100dp"
+        android:ems="10"
+        android:hint="이름(한글)"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textColorHint="#80000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-black"
+        android:text="회원 가입"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/emailEdittext" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

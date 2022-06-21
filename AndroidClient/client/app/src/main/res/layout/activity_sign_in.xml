@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
     tools:context=".user.view.SignInActivity">
 
     <EditText
-        android:id="@+id/usernameTextview"
+        android:id="@+id/usernameEdittext"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="100dp"
@@ -22,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/passwordTextview"
+        android:id="@+id/passwordEdittext"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
@@ -31,9 +32,9 @@
         android:inputType="textPassword"
         android:textColor="#000000"
         android:textColorHint="#80000000"
-        app:layout_constraintEnd_toEndOf="@+id/usernameTextview"
-        app:layout_constraintStart_toStartOf="@+id/usernameTextview"
-        app:layout_constraintTop_toBottomOf="@+id/usernameTextview" />
+        app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
+        app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/usernameEdittext" />
 
     <Button
         android:id="@+id/signInButton"
@@ -43,9 +44,9 @@
         android:fontFamily="sans-serif-black"
         android:text="로그인"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/usernameTextview"
-        app:layout_constraintStart_toStartOf="@+id/usernameTextview"
-        app:layout_constraintTop_toBottomOf="@+id/passwordTextview" />
+        app:layout_constraintEnd_toEndOf="@+id/usernameEdittext"
+        app:layout_constraintStart_toStartOf="@+id/usernameEdittext"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEdittext" />
 
     <TextView
         android:id="@+id/signUpTextview"

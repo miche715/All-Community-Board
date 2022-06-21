@@ -1,33 +1,33 @@
 package com.example.client.user.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
-import com.example.client.jsonconverter.NullOnEmptyConverterFactory
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.client.databinding.ActivitySignInBinding
 import com.example.client.user.domain.User
-import com.example.client.user.service.UserRetrofitService
+import com.example.client.user.service.UserRetrofitServiceObject
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SignInActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivitySignInBinding
 
-    private val retrofit = Retrofit.Builder()
-                           .baseUrl("http://192.168.0.5:8080/users/")
-                           .addConverterFactory(NullOnEmptyConverterFactory())
-                           .addConverterFactory(GsonConverterFactory.create())
-                           .build()
-    private val retrofitService = retrofit.create(UserRetrofitService::class.java)
+    private lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
 
-    private lateinit var usernameTextview: TextView
-    private lateinit var passwordTextview: TextView
+    private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
+
+    private lateinit var usernameEdittext: EditText
+    private lateinit var passwordEdittext: EditText
     private lateinit var signInButton: Button
     private lateinit var signUpTextview: TextView
     private lateinit var findAccountTextview: TextView
@@ -39,15 +39,29 @@ class SignInActivity : AppCompatActivity()
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        usernameTextview = binding.usernameTextview
-        passwordTextview = binding.passwordTextview
+        usernameEdittext = binding.usernameEdittext
+        passwordEdittext = binding.passwordEdittext
         signInButton = binding.signInButton
         signUpTextview = binding.signUpTextview
         findAccountTextview = binding.findAccountTextview
 
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {
+            if(it.resultCode == RESULT_OK)
+            {
+                Snackbar.make(binding.mainLayout, it.data?.getStringExtra("message").toString(), Snackbar.LENGTH_INDEFINITE).run()
+                {
+                    this.setAction("확인", View.OnClickListener()
+                    {
+                        this.dismiss()
+                    })
+                }.show()
+            }
+        }
+
         signInButton.setOnClickListener()
         {
-            retrofitService.signIn(usernameTextview.text.toString(), passwordTextview.text.toString()).enqueue(object: Callback<User?>
+            userRetrofitService.signIn(usernameEdittext.text.toString(), passwordEdittext.text.toString()).enqueue(object: Callback<User?>
             {
                 override fun onResponse(call: Call<User?>, response: Response<User?>)
                 {
@@ -59,10 +73,6 @@ class SignInActivity : AppCompatActivity()
                         {
                             println(result)
                         }
-                        else
-                        {
-                            println("아이디 또는 비번 잘못됨")
-                        }
                     }
                 }
 
@@ -71,6 +81,14 @@ class SignInActivity : AppCompatActivity()
                     Log.e("서버 연결 실패", t.toString())
                 }
             })
+        }
+
+        signUpTextview.setOnClickListener()
+        {
+            Intent(this@SignInActivity, SignUpActivity::class.java).run()
+            {
+                activityResultLauncher.launch(this)
+            }
         }
 
 
