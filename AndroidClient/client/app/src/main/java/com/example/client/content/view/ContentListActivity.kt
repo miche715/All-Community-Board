@@ -1,10 +1,13 @@
 package com.example.client.content.view
 
+import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
@@ -12,6 +15,7 @@ import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityContentListBinding
 import com.example.client.user.domain.User
+import com.example.client.user.view.SignInActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,9 +27,9 @@ class ContentListActivity : AppCompatActivity()
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
     private lateinit var contentListItemAdapter: ContentListItemAdapter
 
-    private lateinit var user: User
+    private var user: User? = null
 
-    lateinit var recylerView: RecyclerView
+    private lateinit var recylerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -60,7 +64,25 @@ class ContentListActivity : AppCompatActivity()
         when(item.itemId)
         {
             R.id.accountSetting -> println("계정 설정")
-            R.id.signOut -> println("로그 아웃")
+            R.id.signOut -> {
+                with(AlertDialog.Builder(this))
+                {
+                    //this.setTitle("로그 아웃")
+                    this.setMessage("로그 아웃 하시겠습니까?")
+                    this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
+                    this.setPositiveButton("확인", DialogInterface.OnClickListener()
+                    { _, _ ->
+                        user = null
+
+                        Intent(this@ContentListActivity, SignInActivity::class.java).run()
+                        {
+                            startActivity(this)
+                        }
+
+                        finish()
+                    })
+                }.show()
+            }
         }
 
         return super.onOptionsItemSelected(item)
