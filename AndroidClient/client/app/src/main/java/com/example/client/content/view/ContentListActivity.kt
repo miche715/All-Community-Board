@@ -1,5 +1,6 @@
 package com.example.client.content.view
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -94,6 +95,7 @@ class ContentListActivity : AppCompatActivity()
 
         contentRetrofitService.getAll().enqueue(object: Callback<MutableList<Content>>
         {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
             {
                 if(response.isSuccessful)
