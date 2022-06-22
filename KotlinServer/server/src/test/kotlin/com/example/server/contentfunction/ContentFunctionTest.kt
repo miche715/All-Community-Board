@@ -100,6 +100,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle1"
             this.text = "testtext1"
+            this.user = user
         }
         contentService.addContent(content1)
 
@@ -108,6 +109,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle2"
             this.text = "testtext2"
+            this.user = user
         }
         contentService.addContent(content2)
 
@@ -116,6 +118,7 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle3"
             this.text = "testtext3"
+            this.user = user
         }
         contentService.addContent(content3)
 

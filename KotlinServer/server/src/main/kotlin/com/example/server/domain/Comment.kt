@@ -1,5 +1,6 @@
 package com.example.server.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -21,12 +22,12 @@ data class Comment(@Id
                    var createdAt: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm")),  // 댓글이 등록된 날짜
 
                    @ManyToOne
-                   @JsonProperty(value = "content_id")
+                   @JsonIgnore
                    @JoinColumn(name = "content_id")
                    var content: Content? = null,  // 댓글이 달린 게시글
 
                    @ManyToOne
-                   @JsonProperty(value = "user_id")
+                   @JsonIgnore
                    @JoinColumn(name = "user_id")
                    var user: User? = null,  // 댓글을 쓴 유저
 )

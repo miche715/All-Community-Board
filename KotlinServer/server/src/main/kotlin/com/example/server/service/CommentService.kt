@@ -14,7 +14,11 @@ class CommentService(@Autowired private val commentRepository: CommentRepository
     {
         return commentRepository.save(comment).run()
         {
-            contentRepository.findById(comment.content?.contentId!!).comments.add(this)
+            contentRepository.findById(comment.content?.contentId!!).apply()
+            {
+                this.commentNum = this.commentNum!! + 1
+                contentRepository.save(this)
+            }
             this
         }
     }
@@ -31,6 +35,15 @@ class CommentService(@Autowired private val commentRepository: CommentRepository
 
     fun removeComment(commentId: Long)
     {
-        return commentRepository.delete(commentRepository.findById(commentId))
+        commentRepository.findById(commentId).run()
+        {
+            contentRepository.findById(this.content?.contentId!!).apply()
+            {
+                this.commentNum = this.commentNum!! - 1
+                contentRepository.save(this)
+            }
+
+            commentRepository.delete(this)
+        }
     }
 }

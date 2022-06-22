@@ -30,6 +30,8 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
         }
 
         holder.bind(listener, content)
+
+        println(content)
     }
 
     override fun getItemCount(): Int = contents.size

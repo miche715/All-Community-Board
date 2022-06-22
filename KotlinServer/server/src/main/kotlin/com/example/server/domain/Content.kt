@@ -1,5 +1,6 @@
 package com.example.server.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -26,11 +27,14 @@ data class Content(@Id
 
                    var bad: Int? = 0,  //싫어요
 
-//                   @ManyToOne
-//                   @JsonProperty(value = "user_id")
-//                   @JoinColumn(name = "user_id")
-//                   var user: User? = null,  // 게시글을 쓴 유저의 식별 값
+                   @ManyToOne
+                   @JsonIgnore
+                   @JoinColumn(name = "user_id")
+                   var user: User? = null,  // 게시글을 쓴 유저의 식별 값
 
-                   @OneToMany(mappedBy = "content", fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-                   var comments: MutableList<Comment> = mutableListOf()  // 게시글에 달린 댓글 목록
+                   @OneToMany(mappedBy = "content", fetch = FetchType.EAGER, cascade = [CascadeType.REMOVE])
+                   var comments: MutableList<Comment> = mutableListOf(),  // 게시글에 달린 댓글 목록
+
+                   @JsonProperty("comment_num")
+                   var commentNum: Int? = 0
 )

@@ -22,6 +22,7 @@ class CommentFunctionTest
     @Autowired lateinit var commentService: CommentService
 
     @Test
+    @Commit
     fun addCommentTest()
     {
         val user1 = User().apply()
@@ -41,6 +42,7 @@ class CommentFunctionTest
             this.writer = user1.username
             this.title = "testtitle1"
             this.text = "testtext1"
+            this.user = user1
         }.run()
         {
             contentService.addContent(this)
@@ -51,6 +53,7 @@ class CommentFunctionTest
             this.writer = user1.username
             this.text = "testcommenttext1"
             this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
@@ -61,6 +64,7 @@ class CommentFunctionTest
             this.writer = user1.username
             this.text = "testcommenttext2"
             this.content = content1
+            this.user = user1
         }.run()
         {
             commentService.addComment(this)
@@ -68,7 +72,6 @@ class CommentFunctionTest
     }
 
     @Test
-    @Commit
     fun getAllTest()
     {
         val user1 = User().apply()
