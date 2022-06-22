@@ -122,9 +122,81 @@ class ContentFunctionTest
         }
         contentService.addContent(content3)
 
+        val content4 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle4"
+            this.text = "testtext4"
+            this.user = user
+        }
+        contentService.addContent(content4)
+
+        val content5 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle5"
+            this.text = "testtext5"
+            this.user = user
+        }
+        contentService.addContent(content5)
+
+        val content6 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle6"
+            this.text = "testtext6"
+            this.user = user
+        }
+        contentService.addContent(content6)
+
+        val content7 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle7"
+            this.text = "testtext7"
+            this.user = user
+        }
+        contentService.addContent(content7)
+
+        val content8 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle8"
+            this.text = "testtext8"
+            this.user = user
+        }
+        contentService.addContent(content8)
+
+        val content9 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle9"
+            this.text = "testtext9"
+            this.user = user
+        }
+        contentService.addContent(content9)
+
+        val content10 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle10"
+            this.text = "testtext10"
+            this.user = user
+        }
+        contentService.addContent(content10)
+
+        val content11 = Content().apply()
+        {
+            this.writer = user.username
+            this.title = "testtitle11"
+            this.text = "testtext11"
+            this.user = user
+        }
+        contentService.addContent(content11)
+
         with(contentService.getAll())
         {
-            Assertions.assertEquals(3, this.size)
+            Assertions.assertEquals(11, this.size)
         }
     }
 
