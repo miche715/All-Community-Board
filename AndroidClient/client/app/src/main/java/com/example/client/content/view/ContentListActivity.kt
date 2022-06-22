@@ -18,11 +18,13 @@ import com.example.client.databinding.ActivityContentListBinding
 import com.example.client.user.domain.User
 import com.example.client.user.view.SignInActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class ContentListActivity : AppCompatActivity()
+class ContentListActivity : AppCompatActivity(), CoroutineScope
 {
     private lateinit var binding: ActivityContentListBinding
 
@@ -34,12 +36,18 @@ class ContentListActivity : AppCompatActivity()
     private lateinit var recylerView: RecyclerView
     private lateinit var addContentFab: FloatingActionButton
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + job
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 
         binding = ActivityContentListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        job = Job()
 
         user = intent.getSerializableExtra("user") as User
 
@@ -51,6 +59,7 @@ class ContentListActivity : AppCompatActivity()
             TODO("게시글 쓰는 액티비티 이동 로직 구현해야함.")
         }
 
+
     }
 
     override fun onResume()
@@ -58,6 +67,13 @@ class ContentListActivity : AppCompatActivity()
         super.onResume()
 
         loadRecyclerContent()
+    }
+
+    override fun onDestroy()
+    {
+        super.onDestroy()
+
+        job.cancel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean
@@ -100,22 +116,25 @@ class ContentListActivity : AppCompatActivity()
         contentListItemAdapter = ContentListItemAdapter(this)
         recylerView.adapter = contentListItemAdapter
 
-        contentRetrofitService.getAll().enqueue(object: Callback<MutableList<Content>>
+        launch()
         {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
+            contentRetrofitService.getAll().enqueue(object: Callback<MutableList<Content>>
             {
-                if(response.isSuccessful)
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
                 {
-                    contentListItemAdapter.contents = response.body()!!
-                    contentListItemAdapter.notifyDataSetChanged()
+                    if(response.isSuccessful)
+                    {
+                        contentListItemAdapter.contents = response.body()!!
+                        contentListItemAdapter.notifyDataSetChanged()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<MutableList<Content>>, t: Throwable)
-            {
-                Log.e("서버 연결 실패", t.toString())
-            }
-        })
+                override fun onFailure(call: Call<MutableList<Content>>, t: Throwable)
+                {
+                    Log.e("서버 연결 실패", t.toString())
+                }
+            })
+        }
     }
 }
