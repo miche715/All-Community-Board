@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.Commit
 import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
@@ -37,7 +38,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.user = user
         }
 
         with(contentService.addContent(content))
@@ -66,7 +66,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.user = user
         }
 
         with(contentService.addContent(content))
@@ -77,11 +76,11 @@ class ContentFunctionTest
             Assertions.assertEquals(content.writer, this.writer)
             Assertions.assertEquals(content.title, this.title)
             Assertions.assertEquals(content.text, this.text)
-            Assertions.assertEquals(content.user, this.user)
         }
     }
 
     @Test
+    @Commit
     fun getAllTest()
     {
         val user = User().apply()
@@ -101,7 +100,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle1"
             this.text = "testtext1"
-            this.user = user
         }
         contentService.addContent(content1)
 
@@ -110,7 +108,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle2"
             this.text = "testtext2"
-            this.user = user
         }
         contentService.addContent(content2)
 
@@ -119,7 +116,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle3"
             this.text = "testtext3"
-            this.user = user
         }
         contentService.addContent(content3)
 
@@ -149,7 +145,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.user = user
         }.run()
         {
             contentService.addContent(this)
@@ -161,7 +156,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle1"
             this.text = "testtext1"
-            this.user = user
         }.run()
         {
             contentService.modifyContent(this)
@@ -173,7 +167,6 @@ class ContentFunctionTest
         Assertions.assertEquals("testtext1", content2.text)
         Assertions.assertEquals(content1.title, content2.title)
         Assertions.assertEquals(content1.text, content2.text)
-        Assertions.assertEquals(content1.user, content2.user)
     }
 
     @Test
@@ -196,7 +189,6 @@ class ContentFunctionTest
             this.writer = user.username
             this.title = "testtitle"
             this.text = "testtext"
-            this.user = user
         }.run()
         {
             contentService.addContent(this)
