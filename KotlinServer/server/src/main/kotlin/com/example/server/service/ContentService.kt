@@ -20,7 +20,7 @@ class ContentService(@Autowired private val contentRepository: ContentRepository
 
     fun getAll(): MutableList<Content>
     {
-        return contentRepository.findAll()
+        return contentRepository.findAllByOrderByContentIdDesc()
     }
 
     fun modifyContent(content: Content): Content

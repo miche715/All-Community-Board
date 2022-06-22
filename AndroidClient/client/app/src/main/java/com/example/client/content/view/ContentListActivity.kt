@@ -23,7 +23,6 @@ class ContentListActivity : AppCompatActivity()
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
     private lateinit var contentListItemAdapter: ContentListItemAdapter
 
-    private lateinit var contents: MutableList<Content>
     private lateinit var user: User
 
     lateinit var recylerView: RecyclerView
@@ -39,9 +38,14 @@ class ContentListActivity : AppCompatActivity()
 
         recylerView = binding.recylerView
 
+
+    }
+
+    override fun onResume()
+    {
+        super.onResume()
+
         loadRecyclerContent()
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean

@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ContentSpringDataRepository : JpaRepository<Content, Long>, ContentRepository
 {
-
+    override fun findAllByOrderByContentIdDesc(): MutableList<Content>
 }

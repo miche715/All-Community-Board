@@ -8,7 +8,7 @@ interface ContentRepository
 
     fun findById(id: Long): Content
 
-    fun findAll(): MutableList<Content>
+    fun findAllByOrderByContentIdDesc(): MutableList<Content>
 
     fun delete(content: Content)
 }
