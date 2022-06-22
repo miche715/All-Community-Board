@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
 import com.example.client.content.domain.Content
@@ -33,6 +34,7 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
 
     private var user: User? = null
 
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var recylerView: RecyclerView
     private lateinit var addContentFab: FloatingActionButton
 
@@ -51,8 +53,15 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
 
         user = intent.getSerializableExtra("user") as User
 
+        swipeRefreshLayout = binding.swipeRefreshLayout
         recylerView = binding.recylerView
         addContentFab = binding.addContentFab
+
+        swipeRefreshLayout.setOnRefreshListener()
+        {
+            loadRecyclerContent()
+            swipeRefreshLayout.isRefreshing = false
+        }
 
         addContentFab.setOnClickListener()
         {
