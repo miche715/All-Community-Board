@@ -17,6 +17,7 @@ import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityContentListBinding
 import com.example.client.user.domain.User
 import com.example.client.user.view.SignInActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +32,7 @@ class ContentListActivity : AppCompatActivity()
     private var user: User? = null
 
     private lateinit var recylerView: RecyclerView
+    private lateinit var addContentFab: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -42,7 +44,12 @@ class ContentListActivity : AppCompatActivity()
         user = intent.getSerializableExtra("user") as User
 
         recylerView = binding.recylerView
+        addContentFab = binding.addContentFab
 
+        addContentFab.setOnClickListener()
+        {
+            TODO("게시글 쓰는 액티비티 이동 로직 구현해야함.")
+        }
 
     }
 
