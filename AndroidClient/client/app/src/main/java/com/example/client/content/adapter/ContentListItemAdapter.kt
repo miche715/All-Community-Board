@@ -57,6 +57,4 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
             itemView.setOnClickListener(listener)
         }
     }
-
-
 }

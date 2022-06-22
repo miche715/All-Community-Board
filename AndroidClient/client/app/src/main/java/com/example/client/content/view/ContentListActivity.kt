@@ -67,9 +67,7 @@ class ContentListActivity : AppCompatActivity()
             R.id.signOut -> {
                 with(AlertDialog.Builder(this))
                 {
-                    //this.setTitle("로그 아웃")
                     this.setMessage("로그 아웃 하시겠습니까?")
-                    this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
                     this.setPositiveButton("확인", DialogInterface.OnClickListener()
                     { _, _ ->
                         user = null
@@ -81,6 +79,7 @@ class ContentListActivity : AppCompatActivity()
 
                         finish()
                     })
+                    this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
                 }.show()
             }
         }
