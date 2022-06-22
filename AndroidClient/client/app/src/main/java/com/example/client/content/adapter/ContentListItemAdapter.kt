@@ -1,6 +1,7 @@
 package com.example.client.content.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
 
         holder.bind(listener, content)
 
-        println(content)
+        Log.d("게시글 수신", content.toString())
     }
 
     override fun getItemCount(): Int = contents.size

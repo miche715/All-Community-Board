@@ -21,6 +21,7 @@
             android:id="@+id/titleTextview"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="24sp" />
@@ -41,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="TextView"
             android:textColor="#434141"
             android:textSize="16sp" />
@@ -50,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="TextView"
             android:textColor="#434141"
             android:textSize="16sp" />
@@ -67,6 +70,7 @@
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="0"
             android:textAlignment="center"
             android:textColor="#D32F2F"
@@ -85,6 +89,7 @@
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="0"
             android:textAlignment="center"
             android:textColor="#303F9F"
@@ -102,6 +107,7 @@
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/nanum_square_round_b"
             android:text="0"
             android:textAlignment="center"
             android:textColor="#00796B"
