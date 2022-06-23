@@ -20,11 +20,6 @@ class ContentService(@Autowired private val contentRepository: ContentRepository
         }
     }
 
-    fun getContent(contentId: Long): Content
-    {
-        return contentRepository.findById(contentId)
-    }
-
     fun getAll(): MutableList<Content>
     {
         return contentRepository.findAllByOrderByContentIdDesc()

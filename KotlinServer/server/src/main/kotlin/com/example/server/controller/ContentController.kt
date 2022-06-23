@@ -16,12 +16,6 @@ class ContentController(@Autowired private var contentService: ContentService)
         return ResponseEntity.status(201).body(contentService.addContent(content, userId))
     }
 
-    @GetMapping("/detail")  // 게시글 1개 세부 사항 읽기
-    fun readContent(@RequestParam(name = "content_id") contentId: Long): ResponseEntity<Content> // content_id를 받아 해당하는 게시글의 상세 페이지 리턴
-    {
-        return ResponseEntity.status(200).body(contentService.getContent(contentId))
-    }
-
     @GetMapping("/all")  // 모든 게시글 읽기
     fun readAll(): ResponseEntity<MutableList<Content>>
     {
