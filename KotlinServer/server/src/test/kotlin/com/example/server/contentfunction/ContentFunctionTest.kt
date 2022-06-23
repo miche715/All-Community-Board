@@ -40,7 +40,7 @@ class ContentFunctionTest
             this.text = "testtext"
         }
 
-        with(contentService.addContent(content))
+        with(contentService.addContent(content, user.userId!!))
         {
             Assertions.assertNotNull(this)
         }
@@ -68,7 +68,7 @@ class ContentFunctionTest
             this.text = "testtext"
         }
 
-        with(contentService.addContent(content))
+        with(contentService.addContent(content, user.userId!!))
         {
             contentService.getContent(this.contentId!!)
         }.run()
@@ -85,9 +85,9 @@ class ContentFunctionTest
     {
         val user = User().apply()
         {
-            this.username = "testusername"
-            this.password = "testpassword"
-            this.name = "testname"
+            this.username = "testman"
+            this.password = "tester1"
+            this.name = "테스트"
             this.email = "test@test.com"
         }.run()
         {
@@ -95,108 +95,23 @@ class ContentFunctionTest
             userService.signIn(this.username!!, this.password!!)!!
         }
 
-        val content1 = Content().apply()
+        for(i in 1..20)
         {
-            this.writer = user.username
-            this.title = "testtitle1"
-            this.text = "testtext1"
-            this.user = user
-        }
-        contentService.addContent(content1)
+            Content().apply()
+            {
+                this.writer = user.username
+                this.title = "제목 테스트${i}"
+                this.text = "내용 테스트${i}"
+            }.run()
+            {
+                contentService.addContent(this, user.userId!!)
+            }
 
-        val content2 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle2"
-            this.text = "testtext2"
-            this.user = user
         }
-        contentService.addContent(content2)
-
-        val content3 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle3"
-            this.text = "testtext3"
-            this.user = user
-        }
-        contentService.addContent(content3)
-
-        val content4 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle4"
-            this.text = "testtext4"
-            this.user = user
-        }
-        contentService.addContent(content4)
-
-        val content5 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle5"
-            this.text = "testtext5"
-            this.user = user
-        }
-        contentService.addContent(content5)
-
-        val content6 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle6"
-            this.text = "testtext6"
-            this.user = user
-        }
-        contentService.addContent(content6)
-
-        val content7 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle7"
-            this.text = "testtext7"
-            this.user = user
-        }
-        contentService.addContent(content7)
-
-        val content8 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle8"
-            this.text = "testtext8"
-            this.user = user
-        }
-        contentService.addContent(content8)
-
-        val content9 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle9"
-            this.text = "testtext9"
-            this.user = user
-        }
-        contentService.addContent(content9)
-
-        val content10 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle10"
-            this.text = "testtext10"
-            this.user = user
-        }
-        contentService.addContent(content10)
-
-        val content11 = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle11"
-            this.text = "testtext11"
-            this.user = user
-        }
-        contentService.addContent(content11)
 
         with(contentService.getAll())
         {
-            Assertions.assertEquals(11, this.size)
+            Assertions.assertEquals(21, this.size)
         }
     }
 
@@ -222,7 +137,7 @@ class ContentFunctionTest
             this.text = "testtext"
         }.run()
         {
-            contentService.addContent(this)
+            contentService.addContent(this, user.userId!!)
         }
 
         val content2 = Content().apply()
@@ -266,7 +181,7 @@ class ContentFunctionTest
             this.text = "testtext"
         }.run()
         {
-            contentService.addContent(this)
+            contentService.addContent(this, user.userId!!)
         }
 
         Assertions.assertEquals(contentService.getAll().size, 1)

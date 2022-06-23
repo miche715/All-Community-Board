@@ -45,7 +45,7 @@ class CommentFunctionTest
             this.user = user1
         }.run()
         {
-            contentService.addContent(this)
+            contentService.addContent(this, user1.userId!!)
         }
 
         val comment1 = Comment().apply()
@@ -93,7 +93,7 @@ class CommentFunctionTest
             this.text = "testtext1"
         }.run()
         {
-            contentService.addContent(this)
+            contentService.addContent(this, user1.userId!!)
         }
 
         val comment1 = Comment().apply()
@@ -141,7 +141,7 @@ class CommentFunctionTest
             this.text = "testtext1"
         }.run()
         {
-            contentService.addContent(this)
+            contentService.addContent(this, user1.userId!!)
         }
 
         val comment1 = Comment().apply()
