@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.client.R
 import com.example.client.content.domain.Content
@@ -15,29 +14,42 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
 {
     var contents = mutableListOf<Content>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
+    private lateinit var itemClickListener : OnItemClickListener
+
+    interface OnItemClickListener
+    {
+        fun onClick(v: View, position: Int)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener)
+    {
+        this.itemClickListener = onItemClickListener
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder  // 아이템 레이아웃과 결합
     {
         val view = LayoutInflater.from(context).inflate(R.layout.content_list_item, parent, false)
 
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int)  // View에 내용 입력
     {
         val content = contents[position]
-        val listener = View.OnClickListener()
+
+        holder.itemView.setOnClickListener()
         {
-            Toast.makeText(it.context, "Clicked -> contentId: ${content.contentId}, title: ${content.title}, commentNum: ${content.commentNum}", Toast.LENGTH_SHORT).show()
+            itemClickListener.onClick(it, position)
         }
 
-        holder.bind(listener, content)
+        holder.bind(content)
 
         Log.d("게시글 수신", content.toString())
     }
 
-    override fun getItemCount(): Int = contents.size
+    override fun getItemCount(): Int = contents.size  // 리스트 내 아이템 개수
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view)  // 레이아웃 내 View 연결
     {
         private val titleTextview = itemView.findViewById<TextView>(R.id.titleTextview)
         private val createdAtTextview = itemView.findViewById<TextView>(R.id.createdAtTextview)
@@ -46,7 +58,7 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
         private val badTextview = itemView.findViewById<TextView>(R.id.badTextview)
         private val commentNumTextview = itemView.findViewById<TextView>(R.id.commentNumTextview)
 
-        fun bind(listener: View.OnClickListener, item: Content)
+        fun bind(item: Content)
         {
             titleTextview.text = item.title
             createdAtTextview.text = item.createdAt
@@ -54,7 +66,6 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
             goodTextview.text = item.good.toString()
             badTextview.text = item.bad.toString()
             commentNumTextview.text = item.commentNum.toString()
-            itemView.setOnClickListener(listener)
         }
     }
 }

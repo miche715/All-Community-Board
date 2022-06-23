@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -57,13 +58,24 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
         recylerView = binding.recylerView
         addContentFab = binding.addContentFab
 
+        contentListItemAdapter = ContentListItemAdapter(this)
+        recylerView.adapter = contentListItemAdapter
+
         swipeRefreshLayout.setOnRefreshListener()
         {
             loadRecyclerContent()
             swipeRefreshLayout.isRefreshing = false
         }
 
-        addContentFab.setOnClickListener()
+        contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener  // 게시글 읽기
+        {
+            override fun onClick(v: View, position: Int)
+            {
+                println(contentListItemAdapter.contents.get(position))
+            }
+        })
+
+        addContentFab.setOnClickListener()  // 게시글 쓰기
         {
             TODO("게시글 쓰는 액티비티 이동 로직 구현해야함.")
         }
@@ -122,9 +134,6 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
 
     private fun loadRecyclerContent()
     {
-        contentListItemAdapter = ContentListItemAdapter(this)
-        recylerView.adapter = contentListItemAdapter
-
         launch()
         {
             contentRetrofitService.getAll().enqueue(object: Callback<MutableList<Content>>
