@@ -23,10 +23,6 @@ class FindUsernameFragment : Fragment()
 
     private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
-    private lateinit var nameEdittext: EditText
-    private lateinit var emailEdittext: EditText
-    private lateinit var findUsernameButton: Button
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -36,18 +32,14 @@ class FindUsernameFragment : Fragment()
     {
         binding = FragmentFindUsernameBinding.inflate(inflater, container, false)
 
-        nameEdittext = binding!!.nameEdittext
-        emailEdittext = binding!!.emailEdittext
-        findUsernameButton = binding!!.findUsernameButton
-
-        findUsernameButton.setOnClickListener()
+        binding!!.findUsernameButton.setOnClickListener()
         {
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
             {
-                this.hideSoftInputFromWindow(findUsernameButton.windowToken, 0)
+                this.hideSoftInputFromWindow(binding!!.findUsernameButton.windowToken, 0)
             }
 
-            userRetrofitService.findUsername(nameEdittext.text.toString(), emailEdittext.text.toString()).enqueue(object: Callback<String?>
+            userRetrofitService.findUsername(binding!!.nameEdittext.text.toString(), binding!!.emailEdittext.text.toString()).enqueue(object: Callback<String?>
             {
                 override fun onResponse(call: Call<String?>, response: Response<String?>)
                 {
@@ -65,8 +57,8 @@ class FindUsernameFragment : Fragment()
                                 })
                             }.show()
 
-                            nameEdittext.text.clear()
-                            emailEdittext.text.clear()
+                            binding!!.nameEdittext.text.clear()
+                            binding!!.emailEdittext.text.clear()
                         }
                         else
                         {

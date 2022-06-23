@@ -35,10 +35,6 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
 
     private var user: User? = null
 
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var recylerView: RecyclerView
-    private lateinit var addContentFab: FloatingActionButton
-
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
@@ -54,17 +50,13 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
 
         user = intent.getSerializableExtra("user") as User
 
-        swipeRefreshLayout = binding.swipeRefreshLayout
-        recylerView = binding.recylerView
-        addContentFab = binding.addContentFab
-
         contentListItemAdapter = ContentListItemAdapter(this)
-        recylerView.adapter = contentListItemAdapter
+        binding.recylerView.adapter = contentListItemAdapter
 
-        swipeRefreshLayout.setOnRefreshListener()
+        binding.swipeRefreshLayout.setOnRefreshListener()
         {
             loadRecyclerContent()
-            swipeRefreshLayout.isRefreshing = false
+            binding.swipeRefreshLayout.isRefreshing = false
         }
 
         contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener  // 게시글 읽기
@@ -80,7 +72,7 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
             }
         })
 
-        addContentFab.setOnClickListener()  // 게시글 쓰기
+        binding.addContentFab.setOnClickListener()  // 게시글 쓰기
         {
             Intent(this@ContentListActivity, AddContentActivity::class.java).run()
             {

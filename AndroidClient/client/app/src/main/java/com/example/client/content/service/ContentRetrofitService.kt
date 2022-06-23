@@ -2,10 +2,7 @@ package com.example.client.content.service
 
 import com.example.client.content.domain.Content
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ContentRetrofitService
 {
@@ -14,4 +11,7 @@ interface ContentRetrofitService
 
     @GET("all")
     fun getAll(): Call<MutableList<Content>>
+
+    @DELETE("delete")
+    fun removeContent(@Query(value = "content_id") contentId: Long): Call<Boolean>
 }

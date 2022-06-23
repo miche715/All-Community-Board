@@ -30,24 +30,12 @@ class SignInActivity : AppCompatActivity()
 
     private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
-    private lateinit var usernameEdittext: EditText
-    private lateinit var passwordEdittext: EditText
-    private lateinit var signInButton: Button
-    private lateinit var signUpTextview: TextView
-    private lateinit var findAccountTextview: TextView
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        usernameEdittext = binding.usernameEdittext
-        passwordEdittext = binding.passwordEdittext
-        signInButton = binding.signInButton
-        signUpTextview = binding.signUpTextview
-        findAccountTextview = binding.findAccountTextview
 
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
         {
@@ -63,14 +51,14 @@ class SignInActivity : AppCompatActivity()
             }
         }
 
-        signInButton.setOnClickListener()
+        binding.signInButton.setOnClickListener()
         {
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
             {
-                this.hideSoftInputFromWindow(signInButton.windowToken, 0)
+                this.hideSoftInputFromWindow(binding.signInButton.windowToken, 0)
             }
 
-            userRetrofitService.signIn(usernameEdittext.text.toString(), passwordEdittext.text.toString()).enqueue(object: Callback<User?>
+            userRetrofitService.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString()).enqueue(object: Callback<User?>
             {
                 override fun onResponse(call: Call<User?>, response: Response<User?>)
                 {
@@ -108,7 +96,7 @@ class SignInActivity : AppCompatActivity()
             })
         }
 
-        signUpTextview.setOnClickListener()
+        binding.signUpTextview.setOnClickListener()
         {
             Intent(this@SignInActivity, SignUpActivity::class.java).run()
             {
@@ -116,7 +104,7 @@ class SignInActivity : AppCompatActivity()
             }
         }
 
-        findAccountTextview.setOnClickListener()
+        binding.findAccountTextview.setOnClickListener()
         {
             Intent(this@SignInActivity, FindAccountActivity::class.java).run()
             {

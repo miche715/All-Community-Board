@@ -23,10 +23,6 @@ class FindPasswordFragment : Fragment()
 
     private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
-    private lateinit var nameEdittext: EditText
-    private lateinit var usernameEdittext: EditText
-    private lateinit var findPasswordButton: Button
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -36,18 +32,14 @@ class FindPasswordFragment : Fragment()
     {
         binding = FragmentFindPasswordBinding.inflate(inflater, container, false)
 
-        nameEdittext = binding!!.nameEdittext
-        usernameEdittext = binding!!.usernameEdittext
-        findPasswordButton = binding!!.findPasswordButton
-
-        findPasswordButton.setOnClickListener()
+        binding!!.findPasswordButton.setOnClickListener()
         {
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
             {
-                this.hideSoftInputFromWindow(findPasswordButton.windowToken, 0)
+                this.hideSoftInputFromWindow(binding!!.findPasswordButton.windowToken, 0)
             }
 
-            userRetrofitService.findPassword(nameEdittext.text.toString(), usernameEdittext.text.toString()).enqueue(object: Callback<String?>
+            userRetrofitService.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString()).enqueue(object: Callback<String?>
             {
                 override fun onResponse(call: Call<String?>, response: Response<String?>)
                 {
@@ -65,8 +57,8 @@ class FindPasswordFragment : Fragment()
                                 })
                             }.show()
 
-                            nameEdittext.text.clear()
-                            usernameEdittext.text.clear()
+                            binding!!.nameEdittext.text.clear()
+                            binding!!.usernameEdittext.text.clear()
                         }
                         else
                         {

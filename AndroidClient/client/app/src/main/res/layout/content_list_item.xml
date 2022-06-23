@@ -33,103 +33,126 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginBottom="2dp"
-        android:background="@color/background_color"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:weightSum="10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <TextView
-            android:id="@+id/createdAtTextview"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center_vertical|left"
-            android:paddingLeft="3dp"
-            android:text="01/01 22:22"
-            android:textColor="#434141"
-            android:textSize="16sp" />
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="4"
+            android:background="@color/background_color"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-        <TextView
-            android:id="@+id/writerTextview"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center_vertical|left"
-            android:paddingLeft="3dp"
-            android:text="testusername"
-            android:textColor="#434141"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/createdAtTextview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="3dp"
+                android:text="01/01 22:22"
+                android:textColor="#434141"
+                android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="#D32F2F"
-            app:srcCompat="@android:drawable/arrow_up_float" />
+            <TextView
+                android:id="@+id/writerTextview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="3dp"
+                android:text="testusername"
+                android:textColor="#F57C00"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/goodTextview"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="@drawable/good_edge"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center_vertical|center"
-            android:text="0"
-            android:textColor="#D32F2F"
-            android:textSize="16sp" />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="#303F9F"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="2dp"
+            android:layout_weight="6"
+            android:background="@color/background_color"
+            android:orientation="horizontal"
+            android:weightSum="6">
 
-        <TextView
-            android:id="@+id/badTextview"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="@drawable/bad_edge"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center_vertical|center"
-            android:text="0"
-            android:textColor="#303F9F"
-            android:textSize="16sp" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="#D32F2F"
+                app:srcCompat="@android:drawable/arrow_up_float" />
 
-        <ImageView
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="#00796B"
-            app:srcCompat="@android:drawable/stat_notify_chat" />
+            <TextView
+                android:id="@+id/goodTextview"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/good_edge"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:gravity="center_vertical|center"
+                android:text="0"
+                android:textColor="#D32F2F"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/commentNumTextview"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="@drawable/comment_num_edge"
-            android:fontFamily="@font/nanum_square_round_b"
-            android:gravity="center_vertical|center"
-            android:text="0"
-            android:textColor="#00796B"
-            android:textSize="16sp" />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="#303F9F"
+                app:srcCompat="@android:drawable/arrow_down_float" />
+
+            <TextView
+                android:id="@+id/badTextview"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/bad_edge"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:gravity="center_vertical|center"
+                android:text="0"
+                android:textColor="#303F9F"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="#00796B"
+                app:srcCompat="@android:drawable/stat_notify_chat" />
+
+            <TextView
+                android:id="@+id/commentNumTextview"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/comment_num_edge"
+                android:fontFamily="@font/nanum_square_round_b"
+                android:gravity="center_vertical|center"
+                android:text="0"
+                android:textColor="#00796B"
+                android:textSize="16sp" />
+        </LinearLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

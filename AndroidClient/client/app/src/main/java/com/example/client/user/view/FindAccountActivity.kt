@@ -13,10 +13,6 @@ class FindAccountActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityFindAccountBinding
 
-    private lateinit var tabLayout: TabLayout
-    private lateinit var findUsernameFragment: FindUsernameFragment
-    private lateinit var findPasswordFragment: FindPasswordFragment
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -24,12 +20,8 @@ class FindAccountActivity : AppCompatActivity()
         binding = ActivityFindAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        tabLayout = binding.tabLayout
-        findUsernameFragment = FindUsernameFragment()
-        findPasswordFragment = FindPasswordFragment()
-
-        supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, findUsernameFragment).commit()
-        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener
+        supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, FindUsernameFragment()).commit()
+        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener
         {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
 
@@ -39,8 +31,8 @@ class FindAccountActivity : AppCompatActivity()
             {
                 when(tab!!.position)
                 {
-                    0 -> supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, findUsernameFragment).commit()
-                    1 -> supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, findPasswordFragment).commit()
+                    0 -> supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, FindUsernameFragment()).commit()
+                    1 -> supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, FindPasswordFragment()).commit()
                 }
             }
         })

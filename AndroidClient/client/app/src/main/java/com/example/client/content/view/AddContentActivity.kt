@@ -25,10 +25,6 @@ class AddContentActivity : AppCompatActivity()
 
     private var user: User? = null
 
-    private lateinit var titleEdittext: EditText
-    private lateinit var textEdittext: EditText
-    private lateinit var submitButton: Button
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -38,17 +34,13 @@ class AddContentActivity : AppCompatActivity()
 
         user = intent.getSerializableExtra("user") as User
 
-        titleEdittext = binding.titleEdittext
-        textEdittext = binding.textEdittext
-        submitButton = binding.submitButton
-
-        submitButton.setOnClickListener()
+        binding.submitButton.setOnClickListener()
         {
             val content = Content().apply()
             {
                 this.writer = user!!.username
-                this.title = titleEdittext.text.toString()
-                this.text = textEdittext.text.toString()
+                this.title = binding.titleEdittext.text.toString()
+                this.text = binding.textEdittext.text.toString()
             }
 
             contentRetrofitService.addContent(content, user!!.userId!!).enqueue(object: Callback<Content>
