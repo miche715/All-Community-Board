@@ -48,6 +48,7 @@
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/button_color"
             android:fontFamily="@font/nanum_square_round_b"
             android:text="아이디 찾기"
             android:textSize="16sp"

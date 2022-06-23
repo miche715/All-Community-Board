@@ -25,7 +25,7 @@ class SignUpActivity : AppCompatActivity()
     private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
     private val nameRegex = "^[가-힣]*$".toRegex()  // 한글만
-    private val usernameRegex = "^[a-z0-9]{4,20}$".toRegex()  // 소문자 + 숫자 4~20자리
+    private val usernameRegex = "^[a-z0-9]{2,8}$".toRegex()  // 소문자 + 숫자 2~8자리
     private val passwordRegex = "^[a-z0-9]{4,20}$".toRegex()  // 소문자 + 숫자 4~20자리
     private val emailRegex = "^[a-z0-9\\.\\-_]+@([a-z0-9\\-]+\\.)+[a-z]{2,6}$".toRegex()  // 이메일 형식
 
