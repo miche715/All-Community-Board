@@ -60,7 +60,12 @@ class GetContentActivity : AppCompatActivity(), CoroutineScope
 
         binding.modifyButton.setOnClickListener()
         {
-
+            Intent(this@GetContentActivity, ModifyContentActivity::class.java).run()
+            {
+                this.putExtra("user", user)
+                this.putExtra("content", content)
+                startActivity(this)
+            }
         }
 
         binding.deleteButton.setOnClickListener()

@@ -12,6 +12,9 @@ interface ContentRetrofitService
     @GET("all")
     fun getAll(): Call<MutableList<Content>>
 
+    @PUT("update")
+    fun modifyContent(@Body content: Content, @Query(value = "user_id") userId: Long): Call<Content>
+
     @DELETE("delete")
     fun removeContent(@Query(value = "content_id") contentId: Long): Call<Boolean>
 }

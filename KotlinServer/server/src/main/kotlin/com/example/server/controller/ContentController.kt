@@ -29,9 +29,9 @@ class ContentController(@Autowired private var contentService: ContentService)
     }
 
     @PutMapping("/update")  // 게시글 수정
-    fun updateContent(@RequestBody content: Content): ResponseEntity<Content>
+    fun updateContent(@RequestBody content: Content, @RequestParam(name = "user_id") userId: Long): ResponseEntity<Content>
     {
-        return ResponseEntity.status(200).body(contentService.modifyContent(content))
+        return ResponseEntity.status(200).body(contentService.modifyContent(content, userId))
     }
 
     @DeleteMapping("/delete")  // 게시글 삭제

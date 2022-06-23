@@ -18,7 +18,6 @@ class ContentService(@Autowired private val contentRepository: ContentRepository
         {
             return contentRepository.save(this)
         }
-
     }
 
     fun getContent(contentId: Long): Content
@@ -31,9 +30,15 @@ class ContentService(@Autowired private val contentRepository: ContentRepository
         return contentRepository.findAllByOrderByContentIdDesc()
     }
 
-    fun modifyContent(content: Content): Content
+    fun modifyContent(content: Content, userId: Long): Content
     {
-        return contentRepository.save(content)
+        content.apply()
+        {
+            this.user = userRepository.findById(userId)
+        }.run()
+        {
+            return contentRepository.save(this)
+        }
     }
 
     fun removeContent(contentId: Long)
