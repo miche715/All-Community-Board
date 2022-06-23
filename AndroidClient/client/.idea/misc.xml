@@ -4,11 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/bad_edge.xml" value="0.335" />
+        <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/bagic_edge.xml" value="0.3285" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/comment_num_edge.xml" value="0.335" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/edge.xml" value="0.335" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/font/font.xml" value="0.3953125" />
+        <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/layout/activity_add_content.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/layout/activity_content_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/layout/activity_find_account.xml" value="0.3515625" />
+        <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/layout/activity_get_content.xml" value="0.34430379746835443" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/layout/activity_main.xml" value="0.35144927536231885" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/layout/activity_sign_in.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/layout/activity_sign_up.xml" value="0.3515625" />

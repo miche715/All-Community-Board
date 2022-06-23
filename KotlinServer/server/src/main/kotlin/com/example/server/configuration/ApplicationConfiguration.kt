@@ -24,7 +24,7 @@ class ApplicationConfiguration(@Autowired private val userRepository: UserReposi
     @Bean
     fun contentService(): ContentService
     {
-        return ContentService(contentRepository)
+        return ContentService(contentRepository, userRepository)
     }
 
     @Bean

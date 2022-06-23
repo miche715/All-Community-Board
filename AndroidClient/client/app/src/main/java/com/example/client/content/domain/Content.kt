@@ -1,5 +1,6 @@
 package com.example.client.content.domain
 
+import com.example.client.user.domain.User
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 

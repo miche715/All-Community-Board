@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".content.view.AddContentActivity">
+
+    <EditText
+        android:id="@+id/titleEdittext"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_margin="1dp"
+        android:ems="10"
+        android:gravity="center|left"
+        android:hint="제목"
+        android:inputType="textPersonName"
+        android:paddingLeft="3dp"
+        android:textColorHint="@color/hint_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/textEdittext"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="1dp"
+        android:background="@drawable/bagic_edge"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="내용"
+        android:inputType="text|textMultiLine"
+        android:lines="30"
+        android:paddingLeft="3dp"
+        android:paddingTop="3dp"
+        android:scrollbars="vertical"
+        android:textColorHint="@color/hint_color"
+        app:layout_constraintBottom_toTopOf="@+id/submitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleEdittext" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/button_color"
+        android:text="게시글 저장"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

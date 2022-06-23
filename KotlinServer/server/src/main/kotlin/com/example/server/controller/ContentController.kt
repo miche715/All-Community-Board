@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*
 class ContentController(@Autowired private var contentService: ContentService)
 {
     @PostMapping("/create")  // 게시글 작성
-    fun createContent(@RequestBody content: Content): ResponseEntity<Content>  // 게시글 작성에 성공하면 만들어진 게시글 리턴
+    fun createContent(@RequestBody content: Content, @RequestParam(name = "user_id") userId: Long): ResponseEntity<Content>  // 게시글 작성에 성공하면 만들어진 게시글 리턴
     {
-        return ResponseEntity.status(201).body(contentService.addContent(content))
+        return ResponseEntity.status(201).body(contentService.addContent(content, userId))
     }
 
     @GetMapping("/detail")  // 게시글 1개 세부 사항 읽기

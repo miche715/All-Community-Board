@@ -167,5 +167,4 @@ class SignUpActivity : AppCompatActivity()
 
         return true
     }
-
 }

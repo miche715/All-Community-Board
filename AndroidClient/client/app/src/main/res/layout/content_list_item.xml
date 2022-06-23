@@ -23,6 +23,7 @@
             android:layout_height="50dp"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center_vertical|left"
+            android:paddingLeft="3dp"
             android:text="TitleTitleTitle"
             android:textColor="#000000"
             android:textSize="24sp" />
@@ -45,6 +46,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center_vertical|left"
+            android:paddingLeft="3dp"
             android:text="01/01 22:22"
             android:textColor="#434141"
             android:textSize="16sp" />
@@ -56,6 +58,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center_vertical|left"
+            android:paddingLeft="3dp"
             android:text="testusername"
             android:textColor="#434141"
             android:textSize="16sp" />

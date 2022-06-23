@@ -71,13 +71,22 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
         {
             override fun onClick(v: View, position: Int)
             {
-                println(contentListItemAdapter.contents.get(position))
+                Intent(this@ContentListActivity, GetContentActivity::class.java).run()
+                {
+                    this.putExtra("user", user)
+                    this.putExtra("content", contentListItemAdapter.contents[position])
+                    startActivity(this)
+                }
             }
         })
 
         addContentFab.setOnClickListener()  // 게시글 쓰기
         {
-            TODO("게시글 쓰는 액티비티 이동 로직 구현해야함.")
+            Intent(this@ContentListActivity, AddContentActivity::class.java).run()
+            {
+                this.putExtra("user", user)
+                startActivity(this)
+            }
         }
 
 

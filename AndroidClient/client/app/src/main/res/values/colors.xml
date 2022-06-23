@@ -10,4 +10,5 @@
 
     <color name="background_color">#D1C4E9</color>
     <color name="hint_color">#80000000</color>
+    <color name="button_color">#25C585</color>
 </resources>

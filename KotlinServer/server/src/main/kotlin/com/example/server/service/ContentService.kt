@@ -2,15 +2,23 @@ package com.example.server.service
 
 import com.example.server.domain.Content
 import com.example.server.repository.ContentRepository
+import com.example.server.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
-class ContentService(@Autowired private val contentRepository: ContentRepository)
+class ContentService(@Autowired private val contentRepository: ContentRepository, @Autowired private val userRepository: UserRepository)
 {
-    fun addContent(content: Content): Content
+    fun addContent(content: Content, userId: Long): Content
     {
-        return contentRepository.save(content)
+        content.apply()
+        {
+            this.user = userRepository.findById(userId)
+        }.run()
+        {
+            return contentRepository.save(this)
+        }
+
     }
 
     fun getContent(contentId: Long): Content
