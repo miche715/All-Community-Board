@@ -72,10 +72,10 @@ class GetContentActivity : AppCompatActivity()
                             {
                                 if (response.body()!!)
                                 {
-                                    Intent(this@GetContentActivity, ContentListActivity::class.java).run()
-                                    {
-                                        startActivity(this)
-                                    }
+//                                    Intent(this@GetContentActivity, ContentListActivity::class.java).run()
+//                                    {
+//                                        startActivity(this)
+//                                    }
 
                                     finish()
                                 }
