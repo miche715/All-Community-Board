@@ -10,8 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
 import com.example.client.content.domain.Content
@@ -19,7 +17,6 @@ import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityContentListBinding
 import com.example.client.user.domain.User
 import com.example.client.user.view.SignInActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,13 +28,14 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
     private lateinit var binding: ActivityContentListBinding
 
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
-    private lateinit var contentListItemAdapter: ContentListItemAdapter
 
-    private var user: User? = null
+    private lateinit var contentListItemAdapter: ContentListItemAdapter
 
     private lateinit var job: Job
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
+
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -80,8 +78,6 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
                 startActivity(this)
             }
         }
-
-
     }
 
     override fun onResume()

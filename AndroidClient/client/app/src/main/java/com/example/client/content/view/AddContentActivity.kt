@@ -7,21 +7,28 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityAddContentBinding
 import com.example.client.user.domain.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class AddContentActivity : AppCompatActivity()
+class AddContentActivity : AppCompatActivity(), CoroutineScope
 {
     lateinit var binding: ActivityAddContentBinding
 
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + job
 
     private var user: User? = null
 
@@ -31,6 +38,8 @@ class AddContentActivity : AppCompatActivity()
 
         binding = ActivityAddContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        job = Job()
 
         user = intent.getSerializableExtra("user") as User
 
@@ -43,43 +52,39 @@ class AddContentActivity : AppCompatActivity()
                 this.text = binding.textEdittext.text.toString()
             }
 
-            contentRetrofitService.addContent(content, user!!.userId!!).enqueue(object: Callback<Content>
+            launch()
             {
-                override fun onResponse(call: Call<Content>, response: Response<Content>)
+                contentRetrofitService.addContent(content, user!!.userId!!).enqueue(object: Callback<Content>
                 {
-                    if(response.isSuccessful)
+                    override fun onResponse(call: Call<Content>, response: Response<Content>)
                     {
-                        Intent(this@AddContentActivity, GetContentActivity::class.java).run()
+                        if(response.isSuccessful)
                         {
-                            this.putExtra("user", user)
-                            this.putExtra("content", response.body())
-                            startActivity(this)
+                            Intent(this@AddContentActivity, GetContentActivity::class.java).run()
+                            {
+                                this.putExtra("user", user)
+                                this.putExtra("content", response.body())
+                                startActivity(this)
+                            }
+
+                            finish()
                         }
-
-                        finish()
                     }
-                }
 
-                override fun onFailure(call: Call<Content>, t: Throwable)
-                {
-                    Log.e("서버 연결 실패", t.toString())
-                }
-            })
-
-
-
-
-
-
-
-
+                    override fun onFailure(call: Call<Content>, t: Throwable)
+                    {
+                        Log.e("서버 연결 실패", t.toString())
+                    }
+                })
+            }
         }
+    }
 
+    override fun onDestroy()
+    {
+        super.onDestroy()
 
-
-
-
-
+        job.cancel()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean

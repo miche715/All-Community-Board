@@ -8,24 +8,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
 import com.example.client.databinding.FragmentFindPasswordBinding
 import com.example.client.user.service.UserRetrofitServiceObject
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class FindPasswordFragment : Fragment()
+class FindPasswordFragment : Fragment(), CoroutineScope
 {
     private var binding: FragmentFindPasswordBinding? = null
 
     private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.IO + job
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
+
+        job = Job()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
@@ -39,45 +48,48 @@ class FindPasswordFragment : Fragment()
                 this.hideSoftInputFromWindow(binding!!.findPasswordButton.windowToken, 0)
             }
 
-            userRetrofitService.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString()).enqueue(object: Callback<String?>
+            launch()
             {
-                override fun onResponse(call: Call<String?>, response: Response<String?>)
+                userRetrofitService.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString()).enqueue(object: Callback<String?>
                 {
-                    if(response.isSuccessful)
+                    override fun onResponse(call: Call<String?>, response: Response<String?>)
                     {
-                        val result = response.body()
-
-                        if(result != null)
+                        if(response.isSuccessful)
                         {
-                            Snackbar.make(binding!!.mainLayout, "회원님의 비밀번호는 ${result} 입니다.", Snackbar.LENGTH_INDEFINITE).run()
-                            {
-                                this.setAction("확인", View.OnClickListener()
-                                {
-                                    this.dismiss()
-                                })
-                            }.show()
+                            val result = response.body()
 
-                            binding!!.nameEdittext.text.clear()
-                            binding!!.usernameEdittext.text.clear()
-                        }
-                        else
-                        {
-                            Snackbar.make(binding!!.mainLayout, "입력하신 정보의 비밀번호를 찾을 수 없습니다.", Snackbar.LENGTH_INDEFINITE).run()
+                            if(result != null)
                             {
-                                this.setAction("확인", View.OnClickListener()
+                                Snackbar.make(binding!!.mainLayout, "회원님의 비밀번호는 ${result} 입니다.", Snackbar.LENGTH_INDEFINITE).run()
                                 {
-                                    this.dismiss()
-                                })
-                            }.show()
+                                    this.setAction("확인", View.OnClickListener()
+                                    {
+                                        this.dismiss()
+                                    })
+                                }.show()
+
+                                binding!!.nameEdittext.text.clear()
+                                binding!!.usernameEdittext.text.clear()
+                            }
+                            else
+                            {
+                                Snackbar.make(binding!!.mainLayout, "입력하신 정보의 비밀번호를 찾을 수 없습니다.", Snackbar.LENGTH_INDEFINITE).run()
+                                {
+                                    this.setAction("확인", View.OnClickListener()
+                                    {
+                                        this.dismiss()
+                                    })
+                                }.show()
+                            }
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<String?>, t: Throwable)
-                {
-                    Log.e("서버 연결 실패", t.toString())
-                }
-            })
+                    override fun onFailure(call: Call<String?>, t: Throwable)
+                    {
+                        Log.e("서버 연결 실패", t.toString())
+                    }
+                })
+            }
         }
 
         return binding!!.root
@@ -87,6 +99,7 @@ class FindPasswordFragment : Fragment()
     {
         super.onDestroyView()
 
+        job.cancel()
         binding = null
     }
 }
