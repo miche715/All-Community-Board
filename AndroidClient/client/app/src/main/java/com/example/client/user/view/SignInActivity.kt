@@ -15,16 +15,11 @@ import com.example.client.databinding.ActivitySignInBinding
 import com.example.client.user.domain.User
 import com.example.client.user.service.UserRetrofitServiceObject
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.coroutines.CoroutineContext
 
-class SignInActivity : AppCompatActivity(), CoroutineScope
+class SignInActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivitySignInBinding
 
@@ -32,18 +27,12 @@ class SignInActivity : AppCompatActivity(), CoroutineScope
 
     private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO + job
-
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        job = Job()
 
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
         {
@@ -66,45 +55,42 @@ class SignInActivity : AppCompatActivity(), CoroutineScope
                 this.hideSoftInputFromWindow(binding.signInButton.windowToken, 0)
             }
 
-            launch()
+            userRetrofitService.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString()).enqueue(object: Callback<User?>
             {
-                userRetrofitService.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString()).enqueue(object: Callback<User?>
+                override fun onResponse(call: Call<User?>, response: Response<User?>)
                 {
-                    override fun onResponse(call: Call<User?>, response: Response<User?>)
+                    if(response.isSuccessful)
                     {
-                        if(response.isSuccessful)
+                        val result = response.body()
+
+                        if(result != null)
                         {
-                            val result = response.body()
-
-                            if(result != null)
+                            Intent(this@SignInActivity, ContentListActivity::class.java).run()
                             {
-                                Intent(this@SignInActivity, ContentListActivity::class.java).run()
-                                {
-                                    this.putExtra("user", result)
-                                    startActivity(this)
-                                }
+                                this.putExtra("user", result)
+                                startActivity(this)
+                            }
 
-                                finish()
-                            }
-                            else
+                            finish()
+                        }
+                        else
+                        {
+                            Snackbar.make(binding.mainLayout, "아이디 또는 패스워드가 잘못됐습니다.", Snackbar.LENGTH_INDEFINITE).run()
                             {
-                                Snackbar.make(binding.mainLayout, "아이디 또는 패스워드가 잘못됐습니다.", Snackbar.LENGTH_INDEFINITE).run()
+                                this.setAction("확인", View.OnClickListener()
                                 {
-                                    this.setAction("확인", View.OnClickListener()
-                                    {
-                                        this.dismiss()
-                                    })
-                                }.show()
-                            }
+                                    this.dismiss()
+                                })
+                            }.show()
                         }
                     }
+                }
 
-                    override fun onFailure(call: Call<User?>, t: Throwable)
-                    {
-                        Log.e("서버 연결 실패", t.toString())
-                    }
-                })
-            }
+                override fun onFailure(call: Call<User?>, t: Throwable)
+                {
+                    Log.e("서버 연결 실패", t.toString())
+                }
+            })
         }
 
         binding.signUpTextview.setOnClickListener()
@@ -122,13 +108,6 @@ class SignInActivity : AppCompatActivity(), CoroutineScope
                 startActivity(this)
             }
         }
-    }
-
-    override fun onDestroy()
-    {
-        super.onDestroy()
-
-        job.cancel()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean

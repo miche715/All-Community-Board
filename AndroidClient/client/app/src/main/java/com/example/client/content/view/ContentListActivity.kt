@@ -17,23 +17,17 @@ import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityContentListBinding
 import com.example.client.user.domain.User
 import com.example.client.user.view.SignInActivity
-import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.coroutines.CoroutineContext
 
-class ContentListActivity : AppCompatActivity(), CoroutineScope
+class ContentListActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityContentListBinding
 
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
-
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO + job
 
     private var user: User? = null
 
@@ -43,8 +37,6 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
 
         binding = ActivityContentListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        job = Job()
 
         user = intent.getSerializableExtra("user") as User
 
@@ -87,13 +79,6 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
         loadRecyclerContent()
     }
 
-    override fun onDestroy()
-    {
-        super.onDestroy()
-
-        job.cancel()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean
     {
         menuInflater.inflate(R.menu.menu_content_list, menu)
@@ -131,25 +116,22 @@ class ContentListActivity : AppCompatActivity(), CoroutineScope
 
     private fun loadRecyclerContent()
     {
-        launch()
+        contentRetrofitService.getAll().enqueue(object: Callback<MutableList<Content>>
         {
-            contentRetrofitService.getAll().enqueue(object: Callback<MutableList<Content>>
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
             {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
+                if(response.isSuccessful)
                 {
-                    if(response.isSuccessful)
-                    {
-                        contentListItemAdapter.contents = response.body()!!
-                        contentListItemAdapter.notifyDataSetChanged()
-                    }
+                    contentListItemAdapter.contents = response.body()!!
+                    contentListItemAdapter.notifyDataSetChanged()
                 }
+            }
 
-                override fun onFailure(call: Call<MutableList<Content>>, t: Throwable)
-                {
-                    Log.e("서버 연결 실패", t.toString())
-                }
-            })
-        }
+            override fun onFailure(call: Call<MutableList<Content>>, t: Throwable)
+            {
+                Log.e("서버 연결 실패", t.toString())
+            }
+        })
     }
 }

@@ -11,24 +11,15 @@ import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityGetContentBinding
 import com.example.client.user.domain.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.coroutines.CoroutineContext
 
-class GetContentActivity : AppCompatActivity(), CoroutineScope
+class GetContentActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityGetContentBinding
 
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
-
-    private lateinit var job: Job
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO + job
 
     private var user: User? = null
     private var content: Content? = null
@@ -39,8 +30,6 @@ class GetContentActivity : AppCompatActivity(), CoroutineScope
 
         binding = ActivityGetContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        job = Job()
 
         user = intent.getSerializableExtra("user") as User
         content = intent.getSerializableExtra("content") as Content
@@ -75,42 +64,32 @@ class GetContentActivity : AppCompatActivity(), CoroutineScope
                 this.setMessage("게시글을 삭제 하시겠습니까?")
                 this.setPositiveButton("확인", DialogInterface.OnClickListener()
                 { _, _ ->
-                    launch()
+                    contentRetrofitService.removeContent(content!!.contentId!!).enqueue(object : Callback<Boolean>
                     {
-                        contentRetrofitService.removeContent(content!!.contentId!!).enqueue(object : Callback<Boolean>
+                        override fun onResponse(call: Call<Boolean>, response: Response<Boolean>)
                         {
-                            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>)
+                            if (response.isSuccessful)
                             {
-                                if (response.isSuccessful)
+                                if (response.body()!!)
                                 {
-                                    if (response.body()!!)
+                                    Intent(this@GetContentActivity, ContentListActivity::class.java).run()
                                     {
-                                        Intent(this@GetContentActivity, ContentListActivity::class.java).run()
-                                        {
-                                            startActivity(this)
-                                        }
-
-                                        finish()
+                                        startActivity(this)
                                     }
+
+                                    finish()
                                 }
                             }
+                        }
 
-                            override fun onFailure(call: Call<Boolean>, t: Throwable)
-                            {
-                                Log.e("서버 연결 실패", t.toString())
-                            }
-                        })
-                    }
+                        override fun onFailure(call: Call<Boolean>, t: Throwable)
+                        {
+                            Log.e("서버 연결 실패", t.toString())
+                        }
+                    })
                 })
                 this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
             }.show()
         }
-    }
-
-    override fun onDestroy()
-    {
-        super.onDestroy()
-
-        job.cancel()
     }
 }
