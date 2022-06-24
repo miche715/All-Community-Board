@@ -1,6 +1,5 @@
 package com.example.client.comment.service
 
-import com.example.client.content.service.ContentRetrofitService
 import com.example.client.jsonconverter.NullOnEmptyConverterFactory
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit

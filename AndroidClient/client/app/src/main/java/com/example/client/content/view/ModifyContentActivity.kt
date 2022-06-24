@@ -47,7 +47,7 @@ class ModifyContentActivity : AppCompatActivity()
             {
                 override fun onResponse(call: Call<Content>, response: Response<Content>)
                 {
-                    if (response.isSuccessful)
+                    if(response.isSuccessful)
                     {
                         Intent(this@ModifyContentActivity, GetContentActivity::class.java).run()
                         {

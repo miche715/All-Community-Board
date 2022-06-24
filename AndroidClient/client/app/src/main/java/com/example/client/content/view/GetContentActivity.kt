@@ -73,7 +73,7 @@ class GetContentActivity : AppCompatActivity()
                     {
                         override fun onResponse(call: Call<Boolean>, response: Response<Boolean>)
                         {
-                            if (response.isSuccessful)
+                            if(response.isSuccessful)
                             {
                                 if (response.body()!!)
                                 {

@@ -89,5 +89,4 @@ class CommentListFragment : Fragment()
 
         binding = null
     }
-
 }
