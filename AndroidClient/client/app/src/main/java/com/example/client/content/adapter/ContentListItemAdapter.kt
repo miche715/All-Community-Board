@@ -55,7 +55,6 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
         private val createdAtTextview = itemView.findViewById<TextView>(R.id.createdAtTextview)
         private val writerTextview = itemView.findViewById<TextView>(R.id.writerTextview)
         private val goodTextview = itemView.findViewById<TextView>(R.id.goodTextview)
-        private val badTextview = itemView.findViewById<TextView>(R.id.badTextview)
         private val commentNumTextview = itemView.findViewById<TextView>(R.id.commentNumTextview)
 
         fun bind(item: Content)
@@ -64,7 +63,6 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
             createdAtTextview.text = item.createdAt
             writerTextview.text = item.writer
             goodTextview.text = item.good.toString()
-            badTextview.text = item.bad.toString()
             commentNumTextview.text = item.commentNum.toString()
         }
     }

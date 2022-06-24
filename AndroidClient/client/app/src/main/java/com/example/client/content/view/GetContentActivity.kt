@@ -39,7 +39,7 @@ class GetContentActivity : AppCompatActivity()
         binding.createdAtTextview.text = content!!.createdAt
         binding.writerTextview.text = content!!.writer
         binding.goodTextview.text = content!!.good.toString()
-        binding.badTextview.text = content!!.bad.toString()
+        binding.commentTextview.text = content!!.commentNum.toString()
 
         if(user!!.username != content!!.writer)
         {

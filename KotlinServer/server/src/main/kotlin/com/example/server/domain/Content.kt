@@ -25,8 +25,6 @@ data class Content(@Id
 
                    var good: Int? = 0,  // 좋아요
 
-                   var bad: Int? = 0,  //싫어요
-
                    @ManyToOne
                    @JsonIgnore
                    @JoinColumn(name = "user_id")

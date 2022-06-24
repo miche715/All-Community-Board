@@ -1,6 +1,5 @@
 package com.example.client.content.domain
 
-import com.example.client.user.domain.User
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -21,9 +20,6 @@ data class Content(@SerializedName("content_id")
 
                    @SerializedName("good")
                    var good: Int? = null,
-
-                   @SerializedName("bad")
-                   var bad: Int? = null,
 
                    @SerializedName("comment_num")
                    var commentNum: Int? = null

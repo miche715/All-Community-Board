@@ -144,26 +144,26 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:id="@+id/badImageView"
+            android:id="@+id/commemtImageView"
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
-            android:background="#303F9F"
-            app:srcCompat="@android:drawable/arrow_down_float" />
+            android:background="#00796B"
+            app:srcCompat="@android:drawable/stat_notify_chat" />
 
         <TextView
-            android:id="@+id/badTextview"
+            android:id="@+id/commentTextview"
             android:layout_width="5dp"
             android:layout_height="match_parent"
             android:layout_marginRight="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
-            android:background="@drawable/bad_edge"
+            android:background="@drawable/comment_num_edge"
             android:fontFamily="@font/nanum_square_round_b"
             android:gravity="center_vertical|center"
             android:text="0"
-            android:textColor="#303F9F"
+            android:textColor="#00796B"
             android:textSize="16sp" />
 
     </LinearLayout>

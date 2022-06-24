@@ -47,39 +47,6 @@ class ContentFunctionTest
     }
 
     @Test
-    fun getContentTest()
-    {
-        val user = User().apply()
-        {
-            this.username = "testusername"
-            this.password = "testpassword"
-            this.name = "testname"
-            this.email = "test@test.com"
-        }.run()
-        {
-            userService.signUp(this)
-            userService.signIn(this.username!!, this.password!!)!!
-        }
-
-        val content = Content().apply()
-        {
-            this.writer = user.username
-            this.title = "testtitle"
-            this.text = "testtext"
-        }
-
-        with(contentService.addContent(content, user.userId!!))
-        {
-            contentService.getContent(this.contentId!!)
-        }.run()
-        {
-            Assertions.assertEquals(content.writer, this.writer)
-            Assertions.assertEquals(content.title, this.title)
-            Assertions.assertEquals(content.text, this.text)
-        }
-    }
-
-    @Test
     @Commit
     fun getAllTest()
     {
@@ -148,7 +115,7 @@ class ContentFunctionTest
             this.text = "testtext1"
         }.run()
         {
-            contentService.modifyContent(this)
+            contentService.modifyContent(this, user.userId!!)
         }
 
         Assertions.assertEquals(content1.contentId, content2.contentId)
