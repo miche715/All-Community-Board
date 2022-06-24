@@ -36,5 +36,5 @@ data class Content(@Id
                    var comments: MutableList<Comment> = mutableListOf(),  // 게시글에 달린 댓글 목록
 
                    @JsonProperty("comment_num")
-                   var commentNum: Int = comments.size
+                   var commentNum: Int = 0
 )

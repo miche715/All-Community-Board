@@ -1,12 +1,17 @@
 package com.example.client.content.view
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
+import com.example.client.R
+import com.example.client.comment.view.CommentListFragment
 import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityGetContentBinding
@@ -86,5 +91,22 @@ class GetContentActivity : AppCompatActivity()
                 this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
             }.show()
         }
+
+        val commentListFragment = CommentListFragment()
+        val bundle = Bundle()
+        bundle.putSerializable("user", user)
+        bundle.putSerializable("content", content)
+        commentListFragment.arguments = bundle
+        supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, commentListFragment).commit()
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
+        {
+            this.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        }
+
+        return true
     }
 }

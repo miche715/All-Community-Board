@@ -4,23 +4,32 @@ import com.example.server.domain.Comment
 import com.example.server.domain.Content
 import com.example.server.repository.CommentRepository
 import com.example.server.repository.ContentRepository
+import com.example.server.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
-class CommentService(@Autowired private val commentRepository: CommentRepository, @Autowired private val contentRepository: ContentRepository)
+class CommentService(@Autowired private val commentRepository: CommentRepository,
+                     @Autowired private val contentRepository: ContentRepository,
+                     @Autowired private val userRepository: UserRepository
+)
 {
-    fun addComment(comment: Comment): Comment
+    fun addComment(comment: Comment, contentId: Long, userId: Long): Comment
     {
-        return commentRepository.save(comment).run()
+        return commentRepository.save(comment.apply()
         {
-            contentRepository.findById(comment.content?.contentId!!).apply()
+            this.content = contentRepository.findById(contentId)
+            this.user = userRepository.findById(userId)
+        }.run()
+        {
+            contentRepository.findById(contentId).let()
             {
-                this.commentNum = this.commentNum!! + 1
-                contentRepository.save(this)
+                it.comments.add(this)
+                it.commentNum = it.comments.size
+                contentRepository.save(it)
             }
             this
-        }
+        })
     }
 
     fun getAll(content: Content): MutableList<Comment>

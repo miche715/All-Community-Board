@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*
 class CommentController(@Autowired private var commentService: CommentService)
 {
     @PostMapping("/create")  // 댓글 작성
-    fun createContent(@RequestBody comment: Comment): ResponseEntity<Comment>  // 게시글 작성에 성공하면 만들어진 게시글 리턴
+    fun createContent(@RequestBody comment: Comment, @RequestParam(name = "content_id") contentId: Long, @RequestParam(name = "user_id") userId: Long): ResponseEntity<Comment>
     {
-        return ResponseEntity.status(201).body(commentService.addComment(comment))
+        return ResponseEntity.status(201).body(commentService.addComment(comment, contentId, userId))
     }
 
     @GetMapping("/all")  // 게시글에 달린 모든 댓글 읽기
