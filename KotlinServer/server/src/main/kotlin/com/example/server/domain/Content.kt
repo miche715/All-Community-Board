@@ -23,7 +23,9 @@ data class Content(@Id
                    @Column(name = "created_at")
                    var createdAt: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm")),  // 게시글이 등록된 날짜
 
-                   var good: Int? = 0,  // 좋아요
+                   @JsonProperty(value = "good_num")
+                   @Column(name = "good_num")
+                   var goodNum: Int? = 0,  // 좋아요
 
                    @ManyToOne
                    @JsonIgnore
@@ -34,5 +36,5 @@ data class Content(@Id
                    var comments: MutableList<Comment> = mutableListOf(),  // 게시글에 달린 댓글 목록
 
                    @JsonProperty("comment_num")
-                   var commentNum: Int? = 0
+                   var commentNum: Int = comments.size
 )

@@ -18,8 +18,8 @@ data class Content(@SerializedName("content_id")
                    @SerializedName("created_at")
                    var createdAt: String? = null,
 
-                   @SerializedName("good")
-                   var good: Int? = null,
+                   @SerializedName("good_num")
+                   var goodNum: Int? = null,
 
                    @SerializedName("comment_num")
                    var commentNum: Int? = null

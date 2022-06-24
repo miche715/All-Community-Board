@@ -62,7 +62,7 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
             titleTextview.text = item.title
             createdAtTextview.text = item.createdAt
             writerTextview.text = item.writer
-            goodTextview.text = item.good.toString()
+            goodTextview.text = item.goodNum.toString()
             commentNumTextview.text = item.commentNum.toString()
         }
     }
