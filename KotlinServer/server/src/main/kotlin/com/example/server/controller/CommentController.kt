@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 class CommentController(@Autowired private var commentService: CommentService)
 {
     @PostMapping("/create")  // 댓글 작성
-    fun createContent(@RequestBody comment: Comment, @RequestParam(name = "content_id") contentId: Long, @RequestParam(name = "user_id") userId: Long): ResponseEntity<Comment>
+    fun createContent(@RequestBody comment: Comment, @RequestParam(name = "content_id") contentId: Long, @RequestParam(name = "user_id") userId: Long): ResponseEntity<Content>
     {
         return ResponseEntity.status(201).body(commentService.addComment(comment, contentId, userId))
     }

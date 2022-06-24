@@ -14,22 +14,21 @@ class CommentService(@Autowired private val commentRepository: CommentRepository
                      @Autowired private val userRepository: UserRepository
 )
 {
-    fun addComment(comment: Comment, contentId: Long, userId: Long): Comment
+    fun addComment(comment: Comment, contentId: Long, userId: Long): Content
     {
-        return commentRepository.save(comment.apply()
+        commentRepository.save(comment.apply()
         {
             this.content = contentRepository.findById(contentId)
             this.user = userRepository.findById(userId)
-        }.run()
+        }).run()
         {
-            contentRepository.findById(contentId).let()
+            return contentRepository.findById(contentId).let()
             {
                 it.comments.add(this)
                 it.commentNum = it.comments.size
                 contentRepository.save(it)
             }
-            this
-        })
+        }
     }
 
     fun getAll(content: Content): MutableList<Comment>
