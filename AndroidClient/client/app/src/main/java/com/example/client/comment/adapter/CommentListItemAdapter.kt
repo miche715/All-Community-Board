@@ -14,20 +14,20 @@ class CommentListItemAdapter(private val context: Context) : RecyclerView.Adapte
 {
     var comments = mutableListOf<Comment>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentListItemAdapter.ViewHolder  // 아이템 레이아웃과 결합
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder  // 아이템 레이아웃과 결합
     {
         val view = LayoutInflater.from(context).inflate(R.layout.comment_list_item, parent, false)
 
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: CommentListItemAdapter.ViewHolder, position: Int)  // View에 내용 입력
+    override fun onBindViewHolder(holder: ViewHolder, position: Int)  // View에 내용 입력
     {
         val comment = comments[position]
 
         holder.bind(comment)
 
-        Log.d("댓글 수신", comment.toString())
+        //Log.d("댓글 수신", comment.toString())
     }
 
     override fun getItemCount(): Int = comments.size  // 리스트 내 아이템 개수

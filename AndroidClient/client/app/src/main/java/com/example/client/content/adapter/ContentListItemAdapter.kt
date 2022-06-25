@@ -44,7 +44,7 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
 
         holder.bind(content)
 
-        Log.d("게시글 수신", content.toString())
+        //Log.d("게시글 수신", content.toString())
     }
 
     override fun getItemCount(): Int = contents.size  // 리스트 내 아이템 개수
