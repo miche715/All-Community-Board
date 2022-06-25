@@ -13,9 +13,11 @@ import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityModifyContentBinding
 import com.example.client.user.domain.User
+import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.system.exitProcess
 
 class ModifyContentActivity : AppCompatActivity()
 {
@@ -83,6 +85,25 @@ class ModifyContentActivity : AppCompatActivity()
         }
 
         return true
+    }
+
+    private var backKeyPressedTime = 0L
+    override fun onBackPressed()
+    {
+        if(System.currentTimeMillis() > backKeyPressedTime + 2000)
+        {
+            backKeyPressedTime = System.currentTimeMillis()
+            Snackbar.make(binding.mainLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
+        {
+            moveTaskToBack(true)
+            finishAndRemoveTask()
+
+            exitProcess(0)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean

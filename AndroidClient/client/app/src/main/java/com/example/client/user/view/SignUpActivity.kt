@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.system.exitProcess
 
 class SignUpActivity : AppCompatActivity()
 {
@@ -37,6 +39,7 @@ class SignUpActivity : AppCompatActivity()
         setSupportActionBar(binding.toolBar)
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         binding.signUpButton.setOnClickListener()
         {
@@ -154,5 +157,34 @@ class SignUpActivity : AppCompatActivity()
         }
 
         return true
+    }
+
+    private var backKeyPressedTime = 0L
+    override fun onBackPressed()
+    {
+        if(System.currentTimeMillis() > backKeyPressedTime + 2000)
+        {
+            backKeyPressedTime = System.currentTimeMillis()
+            Snackbar.make(binding.mainLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
+        if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
+        {
+            moveTaskToBack(true)
+            finishAndRemoveTask()
+
+            exitProcess(0)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        when(item.itemId)
+        {
+            android.R.id.home -> finish()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
