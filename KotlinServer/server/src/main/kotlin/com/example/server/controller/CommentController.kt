@@ -18,9 +18,9 @@ class CommentController(@Autowired private var commentService: CommentService)
     }
 
     @GetMapping("/all")  // 게시글에 달린 모든 댓글 읽기
-    fun readAll(@RequestParam content: Content): ResponseEntity<MutableList<Comment>>
+    fun readAll(@RequestParam(name = "content_id") contentId: Long): ResponseEntity<MutableList<Comment>>
     {
-        return ResponseEntity.status(200).body(commentService.getAll(content))
+        return ResponseEntity.status(200).body(commentService.getAll(contentId))
     }
 
     @PutMapping("/update")  // 댓글 수정

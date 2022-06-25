@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/bad_edge.xml" value="0.335" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/bagic_edge.xml" value="0.3285" />
+        <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/basic_edge.xml" value="0.3285" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/comment_num_edge.xml" value="0.335" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/edge.xml" value="0.335" />
         <entry key="..\:/Users/com/Desktop/pacman/workspace/All Community Board/AndroidClient/client/app/src/main/res/drawable/good_edge.xml" value="0.3285" />
@@ -31,5 +32,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.36614583333333334" />
+      </ProjectState>
+    </option>
   </component>
 </project>

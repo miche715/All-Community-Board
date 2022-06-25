@@ -1,5 +1,6 @@
 package com.example.client.comment.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import com.example.client.comment.adapter.CommentListItemAdapter
 import com.example.client.comment.domain.Comment
 import com.example.client.comment.service.CommentRetrofitServiceObject
 import com.example.client.content.domain.Content
@@ -24,6 +26,8 @@ class CommentListFragment : Fragment()
 
     private val commentRetrofitService = CommentRetrofitServiceObject.getRetrofitInstance()
 
+    private lateinit var commentListItemAdapter: CommentListItemAdapter
+
     private var user: User? = null
     private var content: Content? = null
 
@@ -32,12 +36,22 @@ class CommentListFragment : Fragment()
         super.onCreate(savedInstanceState)
     }
 
+    override fun onResume()
+    {
+        super.onResume()
+
+        loadRecyclerComment()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = FragmentCommentListBinding.inflate(inflater, container, false)
 
         user = requireArguments().getSerializable("user") as User
         content = requireArguments().getSerializable("content") as Content
+
+        commentListItemAdapter = CommentListItemAdapter(this.requireContext())
+        binding!!.recylerView.adapter = commentListItemAdapter
 
         binding!!.submitButton.setOnClickListener()
         {
@@ -88,5 +102,26 @@ class CommentListFragment : Fragment()
         super.onDestroyView()
 
         binding = null
+    }
+
+    private fun loadRecyclerComment()
+    {
+        commentRetrofitService.getAll(content!!.contentId!!).enqueue(object: Callback<MutableList<Comment>>
+        {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onResponse(call: Call<MutableList<Comment>>, response: Response<MutableList<Comment>>)
+            {
+                if(response.isSuccessful)
+                {
+                    commentListItemAdapter.comments = response.body()!!
+                    commentListItemAdapter.notifyDataSetChanged()
+                }
+            }
+
+            override fun onFailure(call: Call<MutableList<Comment>>, t: Throwable)
+            {
+                Log.e("서버 연결 실패", t.toString())
+            }
+        })
     }
 }

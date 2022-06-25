@@ -31,9 +31,9 @@ class CommentService(@Autowired private val commentRepository: CommentRepository
         }
     }
 
-    fun getAll(content: Content): MutableList<Comment>
+    fun getAll(contentId: Long): MutableList<Comment>
     {
-        return commentRepository.findByContent(content)
+        return commentRepository.findByContent(contentRepository.findById(contentId))
     }
 
     fun modifyComment(comment: Comment): Comment
