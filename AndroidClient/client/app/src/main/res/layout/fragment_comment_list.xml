@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="20">
+        android:weightSum="100">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recylerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="19"
+            android:layout_weight="99"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/comment_list_item">
 
