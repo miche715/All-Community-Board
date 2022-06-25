@@ -38,6 +38,10 @@ class ContentListActivity : AppCompatActivity()
         binding = ActivityContentListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolBar)
+        supportActionBar!!.setDisplayShowCustomEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
         user = intent.getSerializableExtra("user") as User
 
         contentListItemAdapter = ContentListItemAdapter(this)
@@ -70,6 +74,11 @@ class ContentListActivity : AppCompatActivity()
                 startActivity(this)
             }
         }
+
+        setSupportActionBar(binding.toolBar)
+        supportActionBar!!.setDisplayShowCustomEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
     }
 
     override fun onResume()

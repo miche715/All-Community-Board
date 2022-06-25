@@ -34,6 +34,10 @@ class SignUpActivity : AppCompatActivity()
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolBar)
+        supportActionBar!!.setDisplayShowCustomEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
         binding.signUpButton.setOnClickListener()
         {
             (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()

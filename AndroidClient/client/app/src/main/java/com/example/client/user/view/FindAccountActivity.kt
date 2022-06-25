@@ -20,6 +20,10 @@ class FindAccountActivity : AppCompatActivity()
         binding = ActivityFindAccountBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolBar)
+        supportActionBar!!.setDisplayShowCustomEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
         supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, FindUsernameFragment()).commit()
         binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener
         {

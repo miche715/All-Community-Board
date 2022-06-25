@@ -34,6 +34,10 @@ class SignInActivity : AppCompatActivity()
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolBar)
+        supportActionBar!!.setDisplayShowCustomEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
         {
             if(it.resultCode == RESULT_OK)

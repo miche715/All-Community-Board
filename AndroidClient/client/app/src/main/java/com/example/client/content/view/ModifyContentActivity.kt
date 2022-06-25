@@ -6,6 +6,7 @@ import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import com.example.client.content.domain.Content
@@ -31,6 +32,11 @@ class ModifyContentActivity : AppCompatActivity()
 
         binding = ActivityModifyContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolBar)
+        supportActionBar!!.setDisplayShowCustomEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         user = intent.getSerializableExtra("user") as User
         content = intent.getSerializableExtra("content") as Content
@@ -77,5 +83,15 @@ class ModifyContentActivity : AppCompatActivity()
         }
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        when(item.itemId)
+        {
+            android.R.id.home -> finish()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

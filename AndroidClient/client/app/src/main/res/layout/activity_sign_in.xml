@@ -8,11 +8,35 @@
     android:background="@color/background_color"
     tools:context=".user.view.SignInActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#4A148C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/toolBarTextview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
+            android:fontFamily="@font/nanum_square_round_b"
+            android:text="@string/app_name"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="18dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
     <EditText
         android:id="@+id/usernameEdittext"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:ems="10"
         android:fontFamily="@font/nanum_square_round_b"
         android:hint="아이디"
@@ -21,7 +45,7 @@
         android:textColorHint="@color/hint_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
 
     <EditText
         android:id="@+id/passwordEdittext"

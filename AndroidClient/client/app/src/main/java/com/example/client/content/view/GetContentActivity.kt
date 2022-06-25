@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -16,6 +17,7 @@ import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityGetContentBinding
 import com.example.client.user.domain.User
+import com.example.client.user.view.SignInActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +37,11 @@ class GetContentActivity : AppCompatActivity()
 
         binding = ActivityGetContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolBar)
+        supportActionBar!!.setDisplayShowCustomEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         user = intent.getSerializableExtra("user") as User
         content = intent.getSerializableExtra("content") as Content
@@ -108,5 +115,15 @@ class GetContentActivity : AppCompatActivity()
         }
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        when(item.itemId)
+        {
+            android.R.id.home -> finish()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
