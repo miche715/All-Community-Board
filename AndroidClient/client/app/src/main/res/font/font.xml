@@ -7,4 +7,20 @@
     <font android:fontStyle="normal"
         android:fontWeight="900"
         android:font="@font/jet_brains_mono_bold" />
+
+    <font android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/noto_sans_kr_black" />
+
+    <font android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/noto_sans_kr_bold" />
+
+    <font android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/noto_sans_kr_regular" />
+
+    <font android:fontStyle="normal"
+        android:fontWeight="100"
+        android:font="@font/jalnan_otf" />
 </font-family>

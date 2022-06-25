@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#7B1FA2"
+    android:background="@color/margin_background_color"
     android:paddingBottom="1dp">
 
     <LinearLayout
@@ -22,12 +22,12 @@
             android:id="@+id/textTextview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/nanum_square_round_b"
+            android:fontFamily="@font/jalnan_otf"
             android:gravity="center_vertical|left"
             android:paddingLeft="3dp"
-            android:text="TEXT"
-            android:textColor="#000000"
-            android:textSize="14sp" />
+            android:text="댓글 내용 영역"
+            android:textColor="@color/dark_text_color"
+            android:textSize="13sp" />
 
     </LinearLayout>
 
@@ -55,24 +55,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_round_b"
+                android:fontFamily="@font/jalnan_otf"
                 android:gravity="fill_vertical|left"
                 android:paddingLeft="3dp"
                 android:text="01/01 22:22"
-                android:textColor="#434141"
-                android:textSize="12sp" />
+                android:textColor="@color/midium_text_color"
+                android:textSize="11sp" />
 
             <TextView
                 android:id="@+id/writerTextview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_round_b"
+                android:fontFamily="@font/jalnan_otf"
                 android:gravity="center_vertical|left"
                 android:paddingLeft="3dp"
                 android:text="testusername"
-                android:textColor="#F57C00"
-                android:textSize="12sp" />
+                android:textColor="@color/midium_text_color"
+                android:textSize="11sp" />
 
         </LinearLayout>
 

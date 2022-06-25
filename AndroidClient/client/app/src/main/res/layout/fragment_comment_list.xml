@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background_color"
     tools:context=".comment.view.CommentListFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background_color"
         android:orientation="vertical"
         android:weightSum="100">
 
@@ -26,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
+            android:background="@color/background_color"
             android:orientation="horizontal"
             android:weightSum="20">
 
@@ -35,10 +38,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="19"
                 android:ems="10"
-                android:fontFamily="@font/nanum_square_round_b"
+                android:fontFamily="@font/jalnan_otf"
                 android:hint="내용"
                 android:inputType="text"
-                android:textColorHint="@color/hint_color" />
+                android:textColor="@color/dark_text_color"
+                android:textColorHint="@color/hint_color"
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/submitButton"
@@ -46,8 +51,9 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:backgroundTint="@color/button_color"
-                android:fontFamily="@font/nanum_square_round_b"
-                android:text="댓글 등록" />
+                android:fontFamily="@font/jalnan_otf"
+                android:text="댓글 등록"
+                android:textColor="@color/light_text_color" />
         </LinearLayout>
 
     </LinearLayout>

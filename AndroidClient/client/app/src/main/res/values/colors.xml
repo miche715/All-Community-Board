@@ -8,7 +8,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="background_color">#D1C4E9</color>
-    <color name="hint_color">#80000000</color>
-    <color name="button_color">#25C585</color>
+    <color name="background_color">#E6E6FA</color>
+    <color name="margin_background_color">#F0F8FF</color>
+    <color name="dark_text_color">#000000</color>
+    <color name="midium_text_color">#696969</color>
+    <color name="light_text_color">#FFFAFA</color>
+    <color name="hint_color">#808080</color>
+    <color name="button_color">#4B0082</color>
+    <color name="toolbar_color">#778899</color>
 </resources>

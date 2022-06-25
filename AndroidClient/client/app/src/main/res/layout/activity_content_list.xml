@@ -10,13 +10,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#4A148C"
+            android:background="@color/toolbar_color"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,9 +27,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_vertical"
-                android:fontFamily="@font/nanum_square_round_b"
+                android:fontFamily="@font/jalnan_otf"
                 android:text="@string/app_name"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/light_text_color"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="18dp" />
@@ -41,10 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:background="#512DA8"
-            android:backgroundTint="#512DA8"
+            android:backgroundTint="@color/button_color"
             android:clickable="true"
-            app:backgroundTint="#512DA8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/recylerView"
             app:srcCompat="@android:drawable/ic_menu_edit"
@@ -54,7 +53,6 @@
             android:id="@+id/recylerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/background_color"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
