@@ -63,7 +63,8 @@ class FindAccountActivity : AppCompatActivity()
         if(System.currentTimeMillis() > backKeyPressedTime + 2000)
         {
             backKeyPressedTime = System.currentTimeMillis()
-            Snackbar.make(binding.mainLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
+
             return
         }
 

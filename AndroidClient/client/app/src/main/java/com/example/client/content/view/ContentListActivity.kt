@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
@@ -152,7 +153,8 @@ class ContentListActivity : AppCompatActivity()
         if(System.currentTimeMillis() > backKeyPressedTime + 2000)
         {
             backKeyPressedTime = System.currentTimeMillis()
-            Snackbar.make(binding.swipeRefreshLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
+            Toast.makeText(this, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
+
             return
         }
 
