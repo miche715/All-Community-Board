@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.client.R
 import com.example.client.comment.view.CommentListFragment
@@ -131,7 +130,7 @@ class GetContentActivity : AppCompatActivity()
         if(System.currentTimeMillis() > backKeyPressedTime + 2000)
         {
             backKeyPressedTime = System.currentTimeMillis()
-            Toast.makeText(this, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.mainLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
 
             return
         }
