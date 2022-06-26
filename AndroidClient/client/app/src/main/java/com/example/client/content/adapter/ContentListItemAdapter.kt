@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.client.R
 import com.example.client.content.domain.Content
@@ -15,6 +16,9 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
     var contents = mutableListOf<Content>()
 
     private lateinit var itemClickListener : OnItemClickListener
+
+    var liveEnd: MutableLiveData<Boolean> = MutableLiveData(false)
+    var lastCount = 0
 
     interface OnItemClickListener
     {
@@ -44,7 +48,11 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
 
         holder.bind(content)
 
-        //Log.d("게시글 수신", content.toString())
+        if(position == itemCount - 1 && lastCount != itemCount)  // 현재 화면에 표시된 게시글이 로딩된 마지막 게시글이고, 목록의 끝에 다다르지 않았을 때
+        {
+            liveEnd.value = true
+            lastCount = itemCount
+        }
     }
 
     override fun getItemCount(): Int = contents.size  // 리스트 내 아이템 개수

@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
 import com.example.client.content.domain.Content
@@ -52,7 +53,17 @@ class ContentListActivity : AppCompatActivity()
 
         binding.swipeRefreshLayout.setOnRefreshListener()
         {
-            loadRecyclerContent()
+            with(this)
+            {
+                this.overridePendingTransition(0, 0)
+                this.intent.putExtra("user", user)
+                this.intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(this.intent)
+                this.overridePendingTransition(0, 0)
+
+                this.finish()
+            }
+
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
@@ -78,10 +89,19 @@ class ContentListActivity : AppCompatActivity()
             }
         }
 
+        contentListItemAdapter.liveEnd.observe(this, Observer()
+        {
+            if(it)
+            {
+                contentListItemAdapter.liveEnd.value = false
+
+                loadRecyclerContent()
+            }
+        })
+
         setSupportActionBar(binding.toolBar)
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
-
     }
 
     override fun onResume()
@@ -126,17 +146,19 @@ class ContentListActivity : AppCompatActivity()
         return super.onOptionsItemSelected(item)
     }
 
+    private var page = 0
     private fun loadRecyclerContent()
     {
-        contentRetrofitService.getAll().enqueue(object: Callback<MutableList<Content>>
+        contentRetrofitService.getAll(page, 11).enqueue(object: Callback<MutableList<Content>>
         {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
             {
                 if(response.isSuccessful)
                 {
-                    contentListItemAdapter.contents = response.body()!!
+                    contentListItemAdapter.contents.addAll(response.body()!!)
                     contentListItemAdapter.notifyDataSetChanged()
+                    page = page + 1
                 }
             }
 

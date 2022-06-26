@@ -3,6 +3,9 @@ package com.example.server.controller
 import com.example.server.domain.Content
 import com.example.server.service.ContentService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -17,9 +20,11 @@ class ContentController(@Autowired private var contentService: ContentService)
     }
 
     @GetMapping("/all")  // 모든 게시글 읽기
-    fun readAll(): ResponseEntity<MutableList<Content>>
+    fun readAll(@RequestParam page: Int, @RequestParam size: Int): ResponseEntity<MutableList<Content>>
     {
-        return ResponseEntity.status(200).body(contentService.getAll())
+        val pageRequest = PageRequest.of(page, size)
+
+        return ResponseEntity.status(200).body(contentService.getAll(pageRequest))
     }
 
     @PutMapping("/update")  // 게시글 수정
