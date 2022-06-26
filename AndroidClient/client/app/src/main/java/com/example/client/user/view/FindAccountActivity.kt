@@ -69,10 +69,7 @@ class FindAccountActivity : AppCompatActivity()
 
         if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
         {
-            moveTaskToBack(true)
-            finishAndRemoveTask()
-
-            exitProcess(0)
+            finishAffinity()
         }
     }
 
