@@ -50,7 +50,7 @@ class CommentListFragment : Fragment()
         user = requireArguments().getSerializable("user") as User
         content = requireArguments().getSerializable("content") as Content
 
-        commentListItemAdapter = CommentListItemAdapter(this.requireContext())
+        commentListItemAdapter = CommentListItemAdapter(this.requireContext(), user!!)
         binding!!.recylerView.adapter = commentListItemAdapter
 
         binding!!.submitButton.setOnClickListener()
@@ -93,6 +93,39 @@ class CommentListFragment : Fragment()
                 }
             })
         }
+
+        commentListItemAdapter.setItemClickListener(object: CommentListItemAdapter.OnItemClickListener  // 댓글 삭제
+        {
+            override fun onClick(v: View, position: Int)
+            {
+                println("클릭")
+                commentRetrofitService.removeComment(commentListItemAdapter.comments[position].commentId!!).enqueue(object: Callback<Content>
+                {
+                    override fun onResponse(call: Call<Content>, response: Response<Content>)
+                    {
+                        if(response.isSuccessful)
+                        {
+                            with(activity!!)
+                            {
+                                this.overridePendingTransition(0, 0)
+                                this.intent.putExtra("user", user)
+                                this.intent.putExtra("content", response.body())
+                                this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                startActivity(this.intent)
+                                this.overridePendingTransition(0, 0)
+
+                                this.finish()
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Content>, t: Throwable)
+                    {
+                        Log.e("서버 연결 실패", t.toString())
+                    }
+                })
+            }
+        })
 
         return binding!!.root
     }

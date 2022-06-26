@@ -41,17 +41,17 @@ class CommentService(@Autowired private val commentRepository: CommentRepository
         return commentRepository.save(comment)
     }
 
-    fun removeComment(commentId: Long)
+    fun removeComment(commentId: Long): Content
     {
         commentRepository.findById(commentId).run()
         {
-            contentRepository.findById(this.content?.contentId!!).apply()
-            {
-                this.commentNum = this.commentNum!! - 1
-                contentRepository.save(this)
-            }
-
             commentRepository.delete(this)
+            return contentRepository.findById(this.content!!.contentId!!).let()
+            {
+                it.comments.remove(this)
+                it.commentNum = it.comments.size
+                it
+            }
         }
     }
 }

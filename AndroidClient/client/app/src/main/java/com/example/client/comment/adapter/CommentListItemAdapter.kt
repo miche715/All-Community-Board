@@ -1,18 +1,31 @@
 package com.example.client.comment.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.client.R
 import com.example.client.comment.domain.Comment
+import com.example.client.user.domain.User
 
-class CommentListItemAdapter(private val context: Context) : RecyclerView.Adapter<CommentListItemAdapter.ViewHolder>()
+class CommentListItemAdapter(private val context: Context, private val user: User) : RecyclerView.Adapter<CommentListItemAdapter.ViewHolder>()
 {
     var comments = mutableListOf<Comment>()
+
+    private lateinit var itemClickListener : CommentListItemAdapter.OnItemClickListener
+
+    interface OnItemClickListener
+    {
+        fun onClick(v: View, position: Int)
+    }
+
+    fun setItemClickListener(onItemClickListener: CommentListItemAdapter.OnItemClickListener)
+    {
+        this.itemClickListener = onItemClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder  // 아이템 레이아웃과 결합
     {
@@ -26,8 +39,6 @@ class CommentListItemAdapter(private val context: Context) : RecyclerView.Adapte
         val comment = comments[position]
 
         holder.bind(comment)
-
-        //Log.d("댓글 수신", comment.toString())
     }
 
     override fun getItemCount(): Int = comments.size  // 리스트 내 아이템 개수
@@ -37,12 +48,24 @@ class CommentListItemAdapter(private val context: Context) : RecyclerView.Adapte
         private val textTextview = itemView.findViewById<TextView>(R.id.textTextview)
         private val createdAtTextview = itemView.findViewById<TextView>(R.id.createdAtTextview)
         private val writerTextview = itemView.findViewById<TextView>(R.id.writerTextview)
+        private val deleteButton = itemView.findViewById<Button>(R.id.deleteButton)
 
         fun bind(item: Comment)
         {
             textTextview.text = item.text
             createdAtTextview.text = item.createdAt
             writerTextview.text = item.writer
+            if(item.writer != user.username)
+            {
+                deleteButton.visibility = View.INVISIBLE
+            }
+            else
+            {
+                deleteButton.setOnClickListener()
+                {
+                    itemClickListener.onClick(deleteButton, adapterPosition)
+                }
+            }
         }
     }
 }

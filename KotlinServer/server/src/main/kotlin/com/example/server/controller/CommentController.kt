@@ -30,10 +30,8 @@ class CommentController(@Autowired private var commentService: CommentService)
     }
 
     @DeleteMapping("/delete")  // 댓글 삭제
-    fun deleteContent(@RequestParam(name = "comment_id") commentId: Long): ResponseEntity<Boolean>
+    fun deleteContent(@RequestParam(name = "comment_id") commentId: Long): ResponseEntity<Content>
     {
-        commentService.removeComment(commentId)
-
-        return ResponseEntity.status(200).body(true)
+        return ResponseEntity.status(200).body(commentService.removeComment(commentId))
     }
 }

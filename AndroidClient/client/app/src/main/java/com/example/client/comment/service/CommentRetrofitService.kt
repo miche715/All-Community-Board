@@ -3,10 +3,7 @@ package com.example.client.comment.service
 import com.example.client.comment.domain.Comment
 import com.example.client.content.domain.Content
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface CommentRetrofitService
 {
@@ -15,4 +12,7 @@ interface CommentRetrofitService
 
     @GET("all")
     fun getAll(@Query(value = "content_id") contentId: Long): Call<MutableList<Comment>>
+
+    @DELETE("delete")
+    fun removeComment(@Query(value = "comment_id") commentId: Long): Call<Content>
 }
