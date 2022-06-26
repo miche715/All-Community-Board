@@ -36,13 +36,6 @@ class CommentListFragment : Fragment()
         super.onCreate(savedInstanceState)
     }
 
-    override fun onResume()
-    {
-        super.onResume()
-
-        loadRecyclerComment()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
     {
         binding = FragmentCommentListBinding.inflate(inflater, container, false)
@@ -52,6 +45,8 @@ class CommentListFragment : Fragment()
 
         commentListItemAdapter = CommentListItemAdapter(this.requireContext(), user!!)
         binding!!.recylerView.adapter = commentListItemAdapter
+
+        loadRecyclerComment()
 
         binding!!.submitButton.setOnClickListener()
         {

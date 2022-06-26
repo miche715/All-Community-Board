@@ -1,7 +1,6 @@
 package com.example.server.repository
 
 import com.example.server.domain.Content
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface ContentRepository

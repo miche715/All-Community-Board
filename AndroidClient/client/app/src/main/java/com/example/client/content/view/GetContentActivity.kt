@@ -18,7 +18,6 @@ import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityGetContentBinding
 import com.example.client.user.domain.User
-import com.example.client.user.view.SignInActivity
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
@@ -85,8 +84,14 @@ class GetContentActivity : AppCompatActivity()
                         {
                             if(response.isSuccessful)
                             {
-                                if (response.body()!!)
+                                if(response.body()!!)
                                 {
+                                    Intent(this@GetContentActivity, ContentListActivity::class.java).run()
+                                    {
+                                        this.putExtra("user", user)
+                                        startActivity(this)
+                                    }
+
                                     finish()
                                 }
                             }

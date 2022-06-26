@@ -4,21 +4,21 @@ import com.example.server.domain.Content
 import com.example.server.repository.ContentRepository
 import com.example.server.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.domain.Page
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.data.domain.Pageable
 
 @Transactional
 class ContentService(@Autowired private val contentRepository: ContentRepository, @Autowired private val userRepository: UserRepository)
 {
-    fun addContent(content: Content, userId: Long): Content
+    fun addContent(content: Content, userId: Long): Boolean
     {
-        content.apply()
+        return content.apply()
         {
             this.user = userRepository.findById(userId)
         }.run()
         {
-            return contentRepository.save(this)
+            contentRepository.save(this)
+            true
         }
     }
 

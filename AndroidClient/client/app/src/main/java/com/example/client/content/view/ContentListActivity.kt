@@ -51,13 +51,15 @@ class ContentListActivity : AppCompatActivity()
         contentListItemAdapter = ContentListItemAdapter(this)
         binding.recylerView.adapter = contentListItemAdapter
 
+        loadRecyclerContent()
+
         binding.swipeRefreshLayout.setOnRefreshListener()
         {
             with(this)
             {
                 this.overridePendingTransition(0, 0)
                 this.intent.putExtra("user", user)
-                this.intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(this.intent)
                 this.overridePendingTransition(0, 0)
 
@@ -94,6 +96,7 @@ class ContentListActivity : AppCompatActivity()
             if(it)
             {
                 contentListItemAdapter.liveEnd.value = false
+                page = page + 1
 
                 loadRecyclerContent()
             }
@@ -104,11 +107,24 @@ class ContentListActivity : AppCompatActivity()
         supportActionBar!!.setDisplayShowTitleEnabled(false)
     }
 
-    override fun onResume()
+    private var backKeyPressedTime = 0L
+    override fun onBackPressed()
     {
-        super.onResume()
+        if(System.currentTimeMillis() > backKeyPressedTime + 2000)
+        {
+            backKeyPressedTime = System.currentTimeMillis()
+            Toast.makeText(this, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
 
-        loadRecyclerContent()
+            return
+        }
+
+        if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
+        {
+            moveTaskToBack(true)
+            finishAndRemoveTask()
+
+            exitProcess(0)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean
@@ -158,7 +174,6 @@ class ContentListActivity : AppCompatActivity()
                 {
                     contentListItemAdapter.contents.addAll(response.body()!!)
                     contentListItemAdapter.notifyDataSetChanged()
-                    page = page + 1
                 }
             }
 
@@ -167,25 +182,5 @@ class ContentListActivity : AppCompatActivity()
                 Log.e("서버 연결 실패", t.toString())
             }
         })
-    }
-
-    private var backKeyPressedTime = 0L
-    override fun onBackPressed()
-    {
-        if(System.currentTimeMillis() > backKeyPressedTime + 2000)
-        {
-            backKeyPressedTime = System.currentTimeMillis()
-            Toast.makeText(this, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
-
-            return
-        }
-
-        if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
-        {
-            moveTaskToBack(true)
-            finishAndRemoveTask()
-
-            exitProcess(0)
-        }
     }
 }

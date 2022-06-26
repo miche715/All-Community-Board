@@ -18,7 +18,7 @@ class ContentListItemAdapter(private val context: Context) : RecyclerView.Adapte
     private lateinit var itemClickListener : OnItemClickListener
 
     var liveEnd: MutableLiveData<Boolean> = MutableLiveData(false)
-    var lastCount = 0
+    private var lastCount = 0
 
     interface OnItemClickListener
     {

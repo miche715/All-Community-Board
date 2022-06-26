@@ -50,24 +50,26 @@ class AddContentActivity : AppCompatActivity()
                 this.text = binding.textEdittext.text.toString()
             }
 
-            contentRetrofitService.addContent(content, user!!.userId!!).enqueue(object: Callback<Content>
+            contentRetrofitService.addContent(content, user!!.userId!!).enqueue(object: Callback<Boolean>
             {
-                override fun onResponse(call: Call<Content>, response: Response<Content>)
+                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>)
                 {
                     if(response.isSuccessful)
                     {
-                        Intent(this@AddContentActivity, GetContentActivity::class.java).run()
+                        if(response.body()!!)
                         {
-                            this.putExtra("user", user)
-                            this.putExtra("content", response.body())
-                            startActivity(this)
-                        }
+                            Intent(this@AddContentActivity, ContentListActivity::class.java).run()
+                            {
+                                this.putExtra("user", user)
+                                startActivity(this)
+                            }
 
-                        finish()
+                            finish()
+                        }
                     }
                 }
 
-                override fun onFailure(call: Call<Content>, t: Throwable)
+                override fun onFailure(call: Call<Boolean>, t: Throwable)
                 {
                     Log.e("서버 연결 실패", t.toString())
                 }

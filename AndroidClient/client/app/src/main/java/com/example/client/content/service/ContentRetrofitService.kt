@@ -7,7 +7,7 @@ import retrofit2.http.*
 interface ContentRetrofitService
 {
     @POST("create")
-    fun addContent(@Body content: Content, @Query(value = "user_id") userId: Long): Call<Content>
+    fun addContent(@Body content: Content, @Query(value = "user_id") userId: Long): Call<Boolean>
 
     @GET("all")
     fun getAll(@Query(value = "page") page: Int, @Query(value = "size") size: Int): Call<MutableList<Content>>
