@@ -145,7 +145,7 @@ class SearchContentListActivity : AppCompatActivity()
     private var page = 0
     private fun loadRecyclerContent()
     {
-        contentRetrofitService.getSearch(keyword!!, page, 11).enqueue(object: Callback<MutableList<Content>>
+        contentRetrofitService.getSearch(keyword!!, page, 15).enqueue(object: Callback<MutableList<Content>>
         {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)

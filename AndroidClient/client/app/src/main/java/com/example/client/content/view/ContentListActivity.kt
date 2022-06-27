@@ -171,7 +171,7 @@ class ContentListActivity : AppCompatActivity()
     private var page = 0
     private fun loadRecyclerContent()
     {
-        contentRetrofitService.getAll(page, 11).enqueue(object: Callback<MutableList<Content>>
+        contentRetrofitService.getAll(page, 15).enqueue(object: Callback<MutableList<Content>>
         {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
