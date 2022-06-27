@@ -2,6 +2,7 @@ package com.example.server.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.hibernate.annotations.BatchSize
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
@@ -32,6 +33,7 @@ data class Content(@Id
                    @JoinColumn(name = "user_id")
                    var user: User? = null,  // 게시글을 쓴 유저의 식별 값
 
+                   @BatchSize(size = 15)
                    @OneToMany(mappedBy = "content", fetch = FetchType.EAGER, cascade = [CascadeType.REMOVE])
                    var comments: MutableList<Comment> = mutableListOf(),  // 게시글에 달린 댓글 목록
 
