@@ -4,6 +4,7 @@ import com.example.server.domain.Content
 import com.example.server.service.ContentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -23,6 +24,14 @@ class ContentController(@Autowired private var contentService: ContentService)
         val pageRequest = PageRequest.of(page, size)
 
         return ResponseEntity.status(200).body(contentService.getAll(pageRequest))
+    }
+
+    @GetMapping("/search")
+    fun readSearch(@RequestParam keyword: String, @RequestParam page: Int, @RequestParam size: Int): ResponseEntity<MutableList<Content>>
+    {
+        val pageRequest = PageRequest.of(page, size, Sort.by("contentId").descending())
+
+        return ResponseEntity.status(200).body(contentService.getSearch(keyword, pageRequest))
     }
 
     @PutMapping("/update")  // 게시글 수정

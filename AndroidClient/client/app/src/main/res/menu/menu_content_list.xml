@@ -3,11 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/accountSetting"
-        android:title="계정 설정"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/signOut"
         android:title="로그 아웃"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/search"
+        android:icon="?android:attr/actionModeWebSearchDrawable"
+        android:title="Item"
+        app:showAsAction="always" />
 </menu>

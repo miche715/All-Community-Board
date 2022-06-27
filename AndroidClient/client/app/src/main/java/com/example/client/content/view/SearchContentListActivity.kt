@@ -1,78 +1,101 @@
 package com.example.client.content.view
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.Observer
-import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
 import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
-import com.example.client.databinding.ActivityContentListBinding
+import com.example.client.databinding.ActivitySearchContentListBinding
 import com.example.client.user.domain.User
-import com.example.client.user.view.SignInActivity
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.system.exitProcess
 
-class ContentListActivity : AppCompatActivity()
+class SearchContentListActivity : AppCompatActivity()
 {
-    private lateinit var binding: ActivityContentListBinding
+    private lateinit var binding: ActivitySearchContentListBinding
 
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
 
     private var user: User? = null
+    private var keyword: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityContentListBinding.inflate(layoutInflater)
+        binding = ActivitySearchContentListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolBar)
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         user = intent.getSerializableExtra("user") as User
+        keyword = intent.getStringExtra("keyword")
 
         contentListItemAdapter = ContentListItemAdapter(this)
         binding.recylerView.adapter = contentListItemAdapter
 
-        loadRecyclerContent()
-
-        binding.swipeRefreshLayout.setOnRefreshListener()
+        if(keyword != null)
         {
+            loadRecyclerContent()
+
+            contentListItemAdapter.liveEnd.observe(this, Observer()
+            {
+                if(it)
+                {
+                    contentListItemAdapter.liveEnd.value = false
+                    page = page + 1
+
+                    loadRecyclerContent()
+                }
+            })
+        }
+        else
+        {
+            binding.noticeTextview.text = "게시글 제목의 일부를 입력 후\n검색 버튼을 눌러주세요."
+        }
+
+        binding.searchButton.setOnClickListener()
+        {
+            if(binding.searchEdittext.text.length < 2)
+            {
+                Snackbar.make(binding.mainLayout, "두 글자 이상 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             with(this)
             {
                 this.overridePendingTransition(0, 0)
                 this.intent.putExtra("user", user)
+                this.intent.putExtra("keyword", binding.searchEdittext.text.toString())
                 this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(this.intent)
                 this.overridePendingTransition(0, 0)
 
                 this.finish()
             }
-
-            binding.swipeRefreshLayout.isRefreshing = false
         }
 
         contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener  // 게시글 읽기
         {
             override fun onClick(v: View, position: Int)
             {
-                Intent(this@ContentListActivity, GetContentActivity::class.java).run()
+                Intent(this@SearchContentListActivity, GetContentActivity::class.java).run()
                 {
                     this.putExtra("user", user)
                     this.putExtra("content", contentListItemAdapter.contents[position])
@@ -80,30 +103,16 @@ class ContentListActivity : AppCompatActivity()
                 }
             }
         })
+    }
 
-        binding.addContentFab.setOnClickListener()  // 게시글 쓰기
+    override fun onTouchEvent(event: MotionEvent): Boolean
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
         {
-            Intent(this@ContentListActivity, AddContentActivity::class.java).run()
-            {
-                this.putExtra("user", user)
-                startActivity(this)
-            }
+            this.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
         }
 
-        contentListItemAdapter.liveEnd.observe(this, Observer()
-        {
-            if(it)
-            {
-                contentListItemAdapter.liveEnd.value = false
-                page = page + 1
-
-                loadRecyclerContent()
-            }
-        })
-
-        setSupportActionBar(binding.toolBar)
-        supportActionBar!!.setDisplayShowCustomEnabled(true)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        return true
     }
 
     private var backKeyPressedTime = 0L
@@ -112,7 +121,7 @@ class ContentListActivity : AppCompatActivity()
         if(System.currentTimeMillis() > backKeyPressedTime + 2000)
         {
             backKeyPressedTime = System.currentTimeMillis()
-            Snackbar.make(binding.swipeRefreshLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.mainLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
 
             return
         }
@@ -120,49 +129,14 @@ class ContentListActivity : AppCompatActivity()
         if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
         {
             finishAffinity()
-//            moveTaskToBack(true)
-//            finishAndRemoveTask()
-//
-//            exitProcess(0)
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean
-    {
-        menuInflater.inflate(R.menu.menu_content_list, menu)
-
-        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean
     {
         when(item.itemId)
         {
-            R.id.search -> {
-                Intent(this@ContentListActivity, SearchContentListActivity::class.java).run()
-                {
-                    this.putExtra("user", user)
-                    startActivity(this)
-                }
-            }
-            R.id.signOut -> {
-                with(AlertDialog.Builder(this))
-                {
-                    this.setMessage("로그아웃 하시겠습니까?")
-                    this.setPositiveButton("확인", DialogInterface.OnClickListener()
-                    { _, _ ->
-                        user = null
-
-                        Intent(this@ContentListActivity, SignInActivity::class.java).run()
-                        {
-                            startActivity(this)
-                        }
-
-                        finish()
-                    })
-                    this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
-                }.show()
-            }
+            android.R.id.home -> finish()
         }
 
         return super.onOptionsItemSelected(item)
@@ -171,15 +145,27 @@ class ContentListActivity : AppCompatActivity()
     private var page = 0
     private fun loadRecyclerContent()
     {
-        contentRetrofitService.getAll(page, 11).enqueue(object: Callback<MutableList<Content>>
+        contentRetrofitService.getSearch(keyword!!, page, 11).enqueue(object: Callback<MutableList<Content>>
         {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
             {
                 if(response.isSuccessful)
                 {
-                    contentListItemAdapter.contents.addAll(response.body()!!)
-                    contentListItemAdapter.notifyDataSetChanged()
+                    if(response.body()!!.size > 0)
+                    {
+                        if(binding.noticeTextview.visibility == View.VISIBLE)
+                        {
+                            binding.noticeTextview.visibility = View.INVISIBLE
+                        }
+
+                        contentListItemAdapter.contents.addAll(response.body()!!)
+                        contentListItemAdapter.notifyDataSetChanged()
+                    }
+                    else
+                    {
+                        binding.noticeTextview.text = "검색 결과가 없습니다."
+                    }
                 }
             }
 

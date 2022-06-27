@@ -27,6 +27,11 @@ class ContentService(@Autowired private val contentRepository: ContentRepository
         return contentRepository.findAllByOrderByContentIdDesc(pageable)
     }
 
+    fun getSearch(keyword: String, pageable: Pageable): MutableList<Content>
+    {
+        return contentRepository.findAllByTitleContaining(keyword, pageable)
+    }
+
     fun modifyContent(content: Content, userId: Long): Content
     {
         content.apply()
