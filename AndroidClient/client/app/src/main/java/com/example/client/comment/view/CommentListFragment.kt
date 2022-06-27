@@ -2,6 +2,7 @@ package com.example.client.comment.view
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AlertDialog
 import com.example.client.comment.adapter.CommentListItemAdapter
 import com.example.client.comment.domain.Comment
 import com.example.client.comment.service.CommentRetrofitServiceObject
@@ -93,32 +95,39 @@ class CommentListFragment : Fragment()
         {
             override fun onClick(v: View, position: Int)
             {
-                println("클릭")
-                commentRetrofitService.removeComment(commentListItemAdapter.comments[position].commentId!!).enqueue(object: Callback<Content>
+                with(AlertDialog.Builder(context!!))
                 {
-                    override fun onResponse(call: Call<Content>, response: Response<Content>)
-                    {
-                        if(response.isSuccessful)
+                    this.setMessage("댓글을 삭제 하시겠습니까?")
+                    this.setPositiveButton("확인", DialogInterface.OnClickListener()
+                    { _, _ ->
+                        commentRetrofitService.removeComment(commentListItemAdapter.comments[position].commentId!!).enqueue(object: Callback<Content>
                         {
-                            with(activity!!)
+                            override fun onResponse(call: Call<Content>, response: Response<Content>)
                             {
-                                this.overridePendingTransition(0, 0)
-                                this.intent.putExtra("user", user)
-                                this.intent.putExtra("content", response.body())
-                                this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                startActivity(this.intent)
-                                this.overridePendingTransition(0, 0)
+                                if(response.isSuccessful)
+                                {
+                                    with(activity!!)
+                                    {
+                                        this.overridePendingTransition(0, 0)
+                                        this.intent.putExtra("user", user)
+                                        this.intent.putExtra("content", response.body())
+                                        this.intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                        startActivity(this.intent)
+                                        this.overridePendingTransition(0, 0)
 
-                                this.finish()
+                                        this.finish()
+                                    }
+                                }
                             }
-                        }
-                    }
 
-                    override fun onFailure(call: Call<Content>, t: Throwable)
-                    {
-                        Log.e("서버 연결 실패", t.toString())
-                    }
-                })
+                            override fun onFailure(call: Call<Content>, t: Throwable)
+                            {
+                                android.util.Log.e("서버 연결 실패", t.toString())
+                            }
+                        })
+                    })
+                    this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
+                }.show()
             }
         })
 
