@@ -103,7 +103,7 @@
             android:background="@color/background_color"
             android:fontFamily="@font/jalnan_otf"
             android:padding="3dp"
-            android:text="TextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextViewTextView"
+            android:text="TEXT"
             android:textColor="@color/dark_text_color"
             android:textSize="15sp" />
     </ScrollView>
@@ -111,19 +111,20 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="4dp"
         android:background="@color/background_color"
         android:orientation="horizontal"
+        android:weightSum="11"
         app:layout_constraintBottom_toTopOf="@+id/containerFramelayout">
 
         <TextView
             android:id="@+id/createdAtTextview"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="1dp"
             android:layout_marginRight="1dp"
-            android:layout_weight="1"
+            android:layout_weight="2.8"
             android:background="@drawable/basic_edge"
             android:fontFamily="@font/jalnan_otf"
             android:gravity="center_vertical|left"
@@ -134,63 +135,77 @@
 
         <TextView
             android:id="@+id/writerTextview"
-            android:layout_width="140dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="1dp"
-            android:layout_weight="1"
+            android:layout_weight="3.8"
             android:background="@drawable/basic_edge"
             android:fontFamily="@font/jalnan_otf"
             android:gravity="center_vertical|left"
             android:paddingLeft="3dp"
-            android:text="testusername"
+            android:text="USERNAME"
             android:textColor="@color/midium_text_color"
             android:textSize="14sp" />
 
-        <ImageView
-            android:id="@+id/goodImageview"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="#D32F2F"
-            app:srcCompat="@android:drawable/arrow_up_float" />
-
-        <TextView
-            android:id="@+id/goodTextview"
-            android:layout_width="5dp"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
+            android:layout_weight="2.2"
             android:background="@drawable/good_edge"
-            android:fontFamily="@font/jalnan_otf"
-            android:gravity="center_vertical|center"
-            android:text="0"
-            android:textColor="#D32F2F"
-            android:textSize="14sp" />
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-        <ImageView
-            android:id="@+id/commemtImageView"
-            android:layout_width="5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="#00796B"
-            app:srcCompat="@android:drawable/stat_notify_chat" />
+            <ImageButton
+                android:id="@+id/goodImageButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                android:backgroundTint="#D32F2F"
+                app:srcCompat="@drawable/thumb_up_48px"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-        <TextView
-            android:id="@+id/commentTextview"
-            android:layout_width="5dp"
+            <TextView
+                android:id="@+id/goodTextview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:fontFamily="@font/jalnan_otf"
+                android:gravity="center_vertical|center"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="#D32F2F"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
+            android:layout_weight="2.2"
             android:background="@drawable/comment_num_edge"
-            android:fontFamily="@font/jalnan_otf"
-            android:gravity="center_vertical|center"
-            android:text="0"
-            android:textColor="#00796B"
-            android:textSize="14sp" />
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <ImageView
+                android:id="@+id/commemtImageView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.2"
+                app:srcCompat="@drawable/chat_48px" />
+
+            <TextView
+                android:id="@+id/commentTextview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:fontFamily="@font/jalnan_otf"
+                android:gravity="center_vertical|center"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="#00796B"
+                android:textSize="14sp" />
+        </LinearLayout>
 
     </LinearLayout>
 

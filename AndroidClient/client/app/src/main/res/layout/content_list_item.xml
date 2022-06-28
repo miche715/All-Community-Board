@@ -92,8 +92,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="1dp"
                 android:layout_weight="1"
-                android:background="#D32F2F"
-                app:srcCompat="@android:drawable/arrow_up_float" />
+                app:srcCompat="@drawable/thumb_up_48px" />
 
             <TextView
                 android:id="@+id/goodTextview"
@@ -102,10 +101,11 @@
                 android:layout_marginRight="1dp"
                 android:layout_marginBottom="1dp"
                 android:layout_weight="1"
-                android:background="@drawable/good_edge"
                 android:fontFamily="@font/jalnan_otf"
                 android:gravity="center_vertical|center"
+                android:paddingLeft="4dp"
                 android:text="0"
+                android:textAlignment="textStart"
                 android:textColor="#D32F2F"
                 android:textSize="13sp" />
 
@@ -114,8 +114,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="1dp"
                 android:layout_weight="1"
-                android:background="#00796B"
-                app:srcCompat="@android:drawable/stat_notify_chat" />
+                app:srcCompat="@drawable/chat_48px" />
 
             <TextView
                 android:id="@+id/commentNumTextview"
@@ -124,10 +123,11 @@
                 android:layout_marginRight="1dp"
                 android:layout_marginBottom="1dp"
                 android:layout_weight="1"
-                android:background="@drawable/comment_num_edge"
                 android:fontFamily="@font/jalnan_otf"
                 android:gravity="center_vertical|center"
+                android:paddingLeft="4dp"
                 android:text="0"
+                android:textAlignment="viewStart"
                 android:textColor="#00796B"
                 android:textSize="13sp" />
         </LinearLayout>

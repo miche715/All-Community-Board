@@ -16,6 +16,8 @@ import com.example.client.comment.view.CommentListFragment
 import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityGetContentBinding
+import com.example.client.good.domain.Good
+import com.example.client.good.service.GoodRetrofitServiceObject
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
@@ -28,6 +30,7 @@ class GetContentActivity : AppCompatActivity()
     private lateinit var binding: ActivityGetContentBinding
 
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
+    private val goodRetrofitService = GoodRetrofitServiceObject.getRetrofitInstance()
 
     private var user: User? = null
     private var content: Content? = null
@@ -99,6 +102,50 @@ class GetContentActivity : AppCompatActivity()
                         override fun onFailure(call: Call<Boolean>, t: Throwable)
                         {
                             Log.e("서버 연결 실패", t.toString())
+                        }
+                    })
+                })
+                this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
+            }.show()
+        }
+
+        binding.goodImageButton.setOnClickListener()
+        {
+            with(AlertDialog.Builder(this))
+            {
+                this.setMessage("좋아요를 추가하시겠습니까?")
+                this.setPositiveButton("확인", DialogInterface.OnClickListener()
+                { _, _ ->
+                    goodRetrofitService.addGood(Good(), content!!.contentId!!, user!!.userId!!).enqueue(object: Callback<Content?>
+                    {
+                        override fun onResponse(call: Call<Content?>, response: Response<Content?>)
+                        {
+                            if(response.isSuccessful)
+                            {
+                                if(response.body() == null)
+                                {
+                                    Snackbar.make(binding.mainLayout, "이미 좋아요를 추가하신 게시글 입니다.", Snackbar.LENGTH_SHORT).show()
+                                }
+                                else
+                                {
+                                    Intent(this@GetContentActivity, GetContentActivity::class.java).run()
+                                    {
+                                        overridePendingTransition(0, 0)
+                                        this.putExtra("user", user)
+                                        this.putExtra("content", response.body())
+                                        this.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                        startActivity(this)
+                                        overridePendingTransition(0, 0)
+                                    }
+
+                                    finish()
+                                }
+                            }
+                        }
+
+                        override fun onFailure(call: Call<Content?>, t: Throwable)
+                        {
+                            android.util.Log.e("서버 연결 실패", t.toString())
                         }
                     })
                 })

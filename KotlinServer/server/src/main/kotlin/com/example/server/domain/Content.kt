@@ -3,6 +3,8 @@ package com.example.server.domain
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.BatchSize
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.persistence.*
@@ -24,10 +26,6 @@ data class Content(@Id
                    @Column(name = "created_at")
                    var createdAt: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("MM/dd HH:mm")),  // 게시글이 등록된 날짜
 
-                   @JsonProperty(value = "good_num")
-                   @Column(name = "good_num")
-                   var goodNum: Int? = 0,  // 좋아요
-
                    @ManyToOne
                    @JsonIgnore
                    @JoinColumn(name = "user_id")
@@ -37,6 +35,16 @@ data class Content(@Id
                    @OneToMany(mappedBy = "content", fetch = FetchType.EAGER, cascade = [CascadeType.REMOVE])
                    var comments: MutableList<Comment> = mutableListOf(),  // 게시글에 달린 댓글 목록
 
-                   @JsonProperty("comment_num")
-                   var commentNum: Int = 0
+                   @BatchSize(size = 5)
+                   @Fetch(value = FetchMode.SUBSELECT)
+                   @OneToMany(mappedBy = "content", fetch = FetchType.EAGER, cascade = [CascadeType.REMOVE])
+                   var goods: MutableList<Good> = mutableListOf(),
+
+                   @JsonProperty(value = "comment_num")
+                   @Column(name = "comment_num")
+                   var commentNum: Int = 0,  //댓글 개수
+
+                   @JsonProperty(value = "good_num")
+                   @Column(name = "good_num")
+                   var goodNum: Int? = 0  // 좋아요 개수
 )
