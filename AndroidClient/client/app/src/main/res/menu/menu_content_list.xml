@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/signOut"
-        android:title="로그 아웃"
+        android:title="로그아웃"
         app:showAsAction="never" />
     <item
         android:id="@+id/search"
