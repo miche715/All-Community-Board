@@ -10,7 +10,6 @@ import com.example.client.R
 import com.example.client.databinding.ActivityFindAccountBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import kotlin.system.exitProcess
 
 class FindAccountActivity : AppCompatActivity()
 {

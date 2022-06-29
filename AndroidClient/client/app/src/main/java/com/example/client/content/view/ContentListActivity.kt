@@ -23,7 +23,6 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.system.exitProcess
 
 class ContentListActivity : AppCompatActivity()
 {
@@ -124,10 +123,6 @@ class ContentListActivity : AppCompatActivity()
         if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
         {
             finishAffinity()
-//            moveTaskToBack(true)
-//            finishAndRemoveTask()
-//
-//            exitProcess(0)
         }
     }
 

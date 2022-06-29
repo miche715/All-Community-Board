@@ -19,7 +19,6 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.system.exitProcess
 
 class SignInActivity : AppCompatActivity()
 {
@@ -118,7 +117,7 @@ class SignInActivity : AppCompatActivity()
         }
     }
 
-    fun signIn(username: String, password: String, flag: Boolean)
+    private fun signIn(username: String, password: String, flag: Boolean)
     {
         userRetrofitService.signIn(username, password).enqueue(object: Callback<User?>
         {
