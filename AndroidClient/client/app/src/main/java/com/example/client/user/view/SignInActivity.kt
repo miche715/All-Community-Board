@@ -2,6 +2,7 @@ package com.example.client.user.view
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +29,9 @@ class SignInActivity : AppCompatActivity()
 
     private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -38,6 +42,13 @@ class SignInActivity : AppCompatActivity()
         setSupportActionBar(binding.toolBar)
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
+
+        sharedPreferences = getSharedPreferences("auto", MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+        if(sharedPreferences.getString("username", null) != null && sharedPreferences.getString("password", null) != null)
+        {
+            signIn(sharedPreferences.getString("username", null)!!, sharedPreferences.getString("password", null)!!, false)
+        }
 
         activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
         {
@@ -60,42 +71,7 @@ class SignInActivity : AppCompatActivity()
                 this.hideSoftInputFromWindow(binding.signInButton.windowToken, 0)
             }
 
-            userRetrofitService.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString()).enqueue(object: Callback<User?>
-            {
-                override fun onResponse(call: Call<User?>, response: Response<User?>)
-                {
-                    if(response.isSuccessful)
-                    {
-                        val result = response.body()
-
-                        if(result != null)
-                        {
-                            Intent(this@SignInActivity, ContentListActivity::class.java).run()
-                            {
-                                this.putExtra("user", result)
-                                startActivity(this)
-                            }
-
-                            finish()
-                        }
-                        else
-                        {
-                            Snackbar.make(binding.mainLayout, "아이디 또는 패스워드가 잘못됐습니다.", Snackbar.LENGTH_INDEFINITE).run()
-                            {
-                                this.setAction("확인", View.OnClickListener()
-                                {
-                                    this.dismiss()
-                                })
-                            }.show()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<User?>, t: Throwable)
-                {
-                    Log.e("서버 연결 실패", t.toString())
-                }
-            })
+            signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString(), true)
         }
 
         binding.signUpTextview.setOnClickListener()
@@ -140,5 +116,52 @@ class SignInActivity : AppCompatActivity()
         {
             finishAffinity()
         }
+    }
+
+    fun signIn(username: String, password: String, flag: Boolean)
+    {
+        userRetrofitService.signIn(username, password).enqueue(object: Callback<User?>
+        {
+            override fun onResponse(call: Call<User?>, response: Response<User?>)
+            {
+                if(response.isSuccessful)
+                {
+                    val result = response.body()
+
+                    if(result != null)
+                    {
+                        if(flag)
+                        {
+                            editor.putString("username", username)
+                            editor.putString("password", password)
+                            editor.commit()
+                        }
+
+                        Intent(this@SignInActivity, ContentListActivity::class.java).run()
+                        {
+                            this.putExtra("user", result)
+                            startActivity(this)
+                        }
+
+                        finish()
+                    }
+                    else
+                    {
+                        Snackbar.make(binding.mainLayout, "아이디 또는 패스워드가 잘못됐습니다.", Snackbar.LENGTH_INDEFINITE).run()
+                        {
+                            this.setAction("확인", View.OnClickListener()
+                            {
+                                this.dismiss()
+                            })
+                        }.show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<User?>, t: Throwable)
+            {
+                Log.e("서버 연결 실패", t.toString())
+            }
+        })
     }
 }

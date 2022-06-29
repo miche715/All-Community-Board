@@ -3,6 +3,7 @@ package com.example.client.content.view
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +32,9 @@ class ContentListActivity : AppCompatActivity()
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     private var user: User? = null
 
@@ -151,6 +155,12 @@ class ContentListActivity : AppCompatActivity()
                     this.setMessage("로그아웃 하시겠습니까?")
                     this.setPositiveButton("확인", DialogInterface.OnClickListener()
                     { _, _ ->
+                        sharedPreferences = getSharedPreferences("auto", MODE_PRIVATE)
+                        editor = sharedPreferences.edit()
+                        editor.remove("username")
+                        editor.remove("password")
+                        editor.commit()
+
                         user = null
 
                         Intent(this@ContentListActivity, SignInActivity::class.java).run()
