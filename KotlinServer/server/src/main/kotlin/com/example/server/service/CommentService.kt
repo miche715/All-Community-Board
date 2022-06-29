@@ -36,11 +36,6 @@ class CommentService(@Autowired private val commentRepository: CommentRepository
         return commentRepository.findByContent(contentRepository.findById(contentId))
     }
 
-    fun modifyComment(comment: Comment): Comment
-    {
-        return commentRepository.save(comment)
-    }
-
     fun removeComment(commentId: Long): Content
     {
         commentRepository.findById(commentId).run()

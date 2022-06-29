@@ -16,11 +16,17 @@ import com.example.client.comment.adapter.CommentListItemAdapter
 import com.example.client.comment.domain.Comment
 import com.example.client.comment.service.CommentRetrofitServiceObject
 import com.example.client.content.domain.Content
+import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.FragmentCommentListBinding
 import com.example.client.user.domain.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class CommentListFragment : Fragment()
 {
@@ -50,7 +56,7 @@ class CommentListFragment : Fragment()
 
         loadRecyclerComment()
 
-        binding!!.submitButton.setOnClickListener()
+        binding!!.submitButton.setOnClickListener()  // 댓글 작성
         {
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
             {
@@ -64,31 +70,35 @@ class CommentListFragment : Fragment()
             }
             binding!!.commentTextEdittext.setText("")
 
-            commentRetrofitService.addComment(comment, content!!.contentId!!, user!!.userId!!).enqueue(object : Callback<Content>
+            CoroutineScope(Dispatchers.IO).launch()
             {
-                override fun onResponse(call: Call<Content>, response: Response<Content>)
+                try
                 {
-                    if(response.isSuccessful)
-                    {
-                        with(activity!!)
-                        {
-                            this.overridePendingTransition(0, 0)
-                            this.intent.putExtra("user", user)
-                            this.intent.putExtra("content", response.body())
-                            this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            startActivity(this.intent)
-                            this.overridePendingTransition(0, 0)
+                    val result = commentRetrofitService.addComment(comment, content!!.contentId!!, user!!.userId!!)
 
-                            this.finish()
+                    if(result.code == 201 && result.body != null)
+                    {
+                        withContext(Dispatchers.Main)
+                        {
+                            with(requireActivity())
+                            {
+                                this.overridePendingTransition(0, 0)
+                                this.intent.putExtra("user", user)
+                                this.intent.putExtra("content", result.body)
+                                this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                startActivity(this.intent)
+                                this.overridePendingTransition(0, 0)
+
+                                this.finish()
+                            }
                         }
                     }
                 }
-
-                override fun onFailure(call: Call<Content>, t: Throwable)
+                catch(e: Exception)
                 {
-                    Log.e("서버 연결 실패", t.toString())
+                    Log.e("서버 연결 실패", e.message!!)
                 }
-            })
+            }
         }
 
         commentListItemAdapter.setItemClickListener(object: CommentListItemAdapter.OnItemClickListener  // 댓글 삭제
@@ -100,31 +110,35 @@ class CommentListFragment : Fragment()
                     this.setMessage("댓글을 삭제 하시겠습니까?")
                     this.setPositiveButton("확인", DialogInterface.OnClickListener()
                     { _, _ ->
-                        commentRetrofitService.removeComment(commentListItemAdapter.comments[position].commentId!!).enqueue(object: Callback<Content>
+                        CoroutineScope(Dispatchers.IO).launch()
                         {
-                            override fun onResponse(call: Call<Content>, response: Response<Content>)
+                            try
                             {
-                                if(response.isSuccessful)
-                                {
-                                    with(activity!!)
-                                    {
-                                        this.overridePendingTransition(0, 0)
-                                        this.intent.putExtra("user", user)
-                                        this.intent.putExtra("content", response.body())
-                                        this.intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                        startActivity(this.intent)
-                                        this.overridePendingTransition(0, 0)
+                                val result = commentRetrofitService.removeComment(commentListItemAdapter.comments[position].commentId!!)
 
-                                        this.finish()
+                                if(result.code == 200 && result.body != null)
+                                {
+                                    withContext(Dispatchers.Main)
+                                    {
+                                        with(requireActivity())
+                                        {
+                                            this.overridePendingTransition(0, 0)
+                                            this.intent.putExtra("user", user)
+                                            this.intent.putExtra("content", result.body)
+                                            this.intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                                            startActivity(this.intent)
+                                            this.overridePendingTransition(0, 0)
+
+                                            this.finish()
+                                        }
                                     }
                                 }
                             }
-
-                            override fun onFailure(call: Call<Content>, t: Throwable)
+                            catch(e: Exception)
                             {
-                                android.util.Log.e("서버 연결 실패", t.toString())
+                                Log.e("서버 연결 실패", e.message!!)
                             }
-                        })
+                        }
                     })
                     this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
                 }.show()
