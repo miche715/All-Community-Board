@@ -13,12 +13,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.ActivitySignInBinding
-import com.example.client.user.domain.User
 import com.example.client.user.service.UserRetrofitServiceObject
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class SignInActivity : AppCompatActivity()
 {
@@ -119,32 +120,30 @@ class SignInActivity : AppCompatActivity()
 
     private fun signIn(username: String, password: String, flag: Boolean)
     {
-        userRetrofitService.signIn(username, password).enqueue(object: Callback<User?>
+        CoroutineScope(Dispatchers.IO).launch()
         {
-            override fun onResponse(call: Call<User?>, response: Response<User?>)
+            try
             {
-                if(response.isSuccessful)
+                val result = userRetrofitService.signIn(username, password)
+
+                if(result.code == 200 && result.body != null)
                 {
-                    val result = response.body()
+                    if(flag) { editor.putString("username", username).putString("password", password).commit() }
 
-                    if(result != null)
+                    withContext(Dispatchers.Main)
                     {
-                        if(flag)
-                        {
-                            editor.putString("username", username)
-                            editor.putString("password", password)
-                            editor.commit()
-                        }
-
                         Intent(this@SignInActivity, ContentListActivity::class.java).run()
                         {
-                            this.putExtra("user", result)
+                            this.putExtra("user", result.body)
                             startActivity(this)
                         }
 
                         finish()
                     }
-                    else
+                }
+                else
+                {
+                    withContext(Dispatchers.Main)
                     {
                         Snackbar.make(binding.mainLayout, "아이디 또는 패스워드가 잘못됐습니다.", Snackbar.LENGTH_INDEFINITE).run()
                         {
@@ -156,11 +155,10 @@ class SignInActivity : AppCompatActivity()
                     }
                 }
             }
-
-            override fun onFailure(call: Call<User?>, t: Throwable)
+            catch(e: Exception)
             {
-                Log.e("서버 연결 실패", t.toString())
+                Log.e("서버 연결 실패", e.message!!)
             }
-        })
+        }
     }
 }

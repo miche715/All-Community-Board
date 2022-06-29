@@ -9,13 +9,19 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.ActivitySignUpBinding
 import com.example.client.user.domain.User
 import com.example.client.user.service.UserRetrofitServiceObject
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class SignUpActivity : AppCompatActivity()
 {
@@ -96,44 +102,49 @@ class SignUpActivity : AppCompatActivity()
                     this.email = binding.emailEdittext.text.toString()
                 }
 
-                userRetrofitService.signUp(user).enqueue(object: Callback<Boolean>
+                CoroutineScope(Dispatchers.IO).launch()
                 {
-                    override fun onResponse(call: Call<Boolean>, response: Response<Boolean>)
+                    try
                     {
-                        if(response.isSuccessful)
+                        val result = userRetrofitService.signUp(user)
+
+                        if(result.code == 201 && result.body != null)
                         {
-                            val result = response.body()
-
-                            if(result!!)
+                            if(result.body!!)
                             {
-                                Intent(this@SignUpActivity, SignInActivity::class.java).apply()
+                                withContext(Dispatchers.Main)
                                 {
-                                    putExtra("message", "회원 가입이 완료됐습니다.")
-                                }.run()
-                                {
-                                    setResult(RESULT_OK, this)
-                                }
+                                    Intent(this@SignUpActivity, SignInActivity::class.java).apply()
+                                    {
+                                        putExtra("message", "회원 가입이 완료됐습니다.")
+                                    }.run()
+                                    {
+                                        setResult(RESULT_OK, this)
+                                    }
 
-                                finish()
+                                    finish()
+                                }
                             }
                             else
                             {
-                                Snackbar.make(binding.mainLayout, "회원 가입 실패 : ", Snackbar.LENGTH_INDEFINITE).run()
+                                withContext(Dispatchers.Main)
                                 {
-                                    this.setAction("이미 가입된 아이디 또는 이메일 입니다.", View.OnClickListener()
+                                    Snackbar.make(binding.mainLayout, "회원 가입 실패 : ", Snackbar.LENGTH_INDEFINITE).run()
                                     {
-                                        this.dismiss()
-                                    })
-                                }.show()
+                                        this.setAction("이미 가입된 아이디 또는 이메일 입니다.", View.OnClickListener()
+                                        {
+                                            this.dismiss()
+                                        })
+                                    }.show()
+                                }
                             }
                         }
                     }
-
-                    override fun onFailure(call: Call<Boolean>, t: Throwable)
+                    catch(e: Exception)
                     {
-                        Log.e("서버 연결 실패", t.toString())
+                        Log.e("서버 연결 실패", e.message!!)
                     }
-                })
+                }
             }
             else
             {

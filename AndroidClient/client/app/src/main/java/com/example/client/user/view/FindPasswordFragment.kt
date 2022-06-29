@@ -11,9 +11,11 @@ import android.view.inputmethod.InputMethodManager
 import com.example.client.databinding.FragmentFindPasswordBinding
 import com.example.client.user.service.UserRetrofitServiceObject
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class FindPasswordFragment : Fragment()
 {
@@ -37,17 +39,17 @@ class FindPasswordFragment : Fragment()
                 this.hideSoftInputFromWindow(binding!!.findPasswordButton.windowToken, 0)
             }
 
-            userRetrofitService.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString()).enqueue(object: Callback<String?>
+            CoroutineScope(Dispatchers.IO).launch()
             {
-                override fun onResponse(call: Call<String?>, response: Response<String?>)
+                try
                 {
-                    if(response.isSuccessful)
-                    {
-                        val result = response.body()
+                    val result = userRetrofitService.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString())
 
-                        if(result != null)
+                    if(result.code == 200 && result.body != null)
+                    {
+                        withContext(Dispatchers.Main)
                         {
-                            Snackbar.make(binding!!.mainLayout, "회원님의 비밀번호는 ${result} 입니다.", Snackbar.LENGTH_INDEFINITE).run()
+                            Snackbar.make(binding!!.mainLayout, "회원님의 비밀번호는 ${result.body} 입니다.", Snackbar.LENGTH_INDEFINITE).run()
                             {
                                 this.setAction("확인", View.OnClickListener()
                                 {
@@ -58,7 +60,10 @@ class FindPasswordFragment : Fragment()
                             binding!!.nameEdittext.text.clear()
                             binding!!.usernameEdittext.text.clear()
                         }
-                        else
+                    }
+                    else
+                    {
+                        withContext(Dispatchers.Main)
                         {
                             Snackbar.make(binding!!.mainLayout, "입력하신 정보의 비밀번호를 찾을 수 없습니다.", Snackbar.LENGTH_INDEFINITE).run()
                             {
@@ -70,12 +75,11 @@ class FindPasswordFragment : Fragment()
                         }
                     }
                 }
-
-                override fun onFailure(call: Call<String?>, t: Throwable)
+                catch(e: Exception)
                 {
-                    Log.e("서버 연결 실패", t.toString())
+                    Log.e("서버 연결 실패", e.message!!)
                 }
-            })
+            }
         }
 
         return binding!!.root

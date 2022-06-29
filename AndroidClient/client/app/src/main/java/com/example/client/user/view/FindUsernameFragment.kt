@@ -11,9 +11,11 @@ import android.view.inputmethod.InputMethodManager
 import com.example.client.databinding.FragmentFindUsernameBinding
 import com.example.client.user.service.UserRetrofitServiceObject
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class FindUsernameFragment : Fragment()
 {
@@ -37,17 +39,17 @@ class FindUsernameFragment : Fragment()
                 this.hideSoftInputFromWindow(binding!!.findUsernameButton.windowToken, 0)
             }
 
-            userRetrofitService.findUsername(binding!!.nameEdittext.text.toString(), binding!!.emailEdittext.text.toString()).enqueue(object: Callback<String?>
+            CoroutineScope(Dispatchers.IO).launch()
             {
-                override fun onResponse(call: Call<String?>, response: Response<String?>)
+                try
                 {
-                    if(response.isSuccessful)
-                    {
-                        val result = response.body()
+                    val result = userRetrofitService.findUsername(binding!!.nameEdittext.text.toString(), binding!!.emailEdittext.text.toString())
 
-                        if(result != null)
+                    if(result.code == 200 && result.body != null)
+                    {
+                        withContext(Dispatchers.Main)
                         {
-                            Snackbar.make(binding!!.mainLayout, "회원님의 아이디는 ${result} 입니다.", Snackbar.LENGTH_INDEFINITE).run()
+                            Snackbar.make(binding!!.mainLayout, "회원님의 아이디는 ${result.body} 입니다.", Snackbar.LENGTH_INDEFINITE).run()
                             {
                                 this.setAction("확인", View.OnClickListener()
                                 {
@@ -58,7 +60,10 @@ class FindUsernameFragment : Fragment()
                             binding!!.nameEdittext.text.clear()
                             binding!!.emailEdittext.text.clear()
                         }
-                        else
+                    }
+                    else
+                    {
+                        withContext(Dispatchers.Main)
                         {
                             Snackbar.make(binding!!.mainLayout, "입력하신 정보의 아이디를 찾을 수 없습니다.", Snackbar.LENGTH_INDEFINITE).run()
                             {
@@ -70,12 +75,11 @@ class FindUsernameFragment : Fragment()
                         }
                     }
                 }
-
-                override fun onFailure(call: Call<String?>, t: Throwable)
+                catch(e: Exception)
                 {
-                    Log.e("서버 연결 실패", t.toString())
+                    Log.e("서버 연결 실패", e.message!!)
                 }
-            })
+            }
         }
 
         return binding!!.root
