@@ -20,9 +20,14 @@ import com.example.client.good.domain.Good
 import com.example.client.good.service.GoodRetrofitServiceObject
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 
 class GetContentActivity : AppCompatActivity()
 {
@@ -62,7 +67,7 @@ class GetContentActivity : AppCompatActivity()
             binding.deleteButton.visibility = View.INVISIBLE
         }
 
-        binding.modifyButton.setOnClickListener()
+        binding.modifyButton.setOnClickListener()  // 게시글 수정
         {
             Intent(this@GetContentActivity, ModifyContentActivity::class.java).run()
             {
@@ -72,20 +77,22 @@ class GetContentActivity : AppCompatActivity()
             }
         }
 
-        binding.deleteButton.setOnClickListener()
+        binding.deleteButton.setOnClickListener()  // 게시글 삭제
         {
             with(AlertDialog.Builder(this))
             {
                 this.setMessage("게시글을 삭제 하시겠습니까?")
                 this.setPositiveButton("확인", DialogInterface.OnClickListener()
                 { _, _ ->
-                    contentRetrofitService.removeContent(content!!.contentId!!).enqueue(object : Callback<Boolean>
+                    CoroutineScope(Dispatchers.IO).launch()
                     {
-                        override fun onResponse(call: Call<Boolean>, response: Response<Boolean>)
+                        try
                         {
-                            if(response.isSuccessful)
+                            val result = contentRetrofitService.removeContent(content!!.contentId!!)
+
+                            if(result.code == 200 && result.body!!)
                             {
-                                if(response.body()!!)
+                                withContext(Dispatchers.Main)
                                 {
                                     Intent(this@GetContentActivity, ContentListActivity::class.java).run()
                                     {
@@ -97,18 +104,17 @@ class GetContentActivity : AppCompatActivity()
                                 }
                             }
                         }
-
-                        override fun onFailure(call: Call<Boolean>, t: Throwable)
+                        catch(e: Exception)
                         {
-                            Log.e("서버 연결 실패", t.toString())
+                            Log.e("서버 연결 실패", e.message!!)
                         }
-                    })
+                    }
                 })
                 this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
             }.show()
         }
 
-        binding.goodImageButton.setOnClickListener()
+        binding.goodImageButton.setOnClickListener()  // 좋아요
         {
             with(AlertDialog.Builder(this))
             {

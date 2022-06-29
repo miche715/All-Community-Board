@@ -13,9 +13,11 @@ import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityAddContentBinding
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class AddContentActivity : AppCompatActivity()
 {
@@ -48,13 +50,15 @@ class AddContentActivity : AppCompatActivity()
                 this.text = binding.textEdittext.text.toString()
             }
 
-            contentRetrofitService.addContent(content, user!!.userId!!).enqueue(object: Callback<Boolean>
+            CoroutineScope(Dispatchers.IO).launch()
             {
-                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>)
+                try
                 {
-                    if(response.isSuccessful)
+                    val result = contentRetrofitService.addContent(content, user!!.userId!!)
+
+                    if(result.code == 201 && result.body!!)
                     {
-                        if(response.body()!!)
+                        withContext(Dispatchers.Main)
                         {
                             Intent(this@AddContentActivity, ContentListActivity::class.java).run()
                             {
@@ -66,12 +70,11 @@ class AddContentActivity : AppCompatActivity()
                         }
                     }
                 }
-
-                override fun onFailure(call: Call<Boolean>, t: Throwable)
+                catch(e: Exception)
                 {
-                    Log.e("서버 연결 실패", t.toString())
+                    Log.e("서버 연결 실패", e.message!!)
                 }
-            })
+            }
         }
     }
 

@@ -1,10 +1,12 @@
 package com.example.server.controller
 
 import com.example.server.domain.Content
+import com.example.server.domain.ContentResponse
 import com.example.server.service.ContentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -13,9 +15,13 @@ import org.springframework.web.bind.annotation.*
 class ContentController(@Autowired private var contentService: ContentService)
 {
     @PostMapping("/create")  // 게시글 작성
-    fun createContent(@RequestBody content: Content, @RequestParam(name = "user_id") userId: Long): ResponseEntity<Boolean>  // 게시글 작성에 성공하면 만들어진 게시글 리턴
+    fun createContent(@RequestBody content: Content, @RequestParam(name = "user_id") userId: Long): ContentResponse // 게시글 작성에 성공하면 만들어진 게시글 리턴
     {
-        return ResponseEntity.status(201).body(contentService.addContent(content, userId))
+        return ContentResponse().apply()
+        {
+            code = HttpStatus.CREATED.value()
+            body = contentService.addContent(content, userId)
+        }
     }
 
     @GetMapping("/all")  // 모든 게시글 읽기
@@ -35,16 +41,24 @@ class ContentController(@Autowired private var contentService: ContentService)
     }
 
     @PutMapping("/update")  // 게시글 수정
-    fun updateContent(@RequestBody content: Content, @RequestParam(name = "user_id") userId: Long): ResponseEntity<Content>
+    fun updateContent(@RequestBody content: Content, @RequestParam(name = "user_id") userId: Long): ContentResponse
     {
-        return ResponseEntity.status(200).body(contentService.modifyContent(content, userId))
+        return ContentResponse().apply()
+        {
+            code = HttpStatus.OK.value()
+            body = contentService.modifyContent(content, userId)
+        }
     }
 
     @DeleteMapping("/delete")  // 게시글 삭제
-    fun deleteContent(@RequestParam(name = "content_id") contentId: Long): ResponseEntity<Boolean>
+    fun deleteContent(@RequestParam(name = "content_id") contentId: Long): ContentResponse
     {
         contentService.removeContent(contentId)
 
-        return ResponseEntity.status(200).body(true)
+        return ContentResponse().apply()
+        {
+            code = HttpStatus.OK.value()
+            body = true
+        }
     }
 }
