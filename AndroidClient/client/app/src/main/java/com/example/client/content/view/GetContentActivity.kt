@@ -24,9 +24,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.Exception
 
 class GetContentActivity : AppCompatActivity()
@@ -121,23 +118,21 @@ class GetContentActivity : AppCompatActivity()
                 this.setMessage("좋아요를 추가하시겠습니까?")
                 this.setPositiveButton("확인", DialogInterface.OnClickListener()
                 { _, _ ->
-                    goodRetrofitService.addGood(Good(), content!!.contentId!!, user!!.userId!!).enqueue(object: Callback<Content?>
+                    CoroutineScope(Dispatchers.IO).launch()
                     {
-                        override fun onResponse(call: Call<Content?>, response: Response<Content?>)
+                        try
                         {
-                            if(response.isSuccessful)
+                            val result = goodRetrofitService.addGood(Good(), content!!.contentId!!, user!!.userId!!)
+
+                            if(result.code == 201 && result.body != null)
                             {
-                                if(response.body() == null)
-                                {
-                                    Snackbar.make(binding.mainLayout, "이미 좋아요를 추가하신 게시글 입니다.", Snackbar.LENGTH_SHORT).show()
-                                }
-                                else
+                                withContext(Dispatchers.Main)
                                 {
                                     Intent(this@GetContentActivity, GetContentActivity::class.java).run()
                                     {
                                         overridePendingTransition(0, 0)
                                         this.putExtra("user", user)
-                                        this.putExtra("content", response.body())
+                                        this.putExtra("content", result.body)
                                         this.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                                         startActivity(this)
                                         overridePendingTransition(0, 0)
@@ -146,13 +141,19 @@ class GetContentActivity : AppCompatActivity()
                                     finish()
                                 }
                             }
+                            else
+                            {
+                                withContext(Dispatchers.Main)
+                                {
+                                    Snackbar.make(binding.mainLayout, "이미 좋아요를 추가하신 게시글 입니다.", Snackbar.LENGTH_SHORT).show()
+                                }
+                            }
                         }
-
-                        override fun onFailure(call: Call<Content?>, t: Throwable)
+                        catch(e: Exception)
                         {
-                            android.util.Log.e("서버 연결 실패", t.toString())
+                            Log.e("서버 연결 실패", e.message!!)
                         }
-                    })
+                    }
                 })
                 this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
             }.show()
