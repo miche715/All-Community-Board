@@ -11,7 +11,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.ActivitySignInBinding
-import com.example.client.user.domain.SignInRequest
 import com.example.client.user.viewmodel.SignInViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -56,14 +55,7 @@ class SignInActivity : AppCompatActivity()
                 this.hideSoftInputFromWindow(binding.signInButton.windowToken, 0)
             }
 
-            SignInRequest().apply()
-            {
-                this.username = binding.usernameEdittext.text.toString()
-                this.password = binding.passwordEdittext.text.toString()
-            }.run()
-            {
-                signInViewModel.signIn(this)
-            }
+            signInViewModel.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString())
         }
 
         signInViewModel.result.observe(this)
@@ -89,13 +81,15 @@ class SignInActivity : AppCompatActivity()
         }
         // 로그인 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        binding.signUpTextview.setOnClickListener()  // 회원가입
+        // 회원가입 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        binding.signUpTextview.setOnClickListener()
         {
             Intent(this@SignInActivity, SignUpActivity::class.java).run()
             {
                 activityResultLauncher.launch(this)
             }
         }
+        // 회원가입 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         binding.findAccountTextview.setOnClickListener()  // 아이디 비밀번호 찾기
         {

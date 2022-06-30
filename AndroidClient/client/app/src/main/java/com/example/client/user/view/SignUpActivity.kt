@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.ActivitySignUpBinding
 import com.example.client.user.domain.User
 import com.example.client.user.service.UserRetrofitServiceObject
@@ -18,9 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.lang.Exception
 
 class SignUpActivity : AppCompatActivity()

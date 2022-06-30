@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.client.user.domain.SignInRequest
 import com.example.client.user.domain.User
 import com.example.client.user.repository.UserRepository
 import kotlinx.coroutines.launch
@@ -15,13 +14,13 @@ class SignInViewModel(private val userRepository: UserRepository = UserRepositor
     val result: MutableLiveData<User> = MutableLiveData()  // 결과를 성공적으로 받아오면 여기에 결과가 들어감
     val message: MutableLiveData<String> = MutableLiveData()  // 통신은 성공했는데 뭔가 잘못되어 실패한 경우 메세지
 
-    fun signIn(request: SignInRequest)
+    fun signIn(username: String, password: String)
     {
         viewModelScope.launch()
         {
             try
             {
-                val response = userRepository.signInCheck(request)  // SignInResponse 리턴
+                val response = userRepository.signInCheck(username, password)  // SignInResponse 리턴
 
                 if(response.code == 200 && response.body != null)  // 로그인 성공
                 {
