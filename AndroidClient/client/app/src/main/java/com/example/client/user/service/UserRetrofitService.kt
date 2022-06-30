@@ -1,7 +1,6 @@
 package com.example.client.user.service
 
 import com.example.client.user.domain.*
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
