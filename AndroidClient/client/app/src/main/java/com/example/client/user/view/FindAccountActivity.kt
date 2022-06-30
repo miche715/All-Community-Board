@@ -38,8 +38,8 @@ class FindAccountActivity : AppCompatActivity()
             {
                 when(tab!!.position)
                 {
-                    0 -> supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, FindUsernameFragment()).commit()
-                    1 -> supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, FindPasswordFragment()).commit()
+                    0 -> supportFragmentManager.beginTransaction().replace(binding.containerFramelayout.id, FindUsernameFragment()).commit()
+                    1 -> supportFragmentManager.beginTransaction().replace(binding.containerFramelayout.id, FindPasswordFragment()).commit()
                 }
             }
         })

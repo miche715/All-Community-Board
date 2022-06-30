@@ -33,20 +33,6 @@ class SignInActivity : AppCompatActivity()
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-        {
-            if(it.resultCode == RESULT_OK)
-            {
-                Snackbar.make(binding.mainLayout, it.data?.getStringExtra("message").toString(), Snackbar.LENGTH_INDEFINITE).run()
-                {
-                    this.setAction("확인", View.OnClickListener()
-                    {
-                        this.dismiss()
-                    })
-                }.show()
-            }
-        }
-
         // 로그인 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         binding.signInButton.setOnClickListener()
         {
@@ -89,8 +75,23 @@ class SignInActivity : AppCompatActivity()
                 activityResultLauncher.launch(this)
             }
         }
+
+        activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+        {
+            if(it.resultCode == RESULT_OK)
+            {
+                Snackbar.make(binding.mainLayout, it.data?.getStringExtra("message").toString(), Snackbar.LENGTH_INDEFINITE).run()
+                {
+                    this.setAction("확인", View.OnClickListener()
+                    {
+                        this.dismiss()
+                    })
+                }.show()
+            }
+        }
         // 회원가입 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        // 계정 찾기 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         binding.findAccountTextview.setOnClickListener()  // 아이디 비밀번호 찾기
         {
             Intent(this@SignInActivity, FindAccountActivity::class.java).run()
@@ -98,6 +99,7 @@ class SignInActivity : AppCompatActivity()
                 startActivity(this)
             }
         }
+        // 계정 찾기 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean
