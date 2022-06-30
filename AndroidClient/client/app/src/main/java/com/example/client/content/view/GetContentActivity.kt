@@ -10,14 +10,14 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import com.example.client.R
 import com.example.client.comment.view.CommentListFragment
 import com.example.client.content.domain.Content
 import com.example.client.content.service.ContentRetrofitServiceObject
 import com.example.client.databinding.ActivityGetContentBinding
 import com.example.client.good.domain.Good
-import com.example.client.good.service.GoodRetrofitServiceObject
+import com.example.client.good.viewmodel.AddGoodViewModel
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +31,7 @@ class GetContentActivity : AppCompatActivity()
     private lateinit var binding: ActivityGetContentBinding
 
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
-    private val goodRetrofitService = GoodRetrofitServiceObject.getRetrofitInstance()
+    private val addGoodViewModel: AddGoodViewModel by viewModels()
 
     private var user: User? = null
     private var content: Content? = null
@@ -111,60 +111,42 @@ class GetContentActivity : AppCompatActivity()
             }.show()
         }
 
+        // 좋아요 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         binding.goodImageButton.setOnClickListener()  // 좋아요
         {
             with(AlertDialog.Builder(this))
             {
                 this.setMessage("좋아요를 추가하시겠습니까?")
-                this.setPositiveButton("확인", DialogInterface.OnClickListener()
-                { _, _ ->
-                    CoroutineScope(Dispatchers.IO).launch()
-                    {
-                        try
-                        {
-                            val result = goodRetrofitService.addGood(Good(), content!!.contentId!!, user!!.userId!!)
-
-                            if(result.code == 201 && result.body != null)
-                            {
-                                withContext(Dispatchers.Main)
-                                {
-                                    Intent(this@GetContentActivity, GetContentActivity::class.java).run()
-                                    {
-                                        overridePendingTransition(0, 0)
-                                        this.putExtra("user", user)
-                                        this.putExtra("content", result.body)
-                                        this.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                        startActivity(this)
-                                        overridePendingTransition(0, 0)
-                                    }
-
-                                    finish()
-                                }
-                            }
-                            else
-                            {
-                                withContext(Dispatchers.Main)
-                                {
-                                    Snackbar.make(binding.mainLayout, "이미 좋아요를 추가하신 게시글 입니다.", Snackbar.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-                        catch(e: Exception)
-                        {
-                            Log.e("서버 연결 실패", e.message!!)
-                        }
-                    }
-                })
+                this.setPositiveButton("확인", DialogInterface.OnClickListener() { _, _ -> addGoodViewModel.addGood(Good(), content!!.contentId!!, user!!.userId!!) })
                 this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
             }.show()
         }
+        addGoodViewModel.result.observe(this)
+        {result ->
+            Intent(this@GetContentActivity, GetContentActivity::class.java).run()
+            {
+                overridePendingTransition(0, 0)
+                this.putExtra("user", user)
+                this.putExtra("content", result)
+                this.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(this)
+                overridePendingTransition(0, 0)
+            }
+
+            finish()
+        }
+        addGoodViewModel.message.observe(this)
+        {message ->
+            Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_SHORT).show()
+        }
+        // 좋아요 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         val commentListFragment = CommentListFragment()
         val bundle = Bundle()
         bundle.putSerializable("user", user)
         bundle.putSerializable("content", content)
         commentListFragment.arguments = bundle
-        supportFragmentManager.beginTransaction().replace(R.id.containerFramelayout, commentListFragment).commit()
+        supportFragmentManager.beginTransaction().replace(binding.containerFramelayout.id, commentListFragment).commit()
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean

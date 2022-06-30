@@ -18,6 +18,10 @@ class GoodController(@Autowired private var goodService: GoodService)
         {
             this.code = HttpStatus.CREATED.value()
             this.body = goodService.addGood(good, contentId, userId)
+            if(this.body == null)
+            {
+                this.code = HttpStatus.OK.value()
+            }
         }
     }
 }
