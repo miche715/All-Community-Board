@@ -5,26 +5,21 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import com.example.client.content.domain.Content
-import com.example.client.content.service.ContentRetrofitServiceObject
+import com.example.client.content.viewmodel.ModifyContentViewModel
 import com.example.client.databinding.ActivityModifyContentBinding
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class ModifyContentActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityModifyContentBinding
 
-    private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
+    private val modifyContentViewModel: ModifyContentViewModel by viewModels()
 
     private var user: User? = null
     private var content: Content? = null
@@ -52,33 +47,19 @@ class ModifyContentActivity : AppCompatActivity()
             content!!.title = binding.titleEdittext.text.toString()
             content!!.text = binding.textEdittext.text.toString()
 
-            CoroutineScope(Dispatchers.IO).launch()
+            modifyContentViewModel.modifyContent(content!!, user!!.userId!!)
+        }
+        modifyContentViewModel.result.observe(this)
+        {result ->
+            Intent(this@ModifyContentActivity, GetContentActivity::class.java).run()
             {
-                try
-                {
-                    val result = contentRetrofitService.modifyContent(content!!, user!!.userId!!)
-
-                    if(result.code == 200 && result.body != null)
-                    {
-                        withContext(Dispatchers.Main)
-                        {
-                            Intent(this@ModifyContentActivity, GetContentActivity::class.java).run()
-                            {
-                                this.putExtra("user", user)
-                                this.putExtra("content", result.body)
-                                this.addFlags(FLAG_ACTIVITY_CLEAR_TOP)  // 게시글을 수정하고 뒤로가기를 눌렀을 때 수정 하기 전 GetContentActivity가 나와서, 이를 백스택에서 제거하기 위해 사용
-                                startActivity(this)
-                            }
-
-                            finish()
-                        }
-                    }
-                }
-                catch(e: Exception)
-                {
-                    Log.e("서버 연결 실패", e.message!!)
-                }
+                this.putExtra("user", user)
+                this.putExtra("content", result)
+                this.addFlags(FLAG_ACTIVITY_CLEAR_TOP)  // 게시글을 수정하고 뒤로가기를 눌렀을 때 수정 하기 전 GetContentActivity가 나와서, 이를 백스택에서 제거하기 위해 사용
+                startActivity(this)
             }
+
+            finish()
         }
     }
 
