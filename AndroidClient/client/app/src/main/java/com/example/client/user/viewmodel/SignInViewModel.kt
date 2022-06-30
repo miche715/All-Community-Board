@@ -21,6 +21,7 @@ class SignInViewModel(private val userRepository: UserRepository = UserRepositor
             try
             {
                 val response = userRepository.signInCheck(username, password)  // SignInResponse 리턴
+                Log.d("통신 성공", "code = ${response.code}, body = ${response.body}")
 
                 if(response.code == 200 && response.body != null)  // 로그인 성공
                 {
