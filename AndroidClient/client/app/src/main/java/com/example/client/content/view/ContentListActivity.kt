@@ -3,7 +3,6 @@ package com.example.client.content.view
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -31,9 +30,6 @@ class ContentListActivity : AppCompatActivity()
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
-
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
 
     private var user: User? = null
 
@@ -71,7 +67,8 @@ class ContentListActivity : AppCompatActivity()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener  // 게시글 읽기
+        // 게시글 읽기 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener
         {
             override fun onClick(v: View, position: Int)
             {
@@ -83,8 +80,10 @@ class ContentListActivity : AppCompatActivity()
                 }
             }
         })
+        // 게시글 읽기 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        binding.addContentFab.setOnClickListener()  // 게시글 쓰기
+        // 게시글 생성 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        binding.addContentFab.setOnClickListener()
         {
             Intent(this@ContentListActivity, AddContentActivity::class.java).run()
             {
@@ -92,6 +91,7 @@ class ContentListActivity : AppCompatActivity()
                 startActivity(this)
             }
         }
+        // 게시글 생성 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         contentListItemAdapter.liveEnd.observe(this, Observer()
         {
@@ -103,10 +103,6 @@ class ContentListActivity : AppCompatActivity()
                 loadRecyclerContent()
             }
         })
-
-        setSupportActionBar(binding.toolBar)
-        supportActionBar!!.setDisplayShowCustomEnabled(true)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
     }
 
     private var backKeyPressedTime = 0L
@@ -148,23 +144,7 @@ class ContentListActivity : AppCompatActivity()
                 with(AlertDialog.Builder(this))
                 {
                     this.setMessage("로그아웃 하시겠습니까?")
-                    this.setPositiveButton("확인", DialogInterface.OnClickListener()
-                    { _, _ ->
-                        sharedPreferences = getSharedPreferences("auto", MODE_PRIVATE)
-                        editor = sharedPreferences.edit()
-                        editor.remove("username")
-                        editor.remove("password")
-                        editor.commit()
-
-                        user = null
-
-                        Intent(this@ContentListActivity, SignInActivity::class.java).run()
-                        {
-                            startActivity(this)
-                        }
-
-                        finish()
-                    })
+                    this.setPositiveButton("확인", DialogInterface.OnClickListener() { _, _ -> signOut() })
                     this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
                 }.show()
             }
@@ -193,5 +173,17 @@ class ContentListActivity : AppCompatActivity()
                 Log.e("서버 연결 실패", t.toString())
             }
         })
+    }
+
+    private fun signOut()
+    {
+        user = null
+
+        Intent(this@ContentListActivity, SignInActivity::class.java).run()
+        {
+            startActivity(this)
+        }
+
+        finish()
     }
 }
