@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import com.example.client.databinding.ActivitySignUpBinding
 import com.example.client.user.viewmodel.SignUpViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -16,7 +17,7 @@ class SignUpActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivitySignUpBinding
 
-    private val signUpViewModel = SignUpViewModel()
+    private val signUpViewModel: SignUpViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {

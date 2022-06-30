@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.ActivitySignInBinding
 import com.example.client.user.viewmodel.SignInViewModel
@@ -20,7 +21,7 @@ class SignInActivity : AppCompatActivity()
 
     private lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
 
-    private val signInViewModel = SignInViewModel()
+    private val signInViewModel: SignInViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {

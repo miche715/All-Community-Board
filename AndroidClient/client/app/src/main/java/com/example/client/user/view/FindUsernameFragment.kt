@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.viewModels
 import com.example.client.databinding.FragmentFindUsernameBinding
 import com.example.client.user.viewmodel.FindUsernameViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -15,7 +16,7 @@ class FindUsernameFragment : Fragment()
 {
     private var binding: FragmentFindUsernameBinding? = null
 
-    private val findUsernameViewModel = FindUsernameViewModel()
+    private val findUsernameViewModel: FindUsernameViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {

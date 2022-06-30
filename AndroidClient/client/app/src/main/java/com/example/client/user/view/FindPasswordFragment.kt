@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.viewModels
 import com.example.client.databinding.FragmentFindPasswordBinding
 import com.example.client.user.viewmodel.FindPasswordViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -15,7 +16,7 @@ class FindPasswordFragment : Fragment()
 {
     private var binding: FragmentFindPasswordBinding? = null
 
-    private val findPasswordViewModel = FindPasswordViewModel()
+    private val findPasswordViewModel: FindPasswordViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
