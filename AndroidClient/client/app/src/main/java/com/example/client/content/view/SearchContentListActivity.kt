@@ -1,36 +1,32 @@
 package com.example.client.content.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.lifecycle.Observer
+import androidx.activity.viewModels
 import com.example.client.content.adapter.ContentListItemAdapter
-import com.example.client.content.domain.Content
-import com.example.client.content.service.ContentRetrofitServiceObject
+import com.example.client.content.viewmodel.GetSearchViewModel
 import com.example.client.databinding.ActivitySearchContentListBinding
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SearchContentListActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivitySearchContentListBinding
 
-    private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
+    private val getSearchViewModel: GetSearchViewModel by viewModels()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
 
     private var user: User? = null
     private var keyword: String? = null
+
+    private var page = 0
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -52,18 +48,34 @@ class SearchContentListActivity : AppCompatActivity()
 
         if(keyword != null)
         {
-            loadRecyclerContent()
+            getSearchViewModel.getSearch(keyword!!, page, 15)
+            getSearchViewModel.result.observe(this)
+            {result ->
+                if(result.size > 0)
+                {
+                    if(binding.noticeTextview.visibility == View.VISIBLE)
+                    {
+                        binding.noticeTextview.visibility = View.INVISIBLE
+                    }
 
-            contentListItemAdapter.liveEnd.observe(this, Observer()
+                    contentListItemAdapter.contents.addAll(result)
+                    contentListItemAdapter.notifyDataSetChanged()
+                }
+                else
+                {
+                    binding.noticeTextview.text = "검색 결과가 없습니다."
+                }
+            }
+            contentListItemAdapter.liveEnd.observe(this)
             {
                 if(it)
                 {
                     contentListItemAdapter.liveEnd.value = false
                     page = page + 1
 
-                    loadRecyclerContent()
+                    getSearchViewModel.getSearch(keyword!!, page, 15)
                 }
-            })
+            }
         }
         else
         {
@@ -91,7 +103,7 @@ class SearchContentListActivity : AppCompatActivity()
             }
         }
 
-        contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener  // 게시글 읽기
+        contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener
         {
             override fun onClick(v: View, position: Int)
             {
@@ -140,39 +152,5 @@ class SearchContentListActivity : AppCompatActivity()
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private var page = 0
-    private fun loadRecyclerContent()
-    {
-        contentRetrofitService.getSearch(keyword!!, page, 15).enqueue(object: Callback<MutableList<Content>>
-        {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
-            {
-                if(response.isSuccessful)
-                {
-                    if(response.body()!!.size > 0)
-                    {
-                        if(binding.noticeTextview.visibility == View.VISIBLE)
-                        {
-                            binding.noticeTextview.visibility = View.INVISIBLE
-                        }
-
-                        contentListItemAdapter.contents.addAll(response.body()!!)
-                        contentListItemAdapter.notifyDataSetChanged()
-                    }
-                    else
-                    {
-                        binding.noticeTextview.text = "검색 결과가 없습니다."
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<MutableList<Content>>, t: Throwable)
-            {
-                Log.e("서버 연결 실패", t.toString())
-            }
-        })
     }
 }

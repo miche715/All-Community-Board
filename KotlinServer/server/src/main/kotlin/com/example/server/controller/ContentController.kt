@@ -37,11 +37,15 @@ class ContentController(@Autowired private var contentService: ContentService)
     }
 
     @GetMapping("/search")
-    fun readSearch(@RequestParam keyword: String, @RequestParam page: Int, @RequestParam size: Int): ResponseEntity<MutableList<Content>>
+    fun readSearch(@RequestParam keyword: String, @RequestParam page: Int, @RequestParam size: Int): ContentResponse
     {
         val pageRequest = PageRequest.of(page, size, Sort.by("contentId").descending())
 
-        return ResponseEntity.status(200).body(contentService.getSearch(keyword, pageRequest))
+        return ContentResponse().apply()
+        {
+            code = HttpStatus.OK.value()
+            body = contentService.getSearch(keyword, pageRequest)
+        }
     }
 
     @PutMapping("/update")  // 게시글 수정

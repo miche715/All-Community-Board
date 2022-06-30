@@ -1,7 +1,6 @@
 package com.example.client.content.service
 
 import com.example.client.content.domain.*
-import retrofit2.Call
 import retrofit2.http.*
 
 interface ContentRetrofitService
@@ -13,7 +12,7 @@ interface ContentRetrofitService
     suspend fun getAll(@Query(value = "page") page: Int, @Query(value = "size") size: Int): GetAllResponse
 
     @GET("search")
-    fun getSearch(@Query(value = "keyword") keyword: String, @Query(value = "page") page: Int, @Query(value = "size") size: Int): Call<MutableList<Content>>
+    suspend fun getSearch(@Query(value = "keyword") keyword: String, @Query(value = "page") page: Int, @Query(value = "size") size: Int): GetSearchResponse
 
     @PUT("update")
     suspend fun modifyContent(@Body content: Content, @Query(value = "user_id") userId: Long): ModifyContentResponse
