@@ -12,4 +12,6 @@ class UserRepository
     suspend fun signInCheck(username: String, password: String) = userRetrofitService.signIn(username, password)
 
     suspend fun findUsernameCheck(name: String, email: String) = userRetrofitService.findUsername(name, email)
+
+    suspend fun findPasswordCheck(name: String, username: String) = userRetrofitService.findPassword(name, username)
 }
