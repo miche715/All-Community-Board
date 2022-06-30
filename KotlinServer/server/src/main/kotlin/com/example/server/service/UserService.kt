@@ -12,9 +12,9 @@ class UserService(@Autowired private val userRepository: UserRepository)
     {
         return userRepository.findByUsernameOrEmail(user.username!!, user.email!!).run()
         {
-            when(this)
+            when(this.size)
             {
-                null -> {
+                0 -> {
                     userRepository.save(user)
                     true
                 }

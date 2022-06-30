@@ -8,7 +8,7 @@ interface UserRepository
 
     fun findById(id: Long): User?
 
-    fun findByUsernameOrEmail(username: String, email: String): User?  // 회원 가입 중복 체크용
+    fun findByUsernameOrEmail(username: String, email: String): MutableList<User?>  // 회원 가입 중복 체크용
 
     fun findByUsernameAndPassword(username: String, password: String): User?  // 로그인용
 

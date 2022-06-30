@@ -23,6 +23,10 @@ class UserController(@Autowired private var userService: UserService)
         {
             this.code = HttpStatus.CREATED.value()
             this.body = userService.signUp(user)
+            if(!(this.body as Boolean))
+            {
+                this.code = HttpStatus.OK.value()
+            }
         }
     }
 

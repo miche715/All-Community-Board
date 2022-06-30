@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserSpringDataRepository : JpaRepository<User, Long>, UserRepository
 {
-    override fun findByUsernameOrEmail(username: String, email: String): User?
+    override fun findByUsernameOrEmail(username: String, email: String): MutableList<User?>
 
     override fun findByUsernameAndPassword(username: String, password: String): User?
 
