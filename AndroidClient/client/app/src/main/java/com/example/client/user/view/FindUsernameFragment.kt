@@ -8,15 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import com.example.client.databinding.FragmentFindUsernameBinding
-import com.example.client.user.service.UserRetrofitServiceObject
 import com.example.client.user.viewmodel.FindUsernameViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class FindUsernameFragment : Fragment()
 {
     private var binding: FragmentFindUsernameBinding? = null
-
-    private val userRetrofitService = UserRetrofitServiceObject.getRetrofitInstance()
 
     private val findUsernameViewModel = FindUsernameViewModel()
 
