@@ -4,26 +4,21 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import com.example.client.content.domain.Content
-import com.example.client.content.service.ContentRetrofitServiceObject
+import com.example.client.content.viewmodel.AddContentViewModel
 import com.example.client.databinding.ActivityAddContentBinding
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class AddContentActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityAddContentBinding
 
-    private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
+    private val addContentViewModel: AddContentViewModel by viewModels()
 
     private var user: User? = null
 
@@ -43,37 +38,27 @@ class AddContentActivity : AppCompatActivity()
 
         binding.submitButton.setOnClickListener()
         {
-            val content = Content().apply()
+            Content().apply()
             {
                 this.writer = user!!.username
                 this.title = binding.titleEdittext.text.toString()
                 this.text = binding.textEdittext.text.toString()
-            }
-
-            CoroutineScope(Dispatchers.IO).launch()
+            }.run()
             {
-                try
+                addContentViewModel.addContent(this, user!!.userId!!)
+            }
+        }
+        addContentViewModel.result.observe(this)
+        {result ->
+            if(result)
+            {
+                Intent(this@AddContentActivity, ContentListActivity::class.java).run()
                 {
-                    val result = contentRetrofitService.addContent(content, user!!.userId!!)
-
-                    if(result.code == 201 && result.body!!)
-                    {
-                        withContext(Dispatchers.Main)
-                        {
-                            Intent(this@AddContentActivity, ContentListActivity::class.java).run()
-                            {
-                                this.putExtra("user", user)
-                                startActivity(this)
-                            }
-
-                            finish()
-                        }
-                    }
+                    this.putExtra("user", user)
+                    startActivity(this)
                 }
-                catch(e: Exception)
-                {
-                    Log.e("서버 연결 실패", e.message!!)
-                }
+
+                finish()
             }
         }
     }
