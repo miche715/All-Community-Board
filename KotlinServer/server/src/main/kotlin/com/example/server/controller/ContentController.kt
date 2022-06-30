@@ -25,11 +25,15 @@ class ContentController(@Autowired private var contentService: ContentService)
     }
 
     @GetMapping("/all")  // 모든 게시글 읽기
-    fun readAll(@RequestParam page: Int, @RequestParam size: Int): ResponseEntity<MutableList<Content>>
+    fun readAll(@RequestParam page: Int, @RequestParam size: Int): ContentResponse
     {
         val pageRequest = PageRequest.of(page, size)
 
-        return ResponseEntity.status(200).body(contentService.getAll(pageRequest))
+        return ContentResponse().apply()
+        {
+            code = HttpStatus.OK.value()
+            body = contentService.getAll(pageRequest)
+        }
     }
 
     @GetMapping("/search")

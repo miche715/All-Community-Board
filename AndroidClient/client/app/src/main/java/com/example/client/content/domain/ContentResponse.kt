@@ -4,6 +4,10 @@ data class AddContentResponse(var code: Int? = null,
                               var body: Boolean? = null
 )
 
+data class GetAllResponse(var code: Int? = null,
+                          var body: MutableList<Content>? = null
+)
+
 data class ModifyContentResponse(var code: Int? = null,
                                  var body: Content? = null
 )

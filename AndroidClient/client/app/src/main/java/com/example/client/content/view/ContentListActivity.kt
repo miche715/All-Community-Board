@@ -1,37 +1,33 @@
 package com.example.client.content.view
 
-import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.Observer
 import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
-import com.example.client.content.domain.Content
-import com.example.client.content.service.ContentRetrofitServiceObject
+import com.example.client.content.viewmodel.GetAllViewModel
 import com.example.client.databinding.ActivityContentListBinding
 import com.example.client.user.domain.User
 import com.example.client.user.view.SignInActivity
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ContentListActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityContentListBinding
 
-    private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
+    private val getAllViewModel: GetAllViewModel by viewModels()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
 
     private var user: User? = null
+
+    private var page = 0
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -49,8 +45,6 @@ class ContentListActivity : AppCompatActivity()
         contentListItemAdapter = ContentListItemAdapter(this)
         binding.recylerView.adapter = contentListItemAdapter
 
-        loadRecyclerContent()
-
         binding.swipeRefreshLayout.setOnRefreshListener()
         {
             with(this)
@@ -67,7 +61,26 @@ class ContentListActivity : AppCompatActivity()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
-        // 게시글 읽기 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 15개씩 게시글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        getAllViewModel.getAll(page, 15)
+        getAllViewModel.result.observe(this)
+        {result ->
+            contentListItemAdapter.contents.addAll(result)
+            contentListItemAdapter.notifyDataSetChanged()
+        }
+        contentListItemAdapter.liveEnd.observe(this)
+        {
+            if(it)
+            {
+                contentListItemAdapter.liveEnd.value = false
+                page = page + 1
+
+                getAllViewModel.getAll(page, 15)
+            }
+        }
+        // 15개씩 게시글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // 게시글 상세 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         contentListItemAdapter.setItemClickListener(object: ContentListItemAdapter.OnItemClickListener
         {
             override fun onClick(v: View, position: Int)
@@ -80,7 +93,7 @@ class ContentListActivity : AppCompatActivity()
                 }
             }
         })
-        // 게시글 읽기 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // 게시글 상세 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // 게시글 생성 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         binding.addContentFab.setOnClickListener()
@@ -92,17 +105,6 @@ class ContentListActivity : AppCompatActivity()
             }
         }
         // 게시글 생성 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        contentListItemAdapter.liveEnd.observe(this, Observer()
-        {
-            if(it)
-            {
-                contentListItemAdapter.liveEnd.value = false
-                page = page + 1
-
-                loadRecyclerContent()
-            }
-        })
     }
 
     private var backKeyPressedTime = 0L
@@ -151,28 +153,6 @@ class ContentListActivity : AppCompatActivity()
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private var page = 0
-    private fun loadRecyclerContent()
-    {
-        contentRetrofitService.getAll(page, 15).enqueue(object: Callback<MutableList<Content>>
-        {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onResponse(call: Call<MutableList<Content>>, response: Response<MutableList<Content>>)
-            {
-                if(response.isSuccessful)
-                {
-                    contentListItemAdapter.contents.addAll(response.body()!!)
-                    contentListItemAdapter.notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<MutableList<Content>>, t: Throwable)
-            {
-                Log.e("서버 연결 실패", t.toString())
-            }
-        })
     }
 
     private fun signOut()
