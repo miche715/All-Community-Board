@@ -8,4 +8,6 @@ class ContentRepository
     private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
 
     suspend fun modifyContentCheck(content: Content, userId: Long) = contentRetrofitService.modifyContent(content, userId)
+
+    suspend fun removeContentCheck(contentId: Long) = contentRetrofitService.removeContent(contentId)
 }

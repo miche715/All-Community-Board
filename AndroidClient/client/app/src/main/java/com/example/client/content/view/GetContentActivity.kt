@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
@@ -14,23 +13,18 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.example.client.comment.view.CommentListFragment
 import com.example.client.content.domain.Content
-import com.example.client.content.service.ContentRetrofitServiceObject
+import com.example.client.content.viewmodel.RemoveContentViewModel
 import com.example.client.databinding.ActivityGetContentBinding
 import com.example.client.good.domain.Good
 import com.example.client.good.viewmodel.AddGoodViewModel
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class GetContentActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityGetContentBinding
 
-    private val contentRetrofitService = ContentRetrofitServiceObject.getRetrofitInstance()
+    private val removeContentViewModel: RemoveContentViewModel by viewModels()
     private val addGoodViewModel: AddGoodViewModel by viewModels()
 
     private var user: User? = null
@@ -64,7 +58,8 @@ class GetContentActivity : AppCompatActivity()
             binding.deleteButton.visibility = View.INVISIBLE
         }
 
-        binding.modifyButton.setOnClickListener()  // 게시글 수정
+        // 게시글 수정 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        binding.modifyButton.setOnClickListener()
         {
             Intent(this@GetContentActivity, ModifyContentActivity::class.java).run()
             {
@@ -73,46 +68,35 @@ class GetContentActivity : AppCompatActivity()
                 startActivity(this)
             }
         }
+        // 게시글 수정 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        binding.deleteButton.setOnClickListener()  // 게시글 삭제
+        // 게시글 삭제 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        binding.deleteButton.setOnClickListener()
         {
             with(AlertDialog.Builder(this))
             {
                 this.setMessage("게시글을 삭제 하시겠습니까?")
-                this.setPositiveButton("확인", DialogInterface.OnClickListener()
-                { _, _ ->
-                    CoroutineScope(Dispatchers.IO).launch()
-                    {
-                        try
-                        {
-                            val result = contentRetrofitService.removeContent(content!!.contentId!!)
-
-                            if(result.code == 200 && result.body!!)
-                            {
-                                withContext(Dispatchers.Main)
-                                {
-                                    Intent(this@GetContentActivity, ContentListActivity::class.java).run()
-                                    {
-                                        this.putExtra("user", user)
-                                        startActivity(this)
-                                    }
-
-                                    finish()
-                                }
-                            }
-                        }
-                        catch(e: Exception)
-                        {
-                            Log.e("서버 연결 실패", e.message!!)
-                        }
-                    }
-                })
+                this.setPositiveButton("확인", DialogInterface.OnClickListener() { _, _ -> removeContentViewModel.removeContent(content!!.contentId!!) })
                 this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
             }.show()
         }
+        removeContentViewModel.result.observe(this)
+        {result ->
+            if(result)
+            {
+                Intent(this@GetContentActivity, ContentListActivity::class.java).run()
+                {
+                    this.putExtra("user", user)
+                    startActivity(this)
+                }
+
+                finish()
+            }
+        }
+        // 게시글 삭제 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // 좋아요 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        binding.goodImageButton.setOnClickListener()  // 좋아요
+        binding.goodImageButton.setOnClickListener()
         {
             with(AlertDialog.Builder(this))
             {
