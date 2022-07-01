@@ -12,9 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import com.example.client.comment.adapter.CommentListItemAdapter
 import com.example.client.comment.domain.Comment
-import com.example.client.comment.viewmodel.AddCommentViewModel
-import com.example.client.comment.viewmodel.GetAllViewModel
-import com.example.client.comment.viewmodel.RemoveCommentViewModel
+import com.example.client.comment.viewmodel.CommentViewModel
 import com.example.client.content.domain.Content
 import com.example.client.databinding.FragmentCommentListBinding
 import com.example.client.user.domain.User
@@ -23,9 +21,7 @@ class CommentListFragment : Fragment()
 {
     private var binding: FragmentCommentListBinding? = null
 
-    private val addCommentViewModel: AddCommentViewModel by viewModels()
-    private val getAllViewModel: GetAllViewModel by viewModels()
-    private val removeCommentViewModel: RemoveCommentViewModel by viewModels()
+    private val commentViewModel: CommentViewModel by viewModels()
 
     private lateinit var commentListItemAdapter: CommentListItemAdapter
 
@@ -43,9 +39,10 @@ class CommentListFragment : Fragment()
         binding!!.recylerView.adapter = commentListItemAdapter
 
         // 댓글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        getAllViewModel.getAll(content!!.contentId!!)
-        getAllViewModel.result.observe(requireActivity())
+        commentViewModel.getAll(content!!.contentId!!)
+        commentViewModel.getAllResult.observe(requireActivity())
         {result ->
+            @Suppress("UNCHECKED_CAST")
             commentListItemAdapter.comments = result
             commentListItemAdapter.notifyDataSetChanged()
         }
@@ -65,13 +62,13 @@ class CommentListFragment : Fragment()
                 this.text = binding!!.commentTextEdittext.text.toString()
             }.run()
             {
-                addCommentViewModel.addComment(this, content!!.contentId!!, user!!.userId!!)
+                commentViewModel.addComment(this, content!!.contentId!!, user!!.userId!!)
             }
 
             binding!!.commentTextEdittext.setText("")
 
         }
-        addCommentViewModel.result.observe(requireActivity())
+        commentViewModel.addCommentResult.observe(requireActivity())
         {result ->
             activity!!.overridePendingTransition(0, 0)
             activity!!.intent.putExtra("user", user)
@@ -85,19 +82,19 @@ class CommentListFragment : Fragment()
         // 댓글 생성 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // 댓글 삭제 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        commentListItemAdapter.setItemClickListener(object: CommentListItemAdapter.OnItemClickListener  // 댓글 삭제
+        commentListItemAdapter.setItemClickListener(object: CommentListItemAdapter.OnItemClickListener
         {
             override fun onClick(v: View, position: Int)
             {
                 with(AlertDialog.Builder(context!!))
                 {
                     this.setMessage("댓글을 삭제 하시겠습니까?")
-                    this.setPositiveButton("확인") { _, _ -> removeCommentViewModel.removeComment(commentListItemAdapter.comments[position].commentId!!) }
+                    this.setPositiveButton("확인") { _, _ -> commentViewModel.removeComment(commentListItemAdapter.comments[position].commentId!!) }
                     this.setNegativeButton("취소") { _, _ -> }
                 }.show()
             }
         })
-        removeCommentViewModel.result.observe(requireActivity())
+        commentViewModel.removeCommentResult.observe(requireActivity())
         {result ->
             activity!!.overridePendingTransition(0, 0)
             activity!!.intent.putExtra("user", user)
