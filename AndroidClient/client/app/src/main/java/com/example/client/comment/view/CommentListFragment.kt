@@ -2,7 +2,6 @@ package com.example.client.comment.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,17 +16,13 @@ import com.example.client.comment.adapter.CommentListItemAdapter
 import com.example.client.comment.domain.Comment
 import com.example.client.comment.service.CommentRetrofitServiceObject
 import com.example.client.comment.viewmodel.AddCommentViewModel
+import com.example.client.comment.viewmodel.RemoveCommentViewModel
 import com.example.client.content.domain.Content
 import com.example.client.databinding.FragmentCommentListBinding
 import com.example.client.user.domain.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class CommentListFragment : Fragment()
 {
@@ -35,18 +30,14 @@ class CommentListFragment : Fragment()
 
     private val commentRetrofitService = CommentRetrofitServiceObject.getRetrofitInstance()
     private val addCommentViewModel: AddCommentViewModel by viewModels()
+    private val removeCommentViewModel: RemoveCommentViewModel by viewModels()
 
     private lateinit var commentListItemAdapter: CommentListItemAdapter
 
     private var user: User? = null
     private var content: Content? = null
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
         binding = FragmentCommentListBinding.inflate(inflater, container, false)
 
@@ -66,17 +57,17 @@ class CommentListFragment : Fragment()
                 this.hideSoftInputFromWindow(binding!!.submitButton.windowToken, 0)
             }
 
-            val comment = Comment().apply()
+            Comment().apply()
             {
                 this.writer = user!!.username
                 this.text = binding!!.commentTextEdittext.text.toString()
             }.run()
             {
                 addCommentViewModel.addComment(this, content!!.contentId!!, user!!.userId!!)
-            }.run()
-            {
-                binding!!.commentTextEdittext.setText("")
             }
+
+            binding!!.commentTextEdittext.setText("")
+
         }
         addCommentViewModel.result.observe(requireActivity())
         {result ->
@@ -91,6 +82,7 @@ class CommentListFragment : Fragment()
         }
         // 댓글 생성 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        // 댓글 삭제 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         commentListItemAdapter.setItemClickListener(object: CommentListItemAdapter.OnItemClickListener  // 댓글 삭제
         {
             override fun onClick(v: View, position: Int)
@@ -98,42 +90,23 @@ class CommentListFragment : Fragment()
                 with(AlertDialog.Builder(context!!))
                 {
                     this.setMessage("댓글을 삭제 하시겠습니까?")
-                    this.setPositiveButton("확인", DialogInterface.OnClickListener()
-                    { _, _ ->
-                        CoroutineScope(Dispatchers.IO).launch()
-                        {
-                            try
-                            {
-                                val result = commentRetrofitService.removeComment(commentListItemAdapter.comments[position].commentId!!)
-
-                                if(result.code == 200 && result.body != null)
-                                {
-                                    withContext(Dispatchers.Main)
-                                    {
-                                        with(requireActivity())
-                                        {
-                                            this.overridePendingTransition(0, 0)
-                                            this.intent.putExtra("user", user)
-                                            this.intent.putExtra("content", result.body)
-                                            this.intent.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                            startActivity(this.intent)
-                                            this.overridePendingTransition(0, 0)
-
-                                            this.finish()
-                                        }
-                                    }
-                                }
-                            }
-                            catch(e: Exception)
-                            {
-                                Log.e("서버 연결 실패", e.message!!)
-                            }
-                        }
-                    })
-                    this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
+                    this.setPositiveButton("확인") { _, _ -> removeCommentViewModel.removeComment(commentListItemAdapter.comments[position].commentId!!) }
+                    this.setNegativeButton("취소") { _, _ -> }
                 }.show()
             }
         })
+        removeCommentViewModel.result.observe(requireActivity())
+        {result ->
+            activity!!.overridePendingTransition(0, 0)
+            activity!!.intent.putExtra("user", user)
+            activity!!.intent.putExtra("content", result)
+            activity!!.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(activity!!.intent)
+            activity!!.overridePendingTransition(0, 0)
+
+            activity!!.finish()
+        }
+        // 댓글 삭제 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         return binding!!.root
     }
