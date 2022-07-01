@@ -104,13 +104,13 @@ class GetContentActivity : AppCompatActivity()
                 this.setNegativeButton("취소") { _, _ -> }
             }.show()
         }
-        goodViewModel.result.observe(this)
+        goodViewModel.addGoodResult.observe(this)
         {result ->
             Intent(this@GetContentActivity, GetContentActivity::class.java).run()
             {
                 overridePendingTransition(0, 0)
                 this.putExtra("user", user)
-                this.putExtra("content", result as Content)
+                this.putExtra("content", result)
                 this.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(this)
                 overridePendingTransition(0, 0)
@@ -118,7 +118,7 @@ class GetContentActivity : AppCompatActivity()
 
             finish()
         }
-        goodViewModel.message.observe(this)
+        goodViewModel.addGoodMessage.observe(this)
         {message ->
             Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_SHORT).show()
         }
