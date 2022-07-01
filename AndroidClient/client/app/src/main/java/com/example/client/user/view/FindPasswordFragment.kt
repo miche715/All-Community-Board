@@ -9,21 +9,16 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import com.example.client.databinding.FragmentFindPasswordBinding
-import com.example.client.user.viewmodel.FindPasswordViewModel
+import com.example.client.user.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class FindPasswordFragment : Fragment()
 {
     private var binding: FragmentFindPasswordBinding? = null
 
-    private val findPasswordViewModel: FindPasswordViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
         binding = FragmentFindPasswordBinding.inflate(inflater, container, false)
 
@@ -34,16 +29,13 @@ class FindPasswordFragment : Fragment()
                 this.hideSoftInputFromWindow(binding!!.findPasswordButton.windowToken, 0)
             }
 
-            findPasswordViewModel.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString())
+            userViewModel.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString())
         }
-        findPasswordViewModel.result.observe(requireActivity())
+        userViewModel.result.observe(requireActivity())
         {result ->
-            Snackbar.make(binding!!.mainLayout, result, Snackbar.LENGTH_INDEFINITE).run()
+            Snackbar.make(binding!!.mainLayout, result as String, Snackbar.LENGTH_INDEFINITE).run()
             {
-                this.setAction("확인", View.OnClickListener()
-                {
-                    this.dismiss()
-                })
+                this.setAction("확인") { this.dismiss() }
             }.show()
         }
 

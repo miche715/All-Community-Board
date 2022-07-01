@@ -5,14 +5,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.ActivitySignInBinding
-import com.example.client.user.viewmodel.SignInViewModel
+import com.example.client.user.domain.User
+import com.example.client.user.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class SignInActivity : AppCompatActivity()
@@ -21,7 +21,7 @@ class SignInActivity : AppCompatActivity()
 
     private lateinit var activityResultLauncher : ActivityResultLauncher<Intent>
 
-    private val signInViewModel: SignInViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -42,28 +42,24 @@ class SignInActivity : AppCompatActivity()
                 this.hideSoftInputFromWindow(binding.signInButton.windowToken, 0)
             }
 
-            signInViewModel.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString())
+            userViewModel.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString())
         }
 
-        signInViewModel.result.observe(this)
+        userViewModel.result.observe(this)
         {result ->
             Intent(this@SignInActivity, ContentListActivity::class.java).run()
             {
-                this.putExtra("user", result)
+                this.putExtra("user", result as User)
                 startActivity(this)
             }
 
             finish()
         }
 
-        signInViewModel.message.observe(this)
+        userViewModel.message.observe(this)
         {message ->
-            Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_INDEFINITE).run()
-            {
-                this.setAction("확인", View.OnClickListener()
-                {
-                    this.dismiss()
-                })
+            Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_INDEFINITE).run {
+                this.setAction("확인") { this.dismiss() }
             }.show()
         }
         // 로그인 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -83,10 +79,7 @@ class SignInActivity : AppCompatActivity()
             {
                 Snackbar.make(binding.mainLayout, it.data?.getStringExtra("message").toString(), Snackbar.LENGTH_INDEFINITE).run()
                 {
-                    this.setAction("확인", View.OnClickListener()
-                    {
-                        this.dismiss()
-                    })
+                    this.setAction("확인") { this.dismiss() }
                 }.show()
             }
         }

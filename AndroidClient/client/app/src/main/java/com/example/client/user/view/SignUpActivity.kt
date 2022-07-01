@@ -6,18 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import com.example.client.databinding.ActivitySignUpBinding
-import com.example.client.user.viewmodel.SignUpViewModel
+import com.example.client.user.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class SignUpActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivitySignUpBinding
 
-    private val signUpViewModel: SignUpViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -38,15 +37,15 @@ class SignUpActivity : AppCompatActivity()
                 this.hideSoftInputFromWindow(binding.signUpButton.windowToken, 0)
             }
 
-            signUpViewModel.signUp(binding.usernameEdittext.text.toString(),
+            userViewModel.signUp(binding.usernameEdittext.text.toString(),
                                    binding.passwordEdittext.text.toString(),
                                    binding.passwordConfirmEdittext.text.toString(),
                                    binding.nameEdittext.text.toString(),
                                    binding.emailEdittext.text.toString())
         }
-        signUpViewModel.result.observe(this)
+        userViewModel.result.observe(this)
         {result ->
-            if(result)
+            if(result as Boolean)
             {
                 Intent(this@SignUpActivity, SignInActivity::class.java).apply()
                 {
@@ -59,14 +58,11 @@ class SignUpActivity : AppCompatActivity()
                 finish()
             }
         }
-        signUpViewModel.message.observe(this)
+        userViewModel.message.observe(this)
         {message ->
             Snackbar.make(binding.mainLayout, "회원 가입 실패 : ", Snackbar.LENGTH_INDEFINITE).run()
             {
-                this.setAction(message, View.OnClickListener()
-                {
-                    this.dismiss()
-                })
+                this.setAction(message) { this.dismiss() }
             }.show()
         }
     }

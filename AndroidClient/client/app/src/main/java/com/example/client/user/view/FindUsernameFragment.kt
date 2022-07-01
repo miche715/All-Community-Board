@@ -9,21 +9,16 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import com.example.client.databinding.FragmentFindUsernameBinding
-import com.example.client.user.viewmodel.FindUsernameViewModel
+import com.example.client.user.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class FindUsernameFragment : Fragment()
 {
     private var binding: FragmentFindUsernameBinding? = null
 
-    private val findUsernameViewModel: FindUsernameViewModel by viewModels()
+    private val usernameViewModel: UserViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
         binding = FragmentFindUsernameBinding.inflate(inflater, container, false)
 
@@ -34,16 +29,13 @@ class FindUsernameFragment : Fragment()
                 this.hideSoftInputFromWindow(binding!!.findUsernameButton.windowToken, 0)
             }
 
-            findUsernameViewModel.findUsername(binding!!.nameEdittext.text.toString(), binding!!.emailEdittext.text.toString())
+            usernameViewModel.findUsername(binding!!.nameEdittext.text.toString(), binding!!.emailEdittext.text.toString())
         }
-        findUsernameViewModel.result.observe(requireActivity())
+        usernameViewModel.result.observe(requireActivity())
         {result ->
-            Snackbar.make(binding!!.mainLayout, result, Snackbar.LENGTH_INDEFINITE).run()
+            Snackbar.make(binding!!.mainLayout, result as String, Snackbar.LENGTH_INDEFINITE).run()
             {
-                this.setAction("확인", View.OnClickListener()
-                {
-                    this.dismiss()
-                })
+                this.setAction("확인") { this.dismiss() }
             }.show()
         }
 

@@ -9,9 +9,9 @@ import com.example.client.user.repository.UserRepository
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class SignUpViewModel(private val userRepository: UserRepository = UserRepository()) : ViewModel()
+class UserViewModel(private val userRepository: UserRepository = UserRepository()) : ViewModel()
 {
-    val result: MutableLiveData<Boolean> = MutableLiveData()  // 결과를 성공적으로 받아오면 여기에 결과가 들어감
+    val result: MutableLiveData<Any> = MutableLiveData()  // 결과를 성공적으로 받아오면 여기에 결과가 들어감
     val message: MutableLiveData<String> = MutableLiveData()  // 통신은 성공했는데 뭔가 잘못되어 실패한 경우 메세지
 
     private lateinit var invalid: String
@@ -83,6 +83,81 @@ class SignUpViewModel(private val userRepository: UserRepository = UserRepositor
         else  // 회원가입 실패
         {
             message.value = invalid
+        }
+    }
+
+    fun signIn(username: String, password: String)
+    {
+        viewModelScope.launch()
+        {
+            try
+            {
+                val response = userRepository.signInCheck(username, password)  // SignInResponse 리턴
+                Log.d("통신 성공", "code = ${response.code}, body = ${response.body}")
+
+                if(response.code == 200 && response.body != null)  // 로그인 성공
+                {
+                    result.value = response.body
+                }
+                else  // 로그인 실패
+                {
+                    message.value = "아이디 또는 패스워드가 잘못됐습니다."
+                }
+            }
+            catch(e: Exception)
+            {
+                Log.e("통신 오류", e.message!!)
+            }
+        }
+    }
+
+    fun findUsername(name: String, email: String)
+    {
+        viewModelScope.launch()
+        {
+            try
+            {
+                val response = userRepository.findUsernameCheck(name, email)  // FindUsernameResponse 리턴
+                Log.d("통신 성공", "code = ${response.code}, body = ${response.body}")
+
+                if(response.code == 200 && response.body != null)  // 아이디 찾기 성공
+                {
+                    result.value = "회원님의 아이디는 ${response.body} 입니다."
+                }
+                else  // 아이디 찾기 실패
+                {
+                    result.value = "입력하신 정보의 아이디를 찾을 수 없습니다."
+                }
+            }
+            catch(e: Exception)
+            {
+                Log.e("통신 오류", e.message!!)
+            }
+        }
+    }
+
+    fun findPassword(name: String, username: String)
+    {
+        viewModelScope.launch()
+        {
+            try
+            {
+                val response = userRepository.findPasswordCheck(name, username)  // FindPasswordResponse 리턴
+                Log.d("통신 성공", "code = ${response.code}, body = ${response.body}")
+
+                if(response.code == 200 && response.body != null)  // 비밀번호 찾기 성공
+                {
+                    result.value = "회원님의 비밀번호는 ${response.body} 입니다."
+                }
+                else  // 비밀번호 찾기 실패
+                {
+                    result.value = "입력하신 정보의 비밀번호를 찾을 수 없습니다."
+                }
+            }
+            catch(e: Exception)
+            {
+                Log.e("통신 오류", e.message!!)
+            }
         }
     }
 }
