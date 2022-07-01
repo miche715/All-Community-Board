@@ -11,8 +11,12 @@ import java.lang.Exception
 
 class UserViewModel(private val userRepository: UserRepository = UserRepository()) : ViewModel()
 {
-    val result: MutableLiveData<Any> = MutableLiveData()  // 결과를 성공적으로 받아오면 여기에 결과가 들어감
-    val message: MutableLiveData<String> = MutableLiveData()  // 통신은 성공했는데 뭔가 잘못되어 실패한 경우 메세지
+    val signUpResult: MutableLiveData<Boolean> = MutableLiveData()
+    val signInResult: MutableLiveData<User> = MutableLiveData()
+    val findUsernameResult: MutableLiveData<String> = MutableLiveData()
+    val findPasswordResult: MutableLiveData<String> = MutableLiveData()
+    val signUpMessage: MutableLiveData<String> = MutableLiveData()
+    val signInMessage: MutableLiveData<String> = MutableLiveData()
 
     private lateinit var invalid: String
     private val nameRegex = "^[가-힣]*$".toRegex()  // 한글만
@@ -67,11 +71,11 @@ class UserViewModel(private val userRepository: UserRepository = UserRepository(
 
                     if(response.code == 201 && response.body!!)  // 회원가입 성공
                     {
-                        result.value = response.body
+                        signUpResult.value = response.body
                     }
                     else if(response.code == 200 && !response.body!!) // 회원가입 실패
                     {
-                        message.value = "이미 가입된 계정입니다."
+                        signUpMessage.value = "이미 가입된 계정입니다."
                     }
                 }
                 catch(e: Exception)
@@ -82,7 +86,7 @@ class UserViewModel(private val userRepository: UserRepository = UserRepository(
         }
         else  // 회원가입 실패
         {
-            message.value = invalid
+            signUpMessage.value = invalid
         }
     }
 
@@ -97,11 +101,11 @@ class UserViewModel(private val userRepository: UserRepository = UserRepository(
 
                 if(response.code == 200 && response.body != null)  // 로그인 성공
                 {
-                    result.value = response.body
+                    signInResult.value = response.body
                 }
                 else  // 로그인 실패
                 {
-                    message.value = "아이디 또는 패스워드가 잘못됐습니다."
+                    signInMessage.value = "아이디 또는 패스워드가 잘못됐습니다."
                 }
             }
             catch(e: Exception)
@@ -122,11 +126,11 @@ class UserViewModel(private val userRepository: UserRepository = UserRepository(
 
                 if(response.code == 200 && response.body != null)  // 아이디 찾기 성공
                 {
-                    result.value = "회원님의 아이디는 ${response.body} 입니다."
+                    findUsernameResult.value = "회원님의 아이디는 ${response.body} 입니다."
                 }
                 else  // 아이디 찾기 실패
                 {
-                    result.value = "입력하신 정보의 아이디를 찾을 수 없습니다."
+                    findUsernameResult.value = "입력하신 정보의 아이디를 찾을 수 없습니다."
                 }
             }
             catch(e: Exception)
@@ -147,11 +151,11 @@ class UserViewModel(private val userRepository: UserRepository = UserRepository(
 
                 if(response.code == 200 && response.body != null)  // 비밀번호 찾기 성공
                 {
-                    result.value = "회원님의 비밀번호는 ${response.body} 입니다."
+                    findPasswordResult.value = "회원님의 비밀번호는 ${response.body} 입니다."
                 }
                 else  // 비밀번호 찾기 실패
                 {
-                    result.value = "입력하신 정보의 비밀번호를 찾을 수 없습니다."
+                    findPasswordResult.value = "입력하신 정보의 비밀번호를 찾을 수 없습니다."
                 }
             }
             catch(e: Exception)

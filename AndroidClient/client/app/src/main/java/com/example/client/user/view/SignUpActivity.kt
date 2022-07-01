@@ -43,9 +43,9 @@ class SignUpActivity : AppCompatActivity()
                                    binding.nameEdittext.text.toString(),
                                    binding.emailEdittext.text.toString())
         }
-        userViewModel.result.observe(this)
+        userViewModel.signUpResult.observe(this)
         {result ->
-            if(result as Boolean)
+            if(result)
             {
                 Intent(this@SignUpActivity, SignInActivity::class.java).apply()
                 {
@@ -58,7 +58,7 @@ class SignUpActivity : AppCompatActivity()
                 finish()
             }
         }
-        userViewModel.message.observe(this)
+        userViewModel.signUpMessage.observe(this)
         {message ->
             Snackbar.make(binding.mainLayout, "회원 가입 실패 : ", Snackbar.LENGTH_INDEFINITE).run()
             {

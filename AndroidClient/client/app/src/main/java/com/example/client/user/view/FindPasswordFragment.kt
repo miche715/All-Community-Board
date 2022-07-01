@@ -31,9 +31,9 @@ class FindPasswordFragment : Fragment()
 
             userViewModel.findPassword(binding!!.nameEdittext.text.toString(), binding!!.usernameEdittext.text.toString())
         }
-        userViewModel.result.observe(requireActivity())
+        userViewModel.findPasswordResult.observe(requireActivity())
         {result ->
-            Snackbar.make(binding!!.mainLayout, result as String, Snackbar.LENGTH_INDEFINITE).run()
+            Snackbar.make(binding!!.mainLayout, result, Snackbar.LENGTH_INDEFINITE).run()
             {
                 this.setAction("확인") { this.dismiss() }
             }.show()

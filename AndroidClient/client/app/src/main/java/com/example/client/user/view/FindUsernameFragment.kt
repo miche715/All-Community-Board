@@ -31,9 +31,9 @@ class FindUsernameFragment : Fragment()
 
             usernameViewModel.findUsername(binding!!.nameEdittext.text.toString(), binding!!.emailEdittext.text.toString())
         }
-        usernameViewModel.result.observe(requireActivity())
+        usernameViewModel.findUsernameResult.observe(requireActivity())
         {result ->
-            Snackbar.make(binding!!.mainLayout, result as String, Snackbar.LENGTH_INDEFINITE).run()
+            Snackbar.make(binding!!.mainLayout, result, Snackbar.LENGTH_INDEFINITE).run()
             {
                 this.setAction("확인") { this.dismiss() }
             }.show()

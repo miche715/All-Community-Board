@@ -45,18 +45,18 @@ class SignInActivity : AppCompatActivity()
             userViewModel.signIn(binding.usernameEdittext.text.toString(), binding.passwordEdittext.text.toString())
         }
 
-        userViewModel.result.observe(this)
+        userViewModel.signInResult.observe(this)
         {result ->
             Intent(this@SignInActivity, ContentListActivity::class.java).run()
             {
-                this.putExtra("user", result as User)
+                this.putExtra("user", result)
                 startActivity(this)
             }
 
             finish()
         }
 
-        userViewModel.message.observe(this)
+        userViewModel.signInMessage.observe(this)
         {message ->
             Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_INDEFINITE).run {
                 this.setAction("확인") { this.dismiss() }
