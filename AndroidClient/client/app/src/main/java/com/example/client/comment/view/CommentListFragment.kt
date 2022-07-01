@@ -1,10 +1,8 @@
 package com.example.client.comment.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,22 +12,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import com.example.client.comment.adapter.CommentListItemAdapter
 import com.example.client.comment.domain.Comment
-import com.example.client.comment.service.CommentRetrofitServiceObject
 import com.example.client.comment.viewmodel.AddCommentViewModel
+import com.example.client.comment.viewmodel.GetAllViewModel
 import com.example.client.comment.viewmodel.RemoveCommentViewModel
 import com.example.client.content.domain.Content
 import com.example.client.databinding.FragmentCommentListBinding
 import com.example.client.user.domain.User
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CommentListFragment : Fragment()
 {
     private var binding: FragmentCommentListBinding? = null
 
-    private val commentRetrofitService = CommentRetrofitServiceObject.getRetrofitInstance()
     private val addCommentViewModel: AddCommentViewModel by viewModels()
+    private val getAllViewModel: GetAllViewModel by viewModels()
     private val removeCommentViewModel: RemoveCommentViewModel by viewModels()
 
     private lateinit var commentListItemAdapter: CommentListItemAdapter
@@ -47,7 +42,14 @@ class CommentListFragment : Fragment()
         commentListItemAdapter = CommentListItemAdapter(this.requireContext(), user!!)
         binding!!.recylerView.adapter = commentListItemAdapter
 
-        loadRecyclerComment()
+        // 댓글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        getAllViewModel.getAll(content!!.contentId!!)
+        getAllViewModel.result.observe(requireActivity())
+        {result ->
+            commentListItemAdapter.comments = result
+            commentListItemAdapter.notifyDataSetChanged()
+        }
+        // 댓글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // 댓글 생성 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         binding!!.submitButton.setOnClickListener()
@@ -116,26 +118,5 @@ class CommentListFragment : Fragment()
         super.onDestroyView()
 
         binding = null
-    }
-
-    private fun loadRecyclerComment()
-    {
-        commentRetrofitService.getAll(content!!.contentId!!).enqueue(object: Callback<MutableList<Comment>>
-        {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onResponse(call: Call<MutableList<Comment>>, response: Response<MutableList<Comment>>)
-            {
-                if(response.isSuccessful)
-                {
-                    commentListItemAdapter.comments = response.body()!!
-                    commentListItemAdapter.notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<MutableList<Comment>>, t: Throwable)
-            {
-                Log.e("서버 연결 실패", t.toString())
-            }
-        })
     }
 }

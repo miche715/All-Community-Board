@@ -9,5 +9,7 @@ class CommentRepository
 
     suspend fun addCommentCheck(comment: Comment, contentId: Long, userId: Long) = commentRetrofitService.addComment(comment, contentId, userId)
 
+    suspend fun getAllCheck(contentId: Long) = commentRetrofitService.getAll(contentId)
+
     suspend fun removeCommentCheck(commentId: Long) = commentRetrofitService.removeComment(commentId)
 }

@@ -2,11 +2,9 @@ package com.example.server.controller
 
 import com.example.server.domain.Comment
 import com.example.server.domain.CommentResponse
-import com.example.server.domain.Content
 import com.example.server.service.CommentService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -24,9 +22,13 @@ class CommentController(@Autowired private var commentService: CommentService)
     }
 
     @GetMapping("/all")  // 게시글에 달린 모든 댓글 읽기
-    fun readAll(@RequestParam(name = "content_id") contentId: Long): ResponseEntity<MutableList<Comment>>
+    fun readAll(@RequestParam(name = "content_id") contentId: Long): CommentResponse
     {
-        return ResponseEntity.status(200).body(commentService.getAll(contentId))
+        return CommentResponse().apply()
+        {
+            this.code = HttpStatus.OK.value()
+            this.body = commentService.getAll(contentId)
+        }
     }
 
     @DeleteMapping("/delete")  // 댓글 삭제
