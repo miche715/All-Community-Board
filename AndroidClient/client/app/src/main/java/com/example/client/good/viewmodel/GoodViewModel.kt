@@ -4,15 +4,14 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.client.content.domain.Content
 import com.example.client.good.domain.Good
 import com.example.client.good.repository.GoodRepository
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class AddGoodViewModel(private val goodRepository: GoodRepository = GoodRepository()) : ViewModel()
+class GoodViewModel(private val goodRepository: GoodRepository = GoodRepository()) : ViewModel()
 {
-    val result: MutableLiveData<Content> = MutableLiveData()  // 결과를 성공적으로 받아오면 여기에 결과가 들어감
+    val result: MutableLiveData<Any> = MutableLiveData()  // 결과를 성공적으로 받아오면 여기에 결과가 들어감
     val message: MutableLiveData<String> = MutableLiveData()  // 통신은 성공했는데 뭔가 잘못되어 실패한 경우 메세지
 
     fun addGood(good: Good, contentId: Long, userId: Long)

@@ -15,7 +15,7 @@ import com.example.client.content.domain.Content
 import com.example.client.content.viewmodel.ContentViewModel
 import com.example.client.databinding.ActivityGetContentBinding
 import com.example.client.good.domain.Good
-import com.example.client.good.viewmodel.AddGoodViewModel
+import com.example.client.good.viewmodel.GoodViewModel
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
 
@@ -24,7 +24,7 @@ class GetContentActivity : AppCompatActivity()
     private lateinit var binding: ActivityGetContentBinding
 
     private val contentViewModel: ContentViewModel by viewModels()
-    private val addGoodViewModel: AddGoodViewModel by viewModels()
+    private val goodViewModel: GoodViewModel by viewModels()
 
     private var user: User? = null
     private var content: Content? = null
@@ -100,17 +100,17 @@ class GetContentActivity : AppCompatActivity()
             with(AlertDialog.Builder(this))
             {
                 this.setMessage("좋아요를 추가하시겠습니까?")
-                this.setPositiveButton("확인") { _, _ -> addGoodViewModel.addGood(Good(), content!!.contentId!!, user!!.userId!!) }
+                this.setPositiveButton("확인") { _, _ -> goodViewModel.addGood(Good(), content!!.contentId!!, user!!.userId!!) }
                 this.setNegativeButton("취소") { _, _ -> }
             }.show()
         }
-        addGoodViewModel.result.observe(this)
+        goodViewModel.result.observe(this)
         {result ->
             Intent(this@GetContentActivity, GetContentActivity::class.java).run()
             {
                 overridePendingTransition(0, 0)
                 this.putExtra("user", user)
-                this.putExtra("content", result)
+                this.putExtra("content", result as Content)
                 this.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(this)
                 overridePendingTransition(0, 0)
@@ -118,7 +118,7 @@ class GetContentActivity : AppCompatActivity()
 
             finish()
         }
-        addGoodViewModel.message.observe(this)
+        goodViewModel.message.observe(this)
         {message ->
             Snackbar.make(binding.mainLayout, message, Snackbar.LENGTH_SHORT).show()
         }
