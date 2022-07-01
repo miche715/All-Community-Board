@@ -50,10 +50,10 @@ class SearchContentListActivity : AppCompatActivity()
         if(keyword != null)
         {
             contentViewModel.getSearch(keyword!!, page, 15)
-            contentViewModel.result.observe(this)
+            contentViewModel.getSearchResult.observe(this)
             {result ->
                 @Suppress("UNCHECKED_CAST")
-                if((result as MutableList<Content>).size > 0)
+                if(result.size > 0)
                 {
                     if(binding.noticeTextview.visibility == View.VISIBLE)
                     {

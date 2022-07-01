@@ -63,10 +63,10 @@ class ContentListActivity : AppCompatActivity()
 
         // 15개씩 게시글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         contentViewModel.getAll(page, 15)
-        contentViewModel.result.observe(this)
+        contentViewModel.getAllResult.observe(this)
         {result ->
             @Suppress("UNCHECKED_CAST")
-            contentListItemAdapter.contents.addAll(result as MutableList<Content>)
+            contentListItemAdapter.contents.addAll(result)
             contentListItemAdapter.notifyDataSetChanged()
         }
         contentListItemAdapter.liveEnd.observe(this)

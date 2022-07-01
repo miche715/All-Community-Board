@@ -79,9 +79,9 @@ class GetContentActivity : AppCompatActivity()
                 this.setNegativeButton("취소") { _, _ -> }
             }.show()
         }
-        contentViewModel.result.observe(this)
+        contentViewModel.removeContentResult.observe(this)
         {result ->
-            if(result as Boolean)
+            if(result)
             {
                 Intent(this@GetContentActivity, ContentListActivity::class.java).run()
                 {

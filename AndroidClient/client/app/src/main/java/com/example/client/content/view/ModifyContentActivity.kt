@@ -49,12 +49,12 @@ class ModifyContentActivity : AppCompatActivity()
 
             contentViewModel.modifyContent(content!!, user!!.userId!!)
         }
-        contentViewModel.result.observe(this)
+        contentViewModel.modifyContentResult.observe(this)
         {result ->
             Intent(this@ModifyContentActivity, GetContentActivity::class.java).run()
             {
                 this.putExtra("user", user)
-                this.putExtra("content", result as Content)
+                this.putExtra("content", result)
                 this.addFlags(FLAG_ACTIVITY_CLEAR_TOP)  // 게시글을 수정하고 뒤로가기를 눌렀을 때 수정 하기 전 GetContentActivity가 나와서, 이를 백스택에서 제거하기 위해 사용
                 startActivity(this)
             }

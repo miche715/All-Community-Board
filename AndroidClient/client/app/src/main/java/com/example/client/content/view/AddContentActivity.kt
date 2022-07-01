@@ -48,9 +48,9 @@ class AddContentActivity : AppCompatActivity()
                 contentViewModel.addContent(this, user!!.userId!!)
             }
         }
-        contentViewModel.result.observe(this)
+        contentViewModel.addContentResult.observe(this)
         {result ->
-            if(result as Boolean)
+            if(result)
             {
                 Intent(this@AddContentActivity, ContentListActivity::class.java).run()
                 {

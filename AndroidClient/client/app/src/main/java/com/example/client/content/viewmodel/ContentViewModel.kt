@@ -11,7 +11,11 @@ import java.lang.Exception
 
 class ContentViewModel(private val contentRepository: ContentRepository = ContentRepository()) : ViewModel()
 {
-    val result: MutableLiveData<Any> = MutableLiveData()  // 결과를 성공적으로 받아오면 여기에 결과가 들어감
+    val addContentResult: MutableLiveData<Boolean> = MutableLiveData()
+    val getAllResult: MutableLiveData<MutableList<Content>> = MutableLiveData()
+    val getSearchResult: MutableLiveData<MutableList<Content>> = MutableLiveData()
+    val modifyContentResult: MutableLiveData<Content> = MutableLiveData()
+    val removeContentResult: MutableLiveData<Boolean> = MutableLiveData()
 
     fun addContent(content: Content, userId: Long)
     {
@@ -24,7 +28,7 @@ class ContentViewModel(private val contentRepository: ContentRepository = Conten
 
                 if(response.code == 201 && response.body!!)  // 게시글 생성 성공
                 {
-                    result.value = response.body
+                    addContentResult.value = response.body
                 }
             }
             catch(e: Exception)
@@ -45,7 +49,7 @@ class ContentViewModel(private val contentRepository: ContentRepository = Conten
 
                 if(response.code == 200 && response.body != null)  // 게시글 로딩 성공
                 {
-                    result.value = response.body
+                    getAllResult.value = response.body
                 }
             }
             catch(e: Exception)
@@ -66,7 +70,7 @@ class ContentViewModel(private val contentRepository: ContentRepository = Conten
 
                 if(response.code == 200 && response.body != null)  // 게시글 검색 로딩 성공
                 {
-                    result.value = response.body
+                    getSearchResult.value = response.body
                 }
             }
             catch(e: Exception)
@@ -87,7 +91,7 @@ class ContentViewModel(private val contentRepository: ContentRepository = Conten
 
                 if(response.code == 200 && response.body != null)  // 게시글 수정 성공
                 {
-                    result.value = response.body
+                    modifyContentResult.value = response.body
                 }
             }
             catch(e: Exception)
@@ -108,7 +112,7 @@ class ContentViewModel(private val contentRepository: ContentRepository = Conten
 
                 if(response.code == 200 && response.body!!)  // 게시글 삭제 성공
                 {
-                    result.value = response.body
+                    removeContentResult.value = response.body
                 }
             }
             catch(e: Exception)
