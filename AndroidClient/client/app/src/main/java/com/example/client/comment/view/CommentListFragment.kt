@@ -12,11 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import com.example.client.comment.adapter.CommentListItemAdapter
 import com.example.client.comment.domain.Comment
 import com.example.client.comment.service.CommentRetrofitServiceObject
+import com.example.client.comment.viewmodel.AddCommentViewModel
 import com.example.client.content.domain.Content
-import com.example.client.content.view.ContentListActivity
 import com.example.client.databinding.FragmentCommentListBinding
 import com.example.client.user.domain.User
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +34,7 @@ class CommentListFragment : Fragment()
     private var binding: FragmentCommentListBinding? = null
 
     private val commentRetrofitService = CommentRetrofitServiceObject.getRetrofitInstance()
+    private val addCommentViewModel: AddCommentViewModel by viewModels()
 
     private lateinit var commentListItemAdapter: CommentListItemAdapter
 
@@ -56,7 +58,8 @@ class CommentListFragment : Fragment()
 
         loadRecyclerComment()
 
-        binding!!.submitButton.setOnClickListener()  // 댓글 작성
+        // 댓글 생성 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        binding!!.submitButton.setOnClickListener()
         {
             (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
             {
@@ -67,39 +70,26 @@ class CommentListFragment : Fragment()
             {
                 this.writer = user!!.username
                 this.text = binding!!.commentTextEdittext.text.toString()
-            }
-            binding!!.commentTextEdittext.setText("")
-
-            CoroutineScope(Dispatchers.IO).launch()
+            }.run()
             {
-                try
-                {
-                    val result = commentRetrofitService.addComment(comment, content!!.contentId!!, user!!.userId!!)
-
-                    if(result.code == 201 && result.body != null)
-                    {
-                        withContext(Dispatchers.Main)
-                        {
-                            with(requireActivity())
-                            {
-                                this.overridePendingTransition(0, 0)
-                                this.intent.putExtra("user", user)
-                                this.intent.putExtra("content", result.body)
-                                this.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                                startActivity(this.intent)
-                                this.overridePendingTransition(0, 0)
-
-                                this.finish()
-                            }
-                        }
-                    }
-                }
-                catch(e: Exception)
-                {
-                    Log.e("서버 연결 실패", e.message!!)
-                }
+                addCommentViewModel.addComment(this, content!!.contentId!!, user!!.userId!!)
+            }.run()
+            {
+                binding!!.commentTextEdittext.setText("")
             }
         }
+        addCommentViewModel.result.observe(requireActivity())
+        {result ->
+            activity!!.overridePendingTransition(0, 0)
+            activity!!.intent.putExtra("user", user)
+            activity!!.intent.putExtra("content", result)
+            activity!!.intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(activity!!.intent)
+            activity!!.overridePendingTransition(0, 0)
+
+            activity!!.finish()
+        }
+        // 댓글 생성 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         commentListItemAdapter.setItemClickListener(object: CommentListItemAdapter.OnItemClickListener  // 댓글 삭제
         {
