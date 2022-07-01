@@ -1,6 +1,5 @@
 package com.example.client.content.view
 
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +10,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.example.client.R
 import com.example.client.content.adapter.ContentListItemAdapter
-import com.example.client.content.viewmodel.GetAllViewModel
+import com.example.client.content.domain.Content
+import com.example.client.content.viewmodel.ContentViewModel
 import com.example.client.databinding.ActivityContentListBinding
 import com.example.client.user.domain.User
 import com.example.client.user.view.SignInActivity
@@ -21,7 +21,7 @@ class ContentListActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityContentListBinding
 
-    private val getAllViewModel: GetAllViewModel by viewModels()
+    private val contentViewModel: ContentViewModel by viewModels()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
 
@@ -62,10 +62,11 @@ class ContentListActivity : AppCompatActivity()
         }
 
         // 15개씩 게시글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        getAllViewModel.getAll(page, 15)
-        getAllViewModel.result.observe(this)
+        contentViewModel.getAll(page, 15)
+        contentViewModel.result.observe(this)
         {result ->
-            contentListItemAdapter.contents.addAll(result)
+            @Suppress("UNCHECKED_CAST")
+            contentListItemAdapter.contents.addAll(result as MutableList<Content>)
             contentListItemAdapter.notifyDataSetChanged()
         }
         contentListItemAdapter.liveEnd.observe(this)
@@ -75,7 +76,7 @@ class ContentListActivity : AppCompatActivity()
                 contentListItemAdapter.liveEnd.value = false
                 page = page + 1
 
-                getAllViewModel.getAll(page, 15)
+                contentViewModel.getAll(page, 15)
             }
         }
         // 15개씩 게시글 로딩 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,8 +147,8 @@ class ContentListActivity : AppCompatActivity()
                 with(AlertDialog.Builder(this))
                 {
                     this.setMessage("로그아웃 하시겠습니까?")
-                    this.setPositiveButton("확인", DialogInterface.OnClickListener() { _, _ -> signOut() })
-                    this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
+                    this.setPositiveButton("확인") { _, _ -> signOut() }
+                    this.setNegativeButton("취소") { _, _ -> }
                 }.show()
             }
         }

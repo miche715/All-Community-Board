@@ -10,7 +10,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import com.example.client.content.adapter.ContentListItemAdapter
-import com.example.client.content.viewmodel.GetSearchViewModel
+import com.example.client.content.domain.Content
+import com.example.client.content.viewmodel.ContentViewModel
 import com.example.client.databinding.ActivitySearchContentListBinding
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
@@ -19,7 +20,7 @@ class SearchContentListActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivitySearchContentListBinding
 
-    private val getSearchViewModel: GetSearchViewModel by viewModels()
+    private val contentViewModel: ContentViewModel by viewModels()
 
     private lateinit var contentListItemAdapter: ContentListItemAdapter
 
@@ -48,10 +49,11 @@ class SearchContentListActivity : AppCompatActivity()
 
         if(keyword != null)
         {
-            getSearchViewModel.getSearch(keyword!!, page, 15)
-            getSearchViewModel.result.observe(this)
+            contentViewModel.getSearch(keyword!!, page, 15)
+            contentViewModel.result.observe(this)
             {result ->
-                if(result.size > 0)
+                @Suppress("UNCHECKED_CAST")
+                if((result as MutableList<Content>).size > 0)
                 {
                     if(binding.noticeTextview.visibility == View.VISIBLE)
                     {
@@ -73,7 +75,7 @@ class SearchContentListActivity : AppCompatActivity()
                     contentListItemAdapter.liveEnd.value = false
                     page = page + 1
 
-                    getSearchViewModel.getSearch(keyword!!, page, 15)
+                    contentViewModel.getSearch(keyword!!, page, 15)
                 }
             }
         }

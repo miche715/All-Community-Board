@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import com.example.client.content.domain.Content
-import com.example.client.content.viewmodel.AddContentViewModel
+import com.example.client.content.viewmodel.ContentViewModel
 import com.example.client.databinding.ActivityAddContentBinding
 import com.example.client.user.domain.User
 import com.google.android.material.snackbar.Snackbar
@@ -18,7 +18,7 @@ class AddContentActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityAddContentBinding
 
-    private val addContentViewModel: AddContentViewModel by viewModels()
+    private val contentViewModel: ContentViewModel by viewModels()
 
     private var user: User? = null
 
@@ -45,12 +45,12 @@ class AddContentActivity : AppCompatActivity()
                 this.text = binding.textEdittext.text.toString()
             }.run()
             {
-                addContentViewModel.addContent(this, user!!.userId!!)
+                contentViewModel.addContent(this, user!!.userId!!)
             }
         }
-        addContentViewModel.result.observe(this)
+        contentViewModel.result.observe(this)
         {result ->
-            if(result)
+            if(result as Boolean)
             {
                 Intent(this@AddContentActivity, ContentListActivity::class.java).run()
                 {

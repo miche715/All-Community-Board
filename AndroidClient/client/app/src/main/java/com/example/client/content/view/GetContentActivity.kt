@@ -1,7 +1,6 @@
 package com.example.client.content.view
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.example.client.comment.view.CommentListFragment
 import com.example.client.content.domain.Content
-import com.example.client.content.viewmodel.RemoveContentViewModel
+import com.example.client.content.viewmodel.ContentViewModel
 import com.example.client.databinding.ActivityGetContentBinding
 import com.example.client.good.domain.Good
 import com.example.client.good.viewmodel.AddGoodViewModel
@@ -24,7 +23,7 @@ class GetContentActivity : AppCompatActivity()
 {
     private lateinit var binding: ActivityGetContentBinding
 
-    private val removeContentViewModel: RemoveContentViewModel by viewModels()
+    private val contentViewModel: ContentViewModel by viewModels()
     private val addGoodViewModel: AddGoodViewModel by viewModels()
 
     private var user: User? = null
@@ -76,13 +75,13 @@ class GetContentActivity : AppCompatActivity()
             with(AlertDialog.Builder(this))
             {
                 this.setMessage("게시글을 삭제 하시겠습니까?")
-                this.setPositiveButton("확인", DialogInterface.OnClickListener() { _, _ -> removeContentViewModel.removeContent(content!!.contentId!!) })
-                this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
+                this.setPositiveButton("확인") { _, _ -> contentViewModel.removeContent(content!!.contentId!!) }
+                this.setNegativeButton("취소") { _, _ -> }
             }.show()
         }
-        removeContentViewModel.result.observe(this)
+        contentViewModel.result.observe(this)
         {result ->
-            if(result)
+            if(result as Boolean)
             {
                 Intent(this@GetContentActivity, ContentListActivity::class.java).run()
                 {
@@ -101,8 +100,8 @@ class GetContentActivity : AppCompatActivity()
             with(AlertDialog.Builder(this))
             {
                 this.setMessage("좋아요를 추가하시겠습니까?")
-                this.setPositiveButton("확인", DialogInterface.OnClickListener() { _, _ -> addGoodViewModel.addGood(Good(), content!!.contentId!!, user!!.userId!!) })
-                this.setNegativeButton("취소", DialogInterface.OnClickListener() { _, _ -> })
+                this.setPositiveButton("확인") { _, _ -> addGoodViewModel.addGood(Good(), content!!.contentId!!, user!!.userId!!) }
+                this.setNegativeButton("취소") { _, _ -> }
             }.show()
         }
         addGoodViewModel.result.observe(this)
