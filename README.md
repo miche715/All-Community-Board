@@ -6,7 +6,7 @@
 
 ---
 
-## 사용 기술, 키워드
+## 1. 사용 기술, 키워드
 + 서버  
 Kotlin, Spring Boot, H2 DataBase, Spring Data JPA, REST API, DI, MVC, ...
 
@@ -15,7 +15,7 @@ Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
 
 ---
 
-## 패키지 구조  
+## 2. 패키지 구조  
 <details>
 <summary>서버</summary>
 
@@ -200,7 +200,57 @@ Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
 
 ---
 
-## 실행 화면  
+## 3. 데이터베이스 구조  
+- USER(사용자)  
+
+|이름|자료형|비고|
+|:------|:---|:---|
+|user_id|bigint|PRIMARY KEY|
+|username|varchar|-|
+|password|varchar|-|
+|name|varchar|-|
+|email|varchar|-|
+
+<br/>  
+
+- CONTENT(게시글)  
+
+|이름|자료형|비고|
+|:------|:---|:---|
+|content_id|bigint|PRIMARY KEY|
+|writer|varchar|-|
+|title|varchar|-|
+|text|varchar|-|
+|created_at|varchar|-|
+|good_num|integer|-|
+|comment_num|integer|-|
+|user_id|bigint|FOREIGN KEY|
+
+<br/>  
+
+- COMMENT(댓글)  
+
+|이름|자료형|비고|
+|:------|:---|:---|
+|comment_id|bigint|PRIMARY KEY|
+|writer|varchar|-|
+|text|varchar|-|
+|created_at|varchar|-|
+|content_id|bigint|FOREIGN KEY|
+|user_id|bigint|FOREIGN KEY|
+
+<br/>  
+
+- GOOD(좋아요)  
+
+|이름|자료형|비고|
+|:------|:---|:---|
+|good_id|bigint|PRIMARY KEY|
+|content_id|bigint|FOREIGN KEY|
+|user_id|bigint|FOREIGN KEY|
+---
+
+## 4. 실행 화면  
 <details>
 <summary>공통</summary>
 
