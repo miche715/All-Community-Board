@@ -1,12 +1,23 @@
 # All-Community-Board
-서버와 클라이언트로 이루어진 게시판.  
-누구나 한 번쯤은 거쳐 가는 게시판.  
-하지만 만만하게는 볼 수 없는 게시판.  
-제목이 저런 이유는 내가 서버, 클라이언트, 데이터베이스 혼자 다(All) 할거라서...
+## 0. 순서
+[1. 배경](#1-배경)  
+[2. 사용 기술](#2-사용-기술)  
+[3. 패키지 구조](#3-패키지-구조)  
+[5. 데이터베이스 구조](#5-데이터베이스-구조)  
+[6. 실행 화면](#6-실행-화면)  
 
 ---
 
-## 1. 사용 기술, 키워드
+## 1. 배경  
+서버와 클라이언트로 이루어진 게시판 프로젝트이다. 개발자 지망생 이라면 적어도 게시판 정도는 한번 씩 만들어 보라는 말을 많이 들었다.  
+현업에서 만드는게 다 게시판 만들기의 응용이라고 말이다.  
+그래서 나도 만들어보고 싶어서 Spring Boot 독학 했다. 클라이언트는 안드로이드로 정했다.  
+내가 안드로이드를 공부를 해서 그런가 서버도 Java대신 Kotlin을 이용하기로 했다. 그게 그거라 별 문제는 없을거다.  
+목표는 게시판에 들어갈 CRUD기능과, Clean Architecture 구성을 목표로 제작에 들어갔다.  
+
+---
+
+## 2. 사용 기술
 + 서버  
 Kotlin, Spring Boot, H2 DataBase, Spring Data JPA, REST API, DI, MVC, ...
 
@@ -15,7 +26,7 @@ Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
 
 ---
 
-## 2. 패키지 구조  
+## 3. 패키지 구조  
 <details>
 <summary>서버</summary>
 
@@ -200,7 +211,49 @@ Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
 
 ---
 
-## 3. 데이터베이스 구조  
+## 4. API 설계  
+- UserController  
+
+|기능|Method|URL|Response Body|
+|:------|:---|:---|:---|
+|회원가입|POST|/users/sign-up|Boolean|
+|로그인|GET|/users/sign-in|User|
+|아이디 찾기|GET|/users/find-username|String|
+|비밀번호 찾기|GET|/users/find-password|String|
+
+<br/>  
+
+- ContentController  
+
+|기능|Method|URL|Response Body|
+|:------|:---|:---|:---|
+|게시글 등록|POST|/contents/create|Boolean|
+|모든 게시글 로딩|GET|/contents/all|MutableList< Content >|
+|게시글 검색|GET|/contents/search|MutableList< Content >|
+|게시글 수정|PUT|/contents/update|Content|
+|게시글 삭제|DELETE|/contents/delete|Boolean|
+
+<br/>  
+
+- CommentController  
+
+|기능|Method|URL|Response Body|
+|:------|:---|:---|:---|
+|댓글 등록|POST|/comments/create|Content|
+|모든 댓글 로딩|GET|/comments/all|MutableList< Comment >|
+|댓글 삭제|DELETE|/comments/delete|Content|
+
+<br/>  
+
+- GoodController  
+
+|기능|Method|URL|Response Body|
+|:------|:---|:---|:---|
+|좋아요 증가|POST|/goods/create|Content|
+
+---
+
+## 5. 데이터베이스 구조  
 - USER(사용자)  
 
 |이름|자료형|비고|
@@ -250,7 +303,7 @@ Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
 |user_id|bigint|FOREIGN KEY|
 ---
 
-## 4. 실행 화면  
+## 6. 실행 화면  
 <details>
 <summary>공통</summary>
 
