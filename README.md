@@ -126,7 +126,7 @@ TabLayout으로 구성되어 있고, 하위에는 아이디를 찾는 Fragment�
 - 로그 아웃  
 ![로그아웃 1로그아웃 성공](https://user-images.githubusercontent.com/44915367/176998139-f599226d-0586-40a5-8f5d-3908d1b8f679.gif)  
     
-툴바 메뉴를 누르면 로그아웃을 할 수 있다.  
+Toolbar 메뉴를 누르면 로그아웃을 할 수 있다.  
 AlertDialog를 통해 정말 로그아웃을 할건지 물어보고, 확인을 누르면 로그인 화면으로 이동한다. 
     
 </details>
@@ -163,13 +163,37 @@ Adapter에 Item이 Bind될 때 position값을 이용해서 끝인지 아닌지 �
 게시글은 본인만 수정할 수 있다.  
     
 - 게시글 삭제  
-    
 ![게시글 삭제](https://user-images.githubusercontent.com/44915367/176998818-cd09a73a-b2d5-4924-90d6-357b2bebe73b.gif)  
     
 게시글은 본인만 삭제할 수 있다.  
 AlertDialog를 통해 한번 물어보고 삭제한다.  
+   
+- 게시글 검색 화면 이동  
+![게시글 검색 1검색 화면 이동](https://user-images.githubusercontent.com/44915367/176998871-0e558b14-5ac4-4a6e-9a50-d2b998d14b25.gif)  
+
+Toolbar에 돋보기 모양 버튼을 누르면 검색 화면으로 이동한다.  
+처음 이동하면 TextView에 검색에 대한 설명을 보여준다.  
+    
+- 게시글 검색 실패  
+![게시글 검색 2글자 수 부족](https://user-images.githubusercontent.com/44915367/176998948-f8d39db1-f023-4be2-a85c-6cbdcc7131aa.gif)  
+    
+게시글 검색을 위해선 두 글자 이상이 필요하다.  
+두 글자 미만으로 입력 시 Snackbar를 통해 알려준다.  
+    
+- 게시글 검색 결과 없음  
+![게시글 검색 3검색 결과 없음](https://user-images.githubusercontent.com/44915367/176998991-6b7baa8f-5cb7-4b51-9df5-9485aac9eeac.gif)  
+    
+검색 결과가 없는 경우 TextView에 없다는 설명을 보여준다.  
+    
+- 게시글 검색 성공  
+![게시글 검색 4성공](https://user-images.githubusercontent.com/44915367/176999040-5a87a13e-fee5-4686-a46a-708fa7e55486.gif)  
+    
+검색에 성공하면 해당 항목을 보여준다.  
+여기도 마찬가지로 페이징이 적용되어 있다.  
     
 </details>
+
+
 
 
 
