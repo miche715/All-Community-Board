@@ -60,6 +60,7 @@
         android:gravity="top|left"
         android:hint="내용"
         android:inputType="text|textMultiLine"
+        android:lineSpacingExtra="5dp"
         android:lines="30"
         android:paddingLeft="3dp"
         android:paddingTop="3dp"

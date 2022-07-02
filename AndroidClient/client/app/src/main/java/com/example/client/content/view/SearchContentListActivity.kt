@@ -86,6 +86,11 @@ class SearchContentListActivity : AppCompatActivity()
 
         binding.searchButton.setOnClickListener()
         {
+            (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
+            {
+                this.hideSoftInputFromWindow(binding.searchButton.windowToken, 0)
+            }
+
             if(binding.searchEdittext.text.length < 2)
             {
                 Snackbar.make(binding.mainLayout, "두 글자 이상 입력해주세요.", Snackbar.LENGTH_SHORT).show()
