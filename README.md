@@ -193,14 +193,34 @@ Toolbar에 돋보기 모양 버튼을 누르면 검색 화면으로 이동한다
     
 </details>
 
+<details>
+<summary>댓글</summary>
 
+- 댓글 등록  
+![댓글 등록 1댓글 등록](https://user-images.githubusercontent.com/44915367/176999186-6ee7054c-f372-4891-87d4-f60abf2633f0.gif)  
 
+댓글을 등록하면 현재 게시글을 즉시 다시 불러온다.  
+댓글 목록도 마찬가지로 RecyclerView로 구성되어 있다.  
+    
+- 댓글 삭제  
+![댓글 삭제](https://user-images.githubusercontent.com/44915367/176999230-700c97d6-e7a3-4081-8cc7-ae602451bc5d.gif)  
+    
+본인의 댓글만 삭제 버튼이 보인다.  
+AlertDialog를 통해 한번 물어보고 삭제한다.
+    
+</details>
 
+<details>
+<summary>좋아요</summary>
 
+- 좋아요 하기  
+![좋아요](https://user-images.githubusercontent.com/44915367/176999288-a5d6bbe7-5557-42aa-901f-8922a8ae942f.gif)  
+    
+빨간색 엄지 버튼을 클릭하면 AlertDialog를 통해 한번 물어보고 좋아요를 1개 올린다.  
+한 게시글당 한번 씩만 가능하다.  
+두 번부터는 Snackbar를 통해 안된다고 알려준다.  
 
-
-
-
+</details>
 
 
 
