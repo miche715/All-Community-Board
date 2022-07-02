@@ -45,6 +45,53 @@ Kotlin, Android, Restrofit2, Recycler View, View Holder, Coroutine, ...
 
 ## 실행 화면  
 <details>
+<summary>공통</summary>
+
+- 뒤로 버튼 두 번 누르면 종료  
+![뒤로 두 번](https://user-images.githubusercontent.com/44915367/176999449-f81c312e-240c-415b-8607-65ae995b4ed1.gif)
+    
+ ```kotlin
+    private var backKeyPressedTime = 0L
+    override fun onBackPressed()
+    {
+        if(System.currentTimeMillis() > backKeyPressedTime + 2000)
+        {
+            backKeyPressedTime = System.currentTimeMillis()
+            Snackbar.make(binding.mainLayout, "\'뒤로\'버튼 한번 더 누르시면 종료됩니다.", Snackbar.LENGTH_SHORT).show()
+
+            return
+        }
+
+        if(System.currentTimeMillis() <= backKeyPressedTime + 2000)
+        {
+            finishAffinity()
+        }
+    }
+ ```
+뒤로 버튼을 누르고 Snackbar를 통해 알려준 뒤, 2초 이내 다시 클릭 시 앱을 종료시킨다.  
+화면을 뒤로 가고싶으면 Toolbar에 백버튼을 누른다.  
+    
+- 빈 화면 클릭 시 키보드 내리기  
+![키보드 내리기](https://user-images.githubusercontent.com/44915367/176999663-35734d23-41d7-4250-b85e-ab54b97f7a8f.gif)   
+                                           
+```kotlin
+    override fun onTouchEvent(event: MotionEvent): Boolean
+    {
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).run()
+        {
+            this.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+        }
+
+        return true
+    }
+```                                                          
+키보드가 올라오는 곳은 빈 화면을 클릭 시 키보드가 내려간다.  
+버튼 클릭도 마찬가지 이다.
+</details>
+
+
+
+<details>
 <summary>회원가입</summary>
 
 - 회원가입 화면으로 이동  
