@@ -1,45 +1,202 @@
 # All-Community-Board
 서버와 클라이언트로 이루어진 게시판.  
-누구나 한 번씩은 거쳐 가는 게시판.  
+누구나 한 번쯤은 거쳐 가는 게시판.  
+하지만 만만하게는 볼 수 없는 게시판.  
 제목이 저런 이유는 내가 서버, 클라이언트, 데이터베이스 혼자 다(All) 할거라서...
 
 ---
 
 ## 사용 기술, 키워드
 + 서버  
-Kotlin, Spring Boot, H2 DataBase, Spring Data JPA, REST API, MVC, DI, ...
+Kotlin, Spring Boot, H2 DataBase, Spring Data JPA, REST API, DI, MVC, ...
 
 + 클라이언트  
-Kotlin, Android, Restrofit2, Recycler View, View Holder, Coroutine, ...
+Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
 
 ---
 
-## 코틀린 서버 패키지 구조
-> configuration
->> ApplicationConfiguration
+## 패키지 구조  
+<details>
+<summary>서버</summary>
 
-> domain
->> User  
->> Content  
->> Comment  
+```  
+📦main  
+ ┣ 📂kotlin  
+ ┃ ┗ 📂com  
+ ┃ ┃ ┗ 📂example  
+ ┃ ┃ ┃ ┗ 📂server  
+ ┃ ┃ ┃ ┃ ┣ 📂configuration  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜ApplicationConfiguration.kt  
+ ┃ ┃ ┃ ┃ ┣ 📂controller  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CommentController.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ContentController.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoodController.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserController.kt  
+ ┃ ┃ ┃ ┃ ┣ 📂domain  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Comment.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CommentResponse.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Content.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ContentResponse.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜Good.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoodResponse.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜User.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserResponse.kt  
+ ┃ ┃ ┃ ┃ ┣ 📂repository  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CommentRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CommentSpringDataRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ContentRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ContentSpringDataRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoodRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoodSpringDataRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserSpringDataRepository.kt  
+ ┃ ┃ ┃ ┃ ┣ 📂service  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜CommentService.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜ContentService.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoodService.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserService.kt  
+ ┃ ┃ ┃ ┃ ┗ 📜ServerApplication.kt  
+ ┗ 📂resources  
+ ┃ ┣ 📂static  
+ ┃ ┣ 📂templates  
+ ┃ ┗ 📜application.properties  
+ ```  
+ 
+</details>
 
-> repository
->> UserRepository  
->> UserSpringDataRepository  
->> ContentRepository  
->> ContentSpringDataRepository  
->> CommentRepository  
->> CommentSpringDataRepository  
+<details>
+<summary>클라이언트</summary>
 
-> service
->> UserService  
->> ContentService  
->> CommentService  
+```  
+📦main  
+ ┣ 📂java  
+ ┃ ┗ 📂com  
+ ┃ ┃ ┗ 📂example  
+ ┃ ┃ ┃ ┗ 📂client  
+ ┃ ┃ ┃ ┃ ┣ 📂comment  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂adapter  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentListItemAdapter.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Comment.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentResponse.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂service  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CommentRetrofitService.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentRetrofitServiceObject.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂view  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentListFragment.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂viewmodel  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜CommentViewModel.kt  
+ ┃ ┃ ┃ ┃ ┣ 📂content  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂adapter  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ContentListItemAdapter.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Content.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ContentResponse.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ContentRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂service  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ContentRetrofitService.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ContentRetrofitServiceObject.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂view  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜AddContentActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ContentListActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜GetContentActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜ModifyContentActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜SearchContentListActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂viewmodel  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜ContentViewModel.kt  
+ ┃ ┃ ┃ ┃ ┣ 📂good  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜Good.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GoodResponse.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GoodRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂service  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜GoodRetrofitService.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GoodRetrofitServiceObject.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂viewmodel  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GoodViewModel.kt  
+ ┃ ┃ ┃ ┃ ┣ 📂jsonconverter  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜NullOnEmptyConverterFactory.kt  
+ ┃ ┃ ┃ ┃ ┗ 📂user  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜User.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserResponse.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserRepository.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂service  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜UserRetrofitService.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserRetrofitServiceObject.kt  
+ ┃ ┃ ┃ ┃ ┃ ┣ 📂view  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FindAccountActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FindPasswordFragment.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FindUsernameFragment.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜SignInActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜SignUpActivity.kt  
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂viewmodel  
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜UserViewModel.kt  
+ ┣ 📂res  
+ ┃ ┣ 📂drawable  
+ ┃ ┃ ┣ 📜basic_edge.xml  
+ ┃ ┃ ┣ 📜comment_num_edge.xml  
+ ┃ ┃ ┣ 📜good_edge.xml  
+ ┃ ┃ ┗ 📜ic_launcher_background.xml  
+ ┃ ┣ 📂drawable-v24  
+ ┃ ┃ ┣ 📜chat_48px.xml  
+ ┃ ┃ ┣ 📜ic_launcher_foreground.xml  
+ ┃ ┃ ┗ 📜thumb_up_48px.xml  
+ ┃ ┣ 📂font  
+ ┃ ┃ ┣ 📜font.xml  
+ ┃ ┃ ┗ 📜jalnan_otf.otf  
+ ┃ ┣ 📂layout  
+ ┃ ┃ ┣ 📜activity_add_content.xml  
+ ┃ ┃ ┣ 📜activity_content_list.xml  
+ ┃ ┃ ┣ 📜activity_find_account.xml  
+ ┃ ┃ ┣ 📜activity_get_content.xml  
+ ┃ ┃ ┣ 📜activity_modify_content.xml  
+ ┃ ┃ ┣ 📜activity_search_content_list.xml  
+ ┃ ┃ ┣ 📜activity_sign_in.xml  
+ ┃ ┃ ┣ 📜activity_sign_up.xml  
+ ┃ ┃ ┣ 📜comment_list_item.xml  
+ ┃ ┃ ┣ 📜content_list_item.xml  
+ ┃ ┃ ┣ 📜fragment_comment_list.xml  
+ ┃ ┃ ┣ 📜fragment_find_password.xml  
+ ┃ ┃ ┗ 📜fragment_find_username.xml  
+ ┃ ┣ 📂menu  
+ ┃ ┃ ┗ 📜menu_content_list.xml  
+ ┃ ┣ 📂mipmap-anydpi-v26  
+ ┃ ┃ ┣ 📜ic_launcher.xml  
+ ┃ ┃ ┗ 📜ic_launcher_round.xml  
+ ┃ ┣ 📂mipmap-hdpi  
+ ┃ ┃ ┣ 📜ic_launcher.webp  
+ ┃ ┃ ┗ 📜ic_launcher_round.webp  
+ ┃ ┣ 📂mipmap-mdpi  
+ ┃ ┃ ┣ 📜ic_launcher.webp  
+ ┃ ┃ ┗ 📜ic_launcher_round.webp  
+ ┃ ┣ 📂mipmap-xhdpi  
+ ┃ ┃ ┣ 📜ic_launcher.webp  
+ ┃ ┃ ┗ 📜ic_launcher_round.webp  
+ ┃ ┣ 📂mipmap-xxhdpi  
+ ┃ ┃ ┣ 📜ic_launcher.webp  
+ ┃ ┃ ┗ 📜ic_launcher_round.webp  
+ ┃ ┣ 📂mipmap-xxxhdpi  
+ ┃ ┃ ┣ 📜ic_launcher.webp  
+ ┃ ┃ ┗ 📜ic_launcher_round.webp  
+ ┃ ┣ 📂values  
+ ┃ ┃ ┣ 📜colors.xml  
+ ┃ ┃ ┣ 📜strings.xml  
+ ┃ ┃ ┗ 📜themes.xml  
+ ┃ ┣ 📂values-night  
+ ┃ ┃ ┗ 📜themes.xml  
+ ┃ ┗ 📂xml  
+ ┃ ┃ ┣ 📜backup_rules.xml  
+ ┃ ┃ ┗ 📜data_extraction_rules.xml  
+ ┗ 📜AndroidManifest.xml  
+```  
 
-> controller
->> UserController  
->> ContentController  
->> CommentController  
+</details>
 
 ---
 
@@ -88,8 +245,6 @@ Kotlin, Android, Restrofit2, Recycler View, View Holder, Coroutine, ...
 키보드가 올라오는 곳은 빈 화면을 클릭 시 키보드가 내려간다.  
 버튼 클릭도 마찬가지 이다.
 </details>
-
-
 
 <details>
 <summary>회원가입</summary>
@@ -269,9 +424,7 @@ AlertDialog를 통해 한번 물어보고 삭제한다.
 
 </details>
 
-
-
 ---
 
 ## 진행 기간
-2022.06.17 ~ 진행중
+2022.06.17 ~ 2022.07.02
