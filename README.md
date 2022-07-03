@@ -1,7 +1,7 @@
 # All-Community-Board
 ## 0. 순서
 [1. 배경](#1-배경)  
-[2. 사용 기술](#2-사용-기술)  
+[2. 기술 및 환경](#2-기술-및-환경)  
 [3. 패키지 구조](#3-패키지-구조)  
 [4. API 설계](#4-api-설계)  
 [5. 데이터베이스 구조](#5-데이터베이스-구조)  
@@ -11,17 +11,24 @@
 ---
 
 ## 1. 배경  
-서버와 클라이언트로 이루어진 게시판 프로젝트이다. 개발자 지망생 이라면 적어도 게시판 정도는 한번 씩 만들어 보라는 말을 많이 들었다.  
-현업에서 만드는게 다 게시판 만들기의 응용이라고 말이다.  
-그래서 나도 만들어보고 싶어서 Spring Boot 독학 했다. 클라이언트는 안드로이드로 정했다.  
-내가 안드로이드를 공부를 해서 그런가 서버도 Java대신 Kotlin을 이용하기로 했다. 그게 그거라 별 문제는 없을거다.  
-목표는 게시판에 들어갈 CRUD기능과, Clean Architecture 구성을 목표로 제작에 들어갔다.  
+서버와 클라이언트로 이루어진 게시판 프로젝트이다.  
+개발자 지망생이라면 적어도 게시판 정도는 한 번씩 만들어 보라는 말을 많이 들었다.  
+현업에서 만드는 게 다 게시판 만들기의 응용이라고 말이다.  
+그래서 나도 만들어 보고 싶어서 Spring Boot 독학했다. 클라이언트는 안드로이드로 정했다.  
+내가 안드로이드를 공부해서 그런지 서버도 Java 대신 Kotlin을 이용하기로 했다. 그게 그거라 별문제는 없을 거다.  
+게시판에 들어갈 CRUD 기능과, Clean Architecture 구성을 목표로 제작에 들어갔다.  
 
 ---
 
-## 2. 사용 기술
+## 2. 기술 및 환경
 + 서버  
-Kotlin, Spring Boot, H2 DataBase, Spring Data JPA, REST API, DI, MVC, ...
+Kotlin  
+Spring Boot  
+H2 DataBase  
+Spring Data JPA  
+REST API  
+DI  
+MVC  
 
 + 클라이언트  
 Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
@@ -349,6 +356,7 @@ Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
 ```                                                          
 키보드가 올라오는 곳은 빈 화면을 클릭 시 키보드가 내려간다.  
 버튼 클릭도 마찬가지 이다.
+
 </details>
 
 <details>
