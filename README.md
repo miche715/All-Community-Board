@@ -21,17 +21,43 @@
 ---
 
 ## 2. 기술 및 환경
-+ 서버  
-Kotlin  
-Spring Boot  
-H2 DataBase  
-Spring Data JPA  
-REST API  
-DI  
-MVC  
++ 서버
+    + 개발 환경  
+        + Windows 10
+        + IntelliJ IDEA Ultimate
+    + 언어  
+        + Kotlin
+    + 프레임워크 & 라이브러리
+        + Spring Boot
+        + Spring Data JPA
+        + Hibernate
+        + Jackson
+    + 데이터베이스
+        + H2 DataBase
+    + 빌드 툴
+        + Gradle
+    + 아키텍처
+        + MVC
 
-+ 클라이언트  
-Kotlin, Android, AAC, Restrofit2, Recycler View, Coroutine, LiveData, MVVM, ...
+<br/> 
+
++ 클라이언트
+    + 개발 환경
+        + Windows 10
+        + Android Studio
+    + 언어
+        + Kotlin
+    + 프레임워크 & 라이브러리
+        + Android(SDK Level: 32)
+        + Retrofit2
+        + Coroutine
+        + LiveData
+        + ViewModel
+        + Gson, Scalars
+    + 빌드 툴
+        + Gradle
+    + 아키텍처
+        + MVVM
 
 ---
 
